@@ -1,20 +1,14 @@
 import axios from "axios";
 
+const config = {
+  headers: {'api_key': 'a2a6cab6a2104b0a95bef74fa2c62b52'}
+};
+
 export default {
-  // Gets all books
-  getBooks: function() {
-    return axios.get("/api/books");
+  busPositions: function(query) {
+    return axios.get("https://api.wmata.com/Bus.svc/json/jBusPositions?RouteID="+ query, config);
   },
-  // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/books/" + id);
-  },
-  // Deletes the book with the given id
-  deleteBook: function(id) {
-    return axios.delete("/api/books/" + id);
-  },
-  // Saves a book to the database
-  saveBook: function(bookData) {
-    return axios.post("/api/books", bookData);
+  routeSearch: function(query) {
+    return axios.get("https://api.wmata.com/Bus.svc/json/jRouteDetails?RouteID="+ query, config);
   }
 };
