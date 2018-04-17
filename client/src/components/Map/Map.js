@@ -78,8 +78,8 @@ const MapRender = compose(
   <GoogleMap
     defaultZoom={props.defaultZoom}
     defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
-  {props.markers.map(bus => (
-    <Marker position={bus} />
+  {props.markers.map((bus,i) => (
+    <Marker key={i} position={bus} />
   ))}
   <Polyline path={props.test} />
 
