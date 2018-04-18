@@ -20,16 +20,16 @@ class Home extends Component {
     this.searchRoutes1(JSON.stringify(70));
     console.log("compWillMount")
   }
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.check) {
-      console.log("made it?")
-      //here it isnt changing the render()...........
-      this.searchRoutes2(this.state.search)
-    }
-  }
-  componentDidMount(query) {
-    this.searchBuses(JSON.stringify(70));
-  }
+  // componentWillUpdate(nextProps, nextState) {
+  //   if (nextState.check) {
+  //     console.log("made it?")
+  //     //here it isnt changing the render()...........
+  //     this.searchRoutes2(this.state.search)
+  //   }
+  // }
+  // componentDidMount(query) {
+  //   this.searchBuses(JSON.stringify(70));
+  // }
   searchBuses = query => {
     let busesArray = [];
     API.busPositions(query)

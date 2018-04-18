@@ -34,6 +34,8 @@ import { compose, withProps, withHandlers } from "recompose";
 
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 
+
+const google = window.google;
 // class Map extends Component {
 //
 //     render() {
@@ -79,10 +81,9 @@ const MapRender = compose(
     defaultZoom={props.defaultZoom}
     defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
   {props.markers.map((bus,i) => (
-    <Marker key={i} position={bus} />
+    <Marker key={i} position={bus} animation={google.maps.Animation.BOUNCE}/>
   ))}
   <Polyline path={props.test} />
-
   </GoogleMap>
 );
 export default MapRender;
