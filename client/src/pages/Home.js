@@ -11,64 +11,73 @@ import MapRender from "../components/Map";
 class Home extends Component {
   state = {
     result: {},
-    search: "",
+    search: "10A",
     routeShape: [],
     buses: [],
     check: false
   };
+
   componentDidMount(query) {
-    this.searchRoutes1(JSON.stringify(70));
+    this.searchRoutes();
+    this.searchBuses();
     console.log("compWillMount")
-  }
+  };
+
   // componentWillUpdate(nextProps, nextState) {
   //   if (nextState.check) {
   //     console.log("made it?")
   //     //here it isnt changing the render()...........
-  //     this.searchRoutes2(this.state.search)
+  //
   //   }
-  // }
+  // };
   // componentDidMount(query) {
   //   this.searchBuses(JSON.stringify(70));
   // }
-  searchBuses = query => {
-    let busesArray = [];
-    API.busPositions(query)
-      .then(res =>
+  searchBuses = () => {
+
+    API.busPositions(this.state.search)
+      .then(res => {
+      let busesArray = [];
       res.data.BusPositions.forEach(item =>
         busesArray.push({
           lat: parseFloat(item.Lat),
           lng: parseFloat(item.Lon)
         })
       ),
-      this.setState({buses: busesArray}))
+      this.setState({buses: busesArray})
+    })
       .catch(err => console.log(err));
   };
-  searchRoutes1 = query => {
-    let ShapeDefined = [];
-    API.routeSearch(query)
-      .then(res =>
+  searchRoutes = () => {
+
+    API.routeSearch(this.state.search)
+      .then(res => {
+      let ShapeDefined = [];
       res.data.Direction0.Shape.forEach(item =>
         ShapeDefined.push({
           lat: parseFloat(item.Lat),
           lng: parseFloat(item.Lon)
         })
       ),
-      this.setState({routeShape: ShapeDefined}))
+      this.setState({routeShape: ShapeDefined})
+    })
       .catch(err => console.log(err));
   };
-        searchRoutes2 = (query) => {
-          let ShapeDefined = [];
-          API.routeSearch(query)
-            .then(res =>
-            res.data.Direction0.Shape.forEach(item =>
-              ShapeDefined.push({
-                lat: parseFloat(item.Lat),
-                lng: parseFloat(item.Lon)
-              })
-            ),
-            this.setState({routeShape: ShapeDefined, check:false}))
-            .catch(err => console.log(err));
-        };
+  //
+  // searchRoutes2 = (query) => {
+  //   let ShapeDefined = [];
+  //   API.routeSearch(query)
+  //     .then(res =>
+  //     res.data.Direction0.Shape.forEach(item =>
+  //       ShapeDefined.push({
+  //         lat: parseFloat(item.Lat),
+  //         lng: parseFloat(item.Lon)
+  //       })
+  //     ),
+  //     this.setState({routeShape: ShapeDefined, check:false}))
+  //     .catch(err => console.log(err));
+  // };
+
   handleInputChange = event => {
     const value = event.target.value;
     const name = event.target.name;
@@ -80,7 +89,9 @@ class Home extends Component {
   // When the form is submitted, search the OMDB API for the value of `this.state.search`
   handleFormSubmit = event => {
     event.preventDefault();
-    this.setState({check: true});
+    this.searchRoutes();
+    this.searchBuses();
+    // this.setState({check: true});
     // this.searchMovies2(this.state.search);
     console.log(this.state.routeShape)
   };
@@ -89,14 +100,13 @@ class Home extends Component {
 
     return (
       <Container>
-              <Search
-                value={this.state.search}
-                handleInputChange={this.handleInputChange}
-                handleFormSubmit={this.handleFormSubmit.bind(this)}
-              />
-
+        <Search
+          value={this.state.search}
+          handleInputChange={this.handleInputChange}
+          handleFormSubmit={this.handleFormSubmit.bind(this)}
+        />
         <MapRender
-          defaultZoom={10}
+          defaultZoom={14}
           markers={this.state.buses}
           test={this.state.routeShape}/>
       </Container>

@@ -32,7 +32,7 @@ import React, {Component} from "react";
 import { compose, withProps, withHandlers } from "recompose";
 // import { withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
+import { withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
 
 
 const google = window.google;
@@ -60,12 +60,11 @@ const google = window.google;
 //------------------------------Working Polyline On Load------------------------------//
 const MapRender = compose(
   withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyZQ_jUpH1-rnOCDRlbZGCAWtyRU2lXw&v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
+    // googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyZQ_jUpH1-rnOCDRlbZGCAWtyRU2lXw&v=3.exp&libraries=geometry,drawing,places",
+    // loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
-  withScriptjs,
   withGoogleMap
 //   lifecycle({
 //     componentDidMount() {
@@ -83,7 +82,7 @@ const MapRender = compose(
   {props.markers.map((bus,i) => (
     <Marker key={i} position={bus} animation={google.maps.Animation.BOUNCE}/>
   ))}
-  <Polyline path={props.test} />
+  <Polyline path={props.test} options={{strokeColor:'black',strokeWeight: 4}} />
   </GoogleMap>
 );
 export default MapRender;
