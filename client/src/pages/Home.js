@@ -16,7 +16,7 @@ class Home extends Component {
     buses: [],
     firstBus: {},
     check: false,
-    zoom: 8
+    zoom: 10
   };
 
   componentDidMount(query) {
@@ -95,9 +95,11 @@ class Home extends Component {
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
+          defaultZoom={10}
         />
         <MapRender
           center={this.state.firstBus}
+          defaultZoom={10}
           zoom={this.state.zoom}
           markers={this.state.buses}
           test={this.state.routeShape}
