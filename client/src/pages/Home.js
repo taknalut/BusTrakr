@@ -46,25 +46,30 @@ class Home extends Component {
       .then(res => {
 
       let busesArray = [];
-      let firstLuckyBus;
+      let firstBusCenter;
       let busLat = res.data.BusPositions[0].Lat;
       let busLng = res.data.BusPositions[0].Lon;
 
       res.data.BusPositions.forEach(item =>
         busesArray.push({
+        position: {
           lat: parseFloat(item.Lat),
           lng: parseFloat(item.Lon)
-        })
+        },
+        tripHeadSign: String(item.tripHeadsign),
+        directionText: String(item.DirectionText),
+        deviation: parseFloat(item.Deviation)
+      })
 
       ),
       this.setState({ buses: busesArray}),
       console.log(res),
       //Grab First Bus in Array
-      firstLuckyBus = {
+      firstBusCenter = {
           lat: parseFloat(busLat),
           lng: parseFloat(busLng)
         }
-      this.setState({ firstBus: firstLuckyBus })
+      this.setState({ firstBus: firstBusCenter })
       console.log(this.state.firstBus)
     })
       .catch(err => console.log(err));
@@ -95,11 +100,10 @@ class Home extends Component {
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
-          defaultZoom={10}
         />
         <MapRender
           center={this.state.firstBus}
-          defaultZoom={10}
+          defaultZoom={14}
           zoom={this.state.zoom}
           markers={this.state.buses}
           test={this.state.routeShape}

@@ -44,7 +44,7 @@ const MapRender = compose(
     center={props.center}
     defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
   {props.markers.map((bus,i) => (
-    <Marker key={i} position={bus} animation={google.maps.Animation.BOUNCE}
+    <Marker key={i} position={bus.position} animation={google.maps.Animation.DROP}
       icon={{
         url:"../Images/bus.png",
         size: new google.maps.Size(300, 300),
