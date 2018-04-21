@@ -25,7 +25,7 @@ class Home extends Component {
     this.searchRoutes();
     // this.searchBuses();
     console.log("compWillMount")
-    localStorage.setItem('googleID', 'fda');
+    // localStorage.setItem('googleID', 'fda');
   };
 
   searchRoutes = () => {
@@ -83,9 +83,13 @@ class Home extends Component {
 
   saveRoute = () => {
     var googleID = localStorage.getItem("googleID");
+
+    if (!googleID) {
+      console.log("You need to log in, fam");
+    }
+
     API.saveRoute(googleID, {routes: [666]});
   }
-
 
   handleInputChange = event => {
     const value = event.target.value;
