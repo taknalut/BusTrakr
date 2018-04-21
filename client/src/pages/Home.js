@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-// import Jumbotron from "../components/Jumbotron";
-// import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
 import API from "../utils/API";
 import MapRender from "../components/Map";
+
 
 class Home extends Component {
   state = {
@@ -16,14 +15,21 @@ class Home extends Component {
     buses: [],
     firstBus: {},
     check: false,
-    zoom: 10
+    zoom: 10,
+    stops: [],
+    isOpen: false
   };
+
 
   componentDidMount(query) {
     this.searchRoutes();
     // this.searchBuses();
     console.log("compWillMount")
   };
+
+  onToggleOpen = () => (
+    this.setState({isOpen: true})
+  );
 
   searchRoutes = () => {
     API.routeSearch(this.state.search)
@@ -35,8 +41,34 @@ class Home extends Component {
           lng: parseFloat(item.Lon)
         })
       ),
-      this.setState({routeShape: ShapeDefined, zoom: 9}),
+      this.setState({routeShape: ShapeDefined}),
+      this.searchBuses(),
+      this.searchRouteStops()
+      console.log("SearchRoutes", res)
+    })
+      .catch(err => console.log(err));
+  };
+
+
+//work on tomorrow for bus stops
+  searchRouteStops = () => {
+    API.routeSearch(this.state.search)
+      .then(res => {
+      let RouteStops = [];
+      res.data.Direction0.Stops.forEach(item =>
+        RouteStops.push({
+        location: {
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        },
+        StopID: Number(item.StopID),
+        Name: String(item.Name),
+        Routes: String(item.Routes)
+        })
+      ),
+      this.setState({stops: RouteStops}),
       this.searchBuses()
+      console.log(this.state.stops)
     })
       .catch(err => console.log(err));
   };
@@ -60,7 +92,6 @@ class Home extends Component {
         directionText: String(item.DirectionText),
         deviation: parseFloat(item.Deviation)
       })
-
       ),
       this.setState({ buses: busesArray}),
       console.log(res),
@@ -74,8 +105,6 @@ class Home extends Component {
     })
       .catch(err => console.log(err));
   };
-
-
 
   handleInputChange = event => {
     const value = event.target.value;
@@ -102,12 +131,17 @@ class Home extends Component {
           handleFormSubmit={this.handleFormSubmit.bind(this)}
         />
         <MapRender
+          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          stops={this.state.stops}
           center={this.state.firstBus}
           defaultZoom={14}
           zoom={this.state.zoom}
           markers={this.state.buses}
-          test={this.state.routeShape}
-        />
+          path={this.state.routeShape}
+          />
       </Container>
     );
   }
