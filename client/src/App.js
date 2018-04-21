@@ -4,7 +4,7 @@ import Nav from "./components/Nav";
 
 const App = () => (
   <div>
-    // <Nav />
+    <Nav />
     <Home />
   </div>
 );
