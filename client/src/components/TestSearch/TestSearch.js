@@ -4,75 +4,24 @@ import Autosuggest from 'react-autosuggest';
 import axios from "axios";
 import "./TestSearch.css";
 
-
+const busRoutesArr = [];
 const config = {
   headers: {'api_key': 'a2a6cab6a2104b0a95bef74fa2c62b52'}
 };
 
-const busRoutes = () => {
-    return axios.get("https://api.wmata.com/Bus.svc/json/jBusPositions", config);
-  }
+axios.get("https://api.wmata.com/Bus.svc/json/jRoutes", config)
+.then(res => {
+res.data.Routes.forEach(item =>
+  busRoutesArr.push({
+    "routeID": item.RouteID,
+    "name": item.Name
+  })
+)
+})
 
-console.log(busRoutes)
+console.log("bus routes Array")
+console.log(busRoutesArr)
 
-const languages = [
-  {
-    name: 'C',
-    year: 1972
-  },
-  {
-    name: 'C#',
-    year: 2000
-  },
-  {
-    name: 'C++',
-    year: 1983
-  },
-  {
-    name: 'Clojure',
-    year: 2007
-  },
-  {
-    name: 'Elm',
-    year: 2012
-  },
-  {
-    name: 'Go',
-    year: 2009
-  },
-  {
-    name: 'Haskell',
-    year: 1990
-  },
-  {
-    name: 'Java',
-    year: 1995
-  },
-  {
-    name: 'Javascript',
-    year: 1995
-  },
-  {
-    name: 'Perl',
-    year: 1987
-  },
-  {
-    name: 'PHP',
-    year: 1995
-  },
-  {
-    name: 'Python',
-    year: 1991
-  },
-  {
-    name: 'Ruby',
-    year: 1995
-  },
-  {
-    name: 'Scala',
-    year: 2003
-  }
-];
 
 function escapeRegexCharacters(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -87,7 +36,7 @@ function getSuggestions(value) {
 
   const regex = new RegExp('^' + escapedValue, 'i');
 
-  return languages.filter(language => regex.test(language.name));
+  return busRoutesArr.filter(busRoutesArr => regex.test(busRoutesArr.name));
 }
 
 function getSuggestionValue(suggestion) {
@@ -131,13 +80,14 @@ export default class TestSearch extends React.Component {
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: "Type 'c'",
+      placeholder: "Start typing your bus line",
       value,
       onChange: this.onChange
     };
 
     return (
       <div className="container">
+      <div>Search: </div>
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}

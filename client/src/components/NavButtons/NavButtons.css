@@ -76,3 +76,9 @@ nav a:focus {
 	top: 0%;
 	opacity: 1;
 }
+
+@media only screen and (max-width: 600px) {
+.mobile-view {
+  margin-left: 0px;
+}
+}
