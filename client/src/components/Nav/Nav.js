@@ -1,11 +1,12 @@
 import React from "react";
 
-const Nav = () => (
-  <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+const Nav = props => (
+  <nav className="navbar navbar-light bg-light mb-3">
   <div className="container">
-    <a className="navbar-brand" href="/">
-      BusTrakr
+    <a className="navbar-brand">BusTrakr
+    <img src="images/busloc.png" height="50" className="d-inline-block align-bottom" alt="" />
     </a>
+    <div>{props.children}</div>
     </div>
   </nav>
 );
