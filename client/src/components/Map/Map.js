@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import { compose, withProps, withState, withHandlers } from "recompose";
 import { withGoogleMap, GoogleMap, Marker, Polyline } from "react-google-maps";
+// const BusStopPic = require("../components/Images/bus-stop.png");
+// const BusPic = require("../components/Images/bus.png");
 
 
 const google = window.google;
@@ -38,14 +40,23 @@ const MapRender = compose(
 )(props =>
   <GoogleMap
     ref={props.onMapMounted}
-    zoom={props.zoom}
+    defaultZoom={props.defaultZoom}
     center={props.center}
     defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
   {props.markers.map((bus,i) => (
-    <Marker key={i} position={bus} animation={google.maps.Animation.BOUNCE}/>
+    <Marker key={i} position={bus.position} animation={google.maps.Animation.DROP}
+      icon={{
+        url:"../Images/bus.png",
+        size: new google.maps.Size(300, 300),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)}}
+    />
   ))}
   <Polyline path={props.test} options={{strokeColor:'black',strokeWeight: 4}} />
   </GoogleMap>
 );
 export default MapRender;
+
+
 //------------------------------Working Polyline------------------------------//

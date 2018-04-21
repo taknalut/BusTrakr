@@ -10,5 +10,8 @@ export default {
   },
   routeSearch: function(query) {
     return axios.get("https://api.wmata.com/Bus.svc/json/jRouteDetails?RouteID="+ query, config);
+  },
+  saveUser: function(userData) {
+    return axios.post("/api/users", userData);
   }
 };
