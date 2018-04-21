@@ -5,6 +5,9 @@ const config = {
 };
 
 export default {
+  searchAll: function() {
+    return axios.get("https://api.wmata.com/Bus.svc/json/jRoutes", config);
+  },
   busPositions: function(query) {
     return axios.get("https://api.wmata.com/Bus.svc/json/jBusPositions?RouteID="+ query, config);
   },

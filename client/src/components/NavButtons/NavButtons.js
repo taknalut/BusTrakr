@@ -19,13 +19,13 @@ export default class NavButtons extends React.Component {
   render() {
     const { open } = this.state;
     return (
-      <nav className="cl-effect-7">
-        <a onClick={this.onOpenModal}>Login/Register</a>
+      <div className="cl-effect-7">
+        <a className="mobile-view" onClick={this.onOpenModal}>Login/Register</a>
         <Modal open={open} onClose={this.onCloseModal} little>
         <p></p>
         <p>Firebase Authentification goes here</p>
         </Modal>
-    </nav>
+    </div>
     );
   }
 }
