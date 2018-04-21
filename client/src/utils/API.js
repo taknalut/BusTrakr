@@ -13,5 +13,8 @@ export default {
   },
   saveUser: function(userData) {
     return axios.post("/api/users", userData);
+  },
+  saveRoute: function(id, updatedFavs) {
+    return axios.put("/api/users/" + id, updatedFavs);
   }
 };

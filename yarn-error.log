@@ -1,17 +1,17 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Elizabeth\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js start
+  /Users/altair/.nvm/versions/node/v6.12.2/bin/node /Users/altair/.nvm/versions/node/v6.12.2/bin/yarn start
 
 PATH: 
-  C:\Users\Elizabeth\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Elizabeth\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client;C:\Program Files\Intel\iCLS Client;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\Hewlett-Packard\SimplePass;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\Program Files (x86)\QuickTime\QTSystem;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\Program Files\MySQL\MySQL Utilities 1.6;C:\Program Files\MongoDB\Server\3.6\bin;C:\Users\Elizabeth\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Heroku\bin;C:\Users\Elizabeth\AppData\Roaming\npm;C:\Users\Elizabeth\AppData\Local\atom\bin;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  /Users/altair/.rvm/gems/ruby-2.3.4/bin:/Users/altair/.rvm/gems/ruby-2.3.4@global/bin:/Users/altair/.rvm/rubies/ruby-2.3.4/bin:/Users/altair/.nvm/versions/node/v6.12.2/bin:/usr/local/bin:/Users/altair/anaconda3/bin:/Users/altair/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/altair/.rvm/bin:/Users/altair/.rvm/bin
 
 Yarn version: 
   1.5.1
 
 Node version: 
-  6.11.3
+  6.12.2
 
 Platform: 
-  win32 x64
+  darwin x64
 
 npm manifest: 
   {
@@ -2264,15 +2264,15 @@ Lockfile:
 Trace: 
   Error: Command failed.
   Exit code: 1
-  Command: C:\WINDOWS\system32\cmd.exe
-  Arguments: /d /s /c concurrently "nodemon server.js" "npm run client"
-  Directory: C:\Users\Elizabeth\Documents\GWU_BootCamp\BusTrakr
+  Command: sh
+  Arguments: -c concurrently "nodemon server.js" "npm run client"
+  Directory: /Users/altair/Projects/Bootcamp/bus-trackr
   Output:
   
       at ProcessTermError.Error (native)
-      at ProcessTermError.MessageError (C:\Users\Elizabeth\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:186:110)
-      at new ProcessTermError (C:\Users\Elizabeth\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:226:113)
-      at ChildProcess.<anonymous> (C:\Users\Elizabeth\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:30281:17)
+      at ProcessTermError.MessageError (/Users/altair/.nvm/versions/node/v6.12.2/lib/node_modules/yarn/lib/cli.js:186:110)
+      at new ProcessTermError (/Users/altair/.nvm/versions/node/v6.12.2/lib/node_modules/yarn/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/Users/altair/.nvm/versions/node/v6.12.2/lib/node_modules/yarn/lib/cli.js:30281:17)
       at emitTwo (events.js:106:13)
       at ChildProcess.emit (events.js:191:7)
       at maybeClose (internal/child_process.js:920:16)

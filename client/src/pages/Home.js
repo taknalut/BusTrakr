@@ -7,6 +7,7 @@ import { Col, Row, Container } from "../components/Grid";
 import Search from "../components/Search";
 import API from "../utils/API";
 import MapRender from "../components/Map";
+import RouteSaveBtn from "../components/RouteSaveBtn";
 
 class Home extends Component {
   state = {
@@ -16,13 +17,15 @@ class Home extends Component {
     buses: [],
     firstBus: {},
     check: false,
-    zoom: 10
+    zoom: 10,
+    validSearch: "10A"
   };
 
   componentDidMount(query) {
     this.searchRoutes();
     // this.searchBuses();
     console.log("compWillMount")
+    localStorage.setItem('googleID', 'fda');
   };
 
   searchRoutes = () => {
@@ -36,7 +39,10 @@ class Home extends Component {
         })
       ),
       this.setState({routeShape: ShapeDefined, zoom: 9}),
-      this.searchBuses()
+      this.searchBuses(),
+
+      // Setting routename that has been verified to be existent
+      this.setState({validSearch: this.state.search})
     })
       .catch(err => console.log(err));
   };
@@ -75,6 +81,10 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
+  saveRoute = () => {
+    var googleID = localStorage.getItem("googleID");
+    API.saveRoute(googleID, {routes: [666]});
+  }
 
 
   handleInputChange = event => {
@@ -101,6 +111,9 @@ class Home extends Component {
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
         />
+        <RouteSaveBtn
+          onClick={this.saveRoute}
+        />
         <MapRender
           center={this.state.firstBus}
           defaultZoom={14}
@@ -108,6 +121,7 @@ class Home extends Component {
           markers={this.state.buses}
           test={this.state.routeShape}
         />
+        {this.state.validSearch}
       </Container>
     );
   }
