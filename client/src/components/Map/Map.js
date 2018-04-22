@@ -2,10 +2,10 @@ import React, {Component} from "react";
 import { compose, withProps, withState, withHandlers, withStateHandlers} from "recompose";
 import { withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow } from "react-google-maps";
 import Search from "../Search";
+import API from "../../utils/API";
 
 const google = window.google;
 
-//------------------------------Working Polyline On Load------------------------------//
 const MapRender = compose(
   withProps({
     // googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyZQ_jUpH1-rnOCDRlbZGCAWtyRU2lXw&v=3.exp&libraries=geometry,drawing,places",
@@ -29,6 +29,25 @@ const MapRender = compose(
     },
     onBusToggleOpen: ({ updateSelectedBusPlace }) => key => {
         updateSelectedBusPlace(key);
+    },
+    checkStopPrediction: () => (stopId) => {
+      API.stopBusPrediction(stopId)
+        .then(res => {
+        let PredictionsArray = [];
+        res.data.Predictions.forEach(item =>
+          PredictionsArray.push({
+            DirectionNum: String(item.DirectionNum),
+            DirectionText: String(item.DirectionText),
+            MinutesAwayPrediction: parseFloat(item.Minutes),
+            RouteID: String(item.RouteID),
+            TripID: String(item.TripID),
+          })
+        ),
+        console.log("Predictions for Location:", res)
+      })
+        // this.setState({routeShape: ShapeDefined}),
+        // console.log("SearchRoutes", res)
+        .catch(err => console.log(err));
     }
   }
 }),
@@ -43,9 +62,9 @@ const MapRender = compose(
         <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
           icon={{
             url:"../Images/bus.png",
-            size: new google.maps.Size(71, 71),
+            size: new google.maps.Size(25, 25),
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(17, 17),
+            anchor: new google.maps.Point(0, 0),
             scaledSize: new google.maps.Size(25, 25)
           }}
           z-index={100}
@@ -55,6 +74,7 @@ const MapRender = compose(
               <p>Destination: {bus.tripHeadSign}</p>
               <p>Direction: {bus.directionText}</p>
               <p>Deviation: {bus.deviation}</p>
+
           </div>
         </InfoWindow>}
       </Marker>
@@ -63,9 +83,9 @@ const MapRender = compose(
       <Marker key={index} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStopToggleOpen(index)}
         icon={{
           url:"../Images/bus-stop.png",
-          size: new google.maps.Size(71, 71),
+          size: new google.maps.Size(25, 25),
           origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 17),
+          anchor: new google.maps.Point(0, 0),
           scaledSize: new google.maps.Size(25, 25)
         }}
         z-index={2}
@@ -75,6 +95,7 @@ const MapRender = compose(
                     <p>Name: {stop.Name}</p>
                     <p>StopID: {stop.StopID}</p>
                     <p>Routes: {stop.Routes}</p>
+                    <button onClick={() => props.checkStopPrediction(stop.StopID)}>How Far Away is the bus</button>
                 </div>
             </InfoWindow>}
         </Marker>
@@ -82,7 +103,5 @@ const MapRender = compose(
     <Polyline path={props.path} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
   </GoogleMap>
 );
+
 export default MapRender;
-
-
-//------------------------------Working Polyline------------------------------//
