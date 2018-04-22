@@ -13,7 +13,8 @@ const MapRender = compose(
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
-  withState('selectedPlace', 'updateSelectedPlace', null),
+  withState('selectedStopPlace', 'updateSelectedStopPlace', null),
+  withState('selectedBusPlace', 'updateSelectedBusPlace', null),
   withHandlers(() => {
   const refs = {
     map: undefined,
@@ -23,8 +24,11 @@ const MapRender = compose(
     onMapMounted: () => ref => {
         refs.map = ref
     },
-    onToggleOpen: ({ updateSelectedPlace }) => key => {
-        updateSelectedPlace(key);
+    onStopToggleOpen: ({ updateSelectedStopPlace }) => key => {
+        updateSelectedStopPlace(key);
+    },
+    onBusToggleOpen: ({ updateSelectedBusPlace }) => key => {
+        updateSelectedBusPlace(key);
     }
   }
 }),
@@ -36,7 +40,7 @@ const MapRender = compose(
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
       {props.markers.map((bus,index) => (
-        <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE}
+        <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
           icon={{
             url:"../Images/bus.png",
             size: new google.maps.Size(71, 71),
@@ -45,10 +49,18 @@ const MapRender = compose(
             scaledSize: new google.maps.Size(25, 25)
           }}
           z-index={100}
-      />
+      >
+        {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
+          <div>
+              <p>Destination: {bus.tripHeadSign}</p>
+              <p>Direction: {bus.directionText}</p>
+              <p>Deviation: {bus.deviation}</p>
+          </div>
+        </InfoWindow>}
+      </Marker>
     ))}
     {props.stops.map((stop,index) => (
-      <Marker key={index} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onToggleOpen(index)}
+      <Marker key={index} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStopToggleOpen(index)}
         icon={{
           url:"../Images/bus-stop.png",
           size: new google.maps.Size(71, 71),
@@ -58,7 +70,7 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedPlace === index && <InfoWindow onCloseClick={props.onToggleOpen}>
+            {props.selectedStopPlace === index && <InfoWindow onCloseClick={props.onStopToggleOpen} position={stop.location}>
                 <div>
                     <p>Name: {stop.Name}</p>
                     <p>StopID: {stop.StopID}</p>
