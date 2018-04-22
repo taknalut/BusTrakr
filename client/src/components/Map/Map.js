@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import { compose, withProps, withStateHandlers} from "recompose";
+import { compose, withProps, withState, withHandlers, withStateHandlers} from "recompose";
 import { withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow } from "react-google-maps";
 import Search from "../Search";
-
 
 const google = window.google;
 
@@ -14,25 +13,21 @@ const MapRender = compose(
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
-  withStateHandlers(() => ({
-    isOpen: false,
-    locationClicked: null
-  }), {
-    handleToggleOpen(item) {
-  		this.setState({
-  			position : {
-  				lat : item.lat,
-  				lng : item.lng
-  			}
-  		})
-  	},
-    onToggleOpen: ({ isOpen }) => () => ({
-      isOpen: !isOpen,
-    })
-    // showInfo(a) {
-    //   this.setState({showInfoIndex: a })
-    // }
-  }),
+  withState('selectedPlace', 'updateSelectedPlace', null),
+  withHandlers(() => {
+  const refs = {
+    map: undefined,
+  }
+
+  return {
+    onMapMounted: () => ref => {
+        refs.map = ref
+    },
+    onToggleOpen: ({ updateSelectedPlace }) => key => {
+        updateSelectedPlace(key);
+    }
+  }
+}),
   withGoogleMap
 )(props =>
     <GoogleMap
@@ -40,20 +35,20 @@ const MapRender = compose(
       defaultZoom={props.defaultZoom}
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
-    {props.markers.map((bus,index) => (
-      <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE}
-        icon={{
-          url:"../Images/bus.png",
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 17),
-          scaledSize: new google.maps.Size(25, 25)
-        }}
-        z-index={100}
+      {props.markers.map((bus,index) => (
+        <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE}
+          icon={{
+            url:"../Images/bus.png",
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 17),
+            scaledSize: new google.maps.Size(25, 25)
+          }}
+          z-index={100}
       />
     ))}
     {props.stops.map((stop,index) => (
-      <Marker key={index} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8}
+      <Marker key={index} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onToggleOpen(index)}
         icon={{
           url:"../Images/bus-stop.png",
           size: new google.maps.Size(71, 71),
@@ -62,19 +57,18 @@ const MapRender = compose(
           scaledSize: new google.maps.Size(25, 25)
         }}
         z-index={2}
-        />
-      //   {this.state.position &&
-      //     <InfoWindow position={this.state.position}>
-      //      <Search />
-      //     </InfoWindow>
-      //   }
-      //   {props.isOpen && <InfoWindow key={index} onCloseClick={props.onToggleOpen}>
-      //     <Search />
-      //   </InfoWindow>}
-      // </Marker>
+        >
+            {props.selectedPlace === index && <InfoWindow onCloseClick={props.onToggleOpen}>
+                <div>
+                    <p>Name: {stop.Name}</p>
+                    <p>StopID: {stop.StopID}</p>
+                    <p>Routes: {stop.Routes}</p>
+                </div>
+            </InfoWindow>}
+        </Marker>
     ))}
     <Polyline path={props.path} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
-    </GoogleMap>
+  </GoogleMap>
 );
 export default MapRender;
 
