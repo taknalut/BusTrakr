@@ -90,7 +90,7 @@ class Home extends Component {
           lat: parseFloat(item.Lat),
           lng: parseFloat(item.Lon)
         },
-        tripHeadSign: String(item.tripHeadsign),
+        tripHeadSign: String(item.TripHeadsign),
         directionText: String(item.DirectionText),
         deviation: parseFloat(item.Deviation)
       })
