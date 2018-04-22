@@ -3,9 +3,8 @@ import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
+import MapRender from "../components/Map"
 import API from "../utils/API";
-import MapRender from "../components/Map";
-
 
 class Home extends Component {
   state = {
@@ -17,9 +16,12 @@ class Home extends Component {
     check: false,
     zoom: 10,
     stops: [],
-    isOpen: false
+    clickedMarker: null
   };
 
+  // handleToggleOpen = (index) => (
+  //         this.setState({clickedMarker: index})
+  // );
 
   componentDidMount(query) {
     this.searchRoutes();
@@ -27,9 +29,9 @@ class Home extends Component {
     console.log("compWillMount")
   };
 
-  onToggleOpen = () => (
-    this.setState({isOpen: true})
-  );
+  // onToggleOpen = () => (
+  //   this.setState({isOpen: true})
+  // );
 
   searchRoutes = () => {
     API.routeSearch(this.state.search)
@@ -146,5 +148,4 @@ class Home extends Component {
     );
   }
 }
-
 export default Home;
