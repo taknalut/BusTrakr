@@ -11,7 +11,6 @@ const App = () => (
     <Nav>
     <NavButtons />
     </Nav>
-    <TestSearch />
     <Home />
     <Form />
   </div>

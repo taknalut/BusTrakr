@@ -5,6 +5,7 @@ import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
+import TestSearch from "../components/TestSearch"
 import API from "../utils/API";
 import MapRender from "../components/Map";
 
@@ -16,7 +17,8 @@ class Home extends Component {
     buses: [],
     firstBus: {},
     check: false,
-    zoom: 10
+    zoom: 10,
+    value: TestSearch.value // this is a test from Angela
   };
 
   componentDidMount(query) {
@@ -27,6 +29,25 @@ class Home extends Component {
 
   searchRoutes = () => {
     API.routeSearch(this.state.search)
+      .then(res => {
+      let ShapeDefined = [];
+      res.data.Direction0.Shape.forEach(item =>
+        ShapeDefined.push({
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        })
+      ),
+      this.setState({routeShape: ShapeDefined, zoom: 9}),
+      this.searchBuses()
+    })
+      .catch(err => console.log(err));
+  };
+
+  // this is a test from Angela
+  searchRoutesTest = () => {
+    API.routeSearch(this.state.value)
+    console.log("this is the value")
+    console.log(this.state.value)
       .then(res => {
       let ShapeDefined = [];
       res.data.Direction0.Shape.forEach(item =>
@@ -92,14 +113,24 @@ class Home extends Component {
     console.log(this.state.routeShape)
   };
 
+  handleFormSubmitTest = (event) => {
+    event.preventDefault();
+    this.searchRoutesTest();
+    console.log(this.state.routeShape)
+  };
+
   render() {
 
     return (
       <Container>
-        <Search
+      <Search
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
+        />
+        {/*this is a test to see if handleformsubmit works*/}
+        <TestSearch
+        handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
         />
         <MapRender
           center={this.state.firstBus}
@@ -107,6 +138,7 @@ class Home extends Component {
           zoom={this.state.zoom}
           markers={this.state.buses}
           test={this.state.routeShape}
+          onSubmit={this.handleFormSubmit}
         />
       </Container>
     );
