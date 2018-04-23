@@ -40,7 +40,7 @@ const MapRender = compose(
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
       {props.markers.map((bus,index) => (
-        <Marker key={bus.position} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
+        <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
           icon={{
             url:"../Images/bus.png",
             size: new google.maps.Size(25, 25),
@@ -55,13 +55,12 @@ const MapRender = compose(
               <p>Destination: {bus.tripHeadSign}</p>
               <p>Direction: {bus.directionText}</p>
               <p>Deviation: {bus.deviation}</p>
-
           </div>
         </InfoWindow>}
       </Marker>
     ))}
     {props.stops.map((stop,i) => (
-      <Marker key={stop.location} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStopToggleOpen(i)}
+      <Marker key={i} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStopToggleOpen(i)}
         icon={{
           url:"../Images/bus-stop.png",
           size: new google.maps.Size(25, 25),
@@ -71,13 +70,13 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace === i && <InfoWindow onCloseClick={props.onStopToggleOpen} position={stop.location} onClick={props.predictions(stop.StopID)}>
+            {props.selectedStopPlace === i && <InfoWindow key={i} onCloseClick={props.onStopToggleOpen} position={stop.location} onClick={props.predictions(stop.StopID)}>
                 <div>
                     <p>Name: {stop.Name}</p>
                     <p>StopID: {stop.StopID}</p>
                     <p>Routes: {stop.Routes}</p>
                     {props.predictionInfo.map((arrivalTime) => (
-                        <p key={arrivalTime.TripID}> Minutes Away: {arrivalTime.MinutesAwayPrediction}   </p>
+                        <p key={arrivalTime.TripID}> Minutes Away: {arrivalTime.MinutesAwayPrediction}</p>
                     ))}
                 </div>
             </InfoWindow>}
