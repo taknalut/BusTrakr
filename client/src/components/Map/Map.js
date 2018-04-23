@@ -29,25 +29,6 @@ const MapRender = compose(
     },
     onBusToggleOpen: ({ updateSelectedBusPlace }) => key => {
         updateSelectedBusPlace(key);
-    },
-    checkStopPrediction: () => (stopId) => {
-      API.stopBusPrediction(stopId)
-        .then(res => {
-        let PredictionsArray = [];
-        res.data.Predictions.forEach(item =>
-          PredictionsArray.push({
-            DirectionNum: String(item.DirectionNum),
-            DirectionText: String(item.DirectionText),
-            MinutesAwayPrediction: parseFloat(item.Minutes),
-            RouteID: String(item.RouteID),
-            TripID: String(item.TripID),
-          })
-        ),
-        console.log("Predictions for Location:", res)
-      })
-        // this.setState({routeShape: ShapeDefined}),
-        // console.log("SearchRoutes", res)
-        .catch(err => console.log(err));
     }
   }
 }),
@@ -59,7 +40,7 @@ const MapRender = compose(
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
       {props.markers.map((bus,index) => (
-        <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
+        <Marker key={bus.position} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
           icon={{
             url:"../Images/bus.png",
             size: new google.maps.Size(25, 25),
@@ -79,8 +60,8 @@ const MapRender = compose(
         </InfoWindow>}
       </Marker>
     ))}
-    {props.stops.map((stop,index) => (
-      <Marker key={index} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStopToggleOpen(index)}
+    {props.stops.map((stop,i) => (
+      <Marker key={stop.location} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStopToggleOpen(i)}
         icon={{
           url:"../Images/bus-stop.png",
           size: new google.maps.Size(25, 25),
@@ -90,12 +71,14 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace === index && <InfoWindow onCloseClick={props.onStopToggleOpen} position={stop.location}>
+            {props.selectedStopPlace === i && <InfoWindow onCloseClick={props.onStopToggleOpen} position={stop.location} onClick={props.predictions(stop.StopID)}>
                 <div>
                     <p>Name: {stop.Name}</p>
                     <p>StopID: {stop.StopID}</p>
                     <p>Routes: {stop.Routes}</p>
-                    <button onClick={() => props.checkStopPrediction(stop.StopID)}>How Far Away is the bus</button>
+                    {props.predictionInfo.map((arrivalTime) => (
+                        <p key={arrivalTime.TripID}> Minutes Away: {arrivalTime.MinutesAwayPrediction}   </p>
+                    ))}
                 </div>
             </InfoWindow>}
         </Marker>

@@ -16,7 +16,8 @@ class Home extends Component {
     check: false,
     zoom: 10,
     stops: [],
-    clickedMarker: null
+    clickedMarker: null,
+    predictionsInfo: []
   };
 
   // handleToggleOpen = (index) => (
@@ -108,6 +109,25 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
+  checkStopPrediction = (stopId) => {
+    API.stopBusPrediction(stopId)
+      .then(res => {
+      let predictionsArray = [];
+      res.data.Predictions.forEach(item =>
+        predictionsArray.push({
+          DirectionNum: String(item.DirectionNum),
+          DirectionText: String(item.DirectionText),
+          MinutesAwayPrediction: parseFloat(item.Minutes),
+          RouteID: String(item.RouteID),
+          TripID: String(item.TripID),
+        })
+      )
+      this.setState({predictionsInfo: predictionsArray})
+      console.log("Predictions for Location:", this.state.predictionsInfo)
+    })
+      .catch(err => console.log(err));
+  };
+
   handleInputChange = event => {
     const value = event.target.value;
     const name = event.target.name;
@@ -143,6 +163,8 @@ class Home extends Component {
           zoom={this.state.zoom}
           markers={this.state.buses}
           path={this.state.routeShape}
+          predictions={this.checkStopPrediction}
+          predictionInfo={this.state.predictionsInfo}
           />
       </Container>
     );
