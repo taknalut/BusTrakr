@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from 'react-dom'
 import Modal from 'react-responsive-modal';
 import "./NavButtons.css";
+import Firebase from "../Firebase";
 
 export default class NavButtons extends React.Component {
   state = {
@@ -22,8 +23,7 @@ export default class NavButtons extends React.Component {
       <div className="cl-effect-7">
         <a className="mobile-view" onClick={this.onOpenModal}>Login/Register</a>
         <Modal open={open} onClose={this.onCloseModal} little>
-        <p></p>
-        <p>Firebase Authentification goes here</p>
+        <Firebase />
         </Modal>
     </div>
     );
