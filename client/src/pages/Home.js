@@ -18,15 +18,39 @@ class Home extends Component {
     firstBus: {},
     check: false,
     zoom: 10,
-    validSearch: "10A"
+    validSearch: "10A",
+    isLoggedIn: false,
+    usersRoutes: [],
+    savePrompt: "Save Route"
   };
 
   componentDidMount(query) {
     this.searchRoutes();
     // this.searchBuses();
     console.log("compWillMount")
-    // localStorage.setItem('googleID', 'fda');
+
+    this.checkLoginStatus();
   };
+
+  checkLoginStatus = () => {
+
+    // Delete after Tak implements ID-setting code
+    localStorage.setItem('googleID', '100');
+
+    var userID = localStorage.getItem('googleID');
+    this.setState({ isLoggedIn: true });
+
+    // Grabs from db the user's currently favorited routes
+    API.getUsersRoutes(userID).
+      then((result) => {
+        const theirSaved = result.data[0].routes;
+        this.setState({usersRoutes: theirSaved})
+
+        if (this.state.usersRoutes.includes("10A")) {
+            this.setState({ savePrompt: "Remove Route" })
+        }
+      });
+  }
 
   searchRoutes = () => {
     API.routeSearch(this.state.search)
@@ -41,7 +65,7 @@ class Home extends Component {
       this.setState({routeShape: ShapeDefined, zoom: 9}),
       this.searchBuses(),
 
-      // Setting routename that has been verified to be existent
+      // Set routename that has been verified to exist
       this.setState({validSearch: this.state.search})
     })
       .catch(err => console.log(err));
@@ -81,14 +105,53 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
-  saveRoute = () => {
+  updateRoute = () => {
     var googleID = localStorage.getItem("googleID");
 
     if (!googleID) {
       console.log("You need to log in, fam");
     }
 
-    API.saveRoute(googleID, {routes: [666]});
+    if (this.state.usersRoutes.includes(this.state.validSearch)) {
+      this.removeRoute();
+    }
+
+    else {
+      this.saveRoute();
+    }
+
+    API.saveRoute(googleID, {routes: this.state.usersRoutes});
+  }
+
+  saveRoute = () => {
+    var theirRoutes = this.state.usersRoutes;
+
+    console.log(theirRoutes);
+
+    theirRoutes.push(this.state.validSearch);
+
+    this.setState({ usersRoutes: theirRoutes});
+    this.setState({ savePrompt: "Remove Route" })
+
+    console.log("This is usersRoutes as defined by the state, on save");
+    console.log(this.state.usersRoutes);
+  }
+
+  removeRoute = () => {
+    var theirRoutes = this.state.usersRoutes;
+
+    console.log(theirRoutes);
+    var index = theirRoutes.indexOf(this.state.validSearch);
+
+    if (index > -1) {
+      theirRoutes.splice(index, 1);
+    }
+
+    this.setState({ usersRoutes: theirRoutes});
+    this.setState({ savePrompt: "Save Route" }) 
+
+    console.log("This is usersRoutes as defined by the state, on remove");
+    console.log(this.state.usersRoutes);
   }
 
   handleInputChange = event => {
@@ -99,7 +162,6 @@ class Home extends Component {
     });
   };
 
-  // When the form is submitted, search the OMDB API for the value of `this.state.search`
   handleFormSubmit = event => {
     event.preventDefault();
     this.searchRoutes();
@@ -107,7 +169,6 @@ class Home extends Component {
   };
 
   render() {
-
     return (
       <Container>
         <Search
@@ -115,9 +176,10 @@ class Home extends Component {
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
         />
-        <RouteSaveBtn
-          onClick={this.saveRoute}
-        />
+        <button
+          onClick={this.updateRoute}>
+          {this.state.savePrompt}
+        </button>
         <MapRender
           center={this.state.firstBus}
           defaultZoom={14}
@@ -125,7 +187,7 @@ class Home extends Component {
           markers={this.state.buses}
           test={this.state.routeShape}
         />
-        {this.state.validSearch}
+        {this.state.usersRoutes}, {this.state.validSearch}
       </Container>
     );
   }

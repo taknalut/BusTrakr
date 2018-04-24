@@ -16,5 +16,8 @@ export default {
   },
   saveRoute: function(id, updatedFavs) {
     return axios.put("/api/users/" + id, updatedFavs);
+  },
+  getUsersRoutes: function(id) {
+    return axios.get("/api/users/" + id);
   }
 };
