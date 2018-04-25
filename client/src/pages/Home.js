@@ -24,13 +24,14 @@ class Home extends Component {
     usersRoutes: [],
     savePrompt: "Save Route",
     clickedMarker: null,
-    predictionsInfo: []
+    predictionsInfo0: [],
+    predictionsInfo1: []
   };
 
   componentDidMount(query) {
     this.searchRoutes0();
     //Need to fix the error of too many requests
-    // this.searchRouteStops1();
+    this.searchRouteStops1();
     console.log("compWillMount")
 
     this.checkLoginStatus();
@@ -211,14 +212,14 @@ class Home extends Component {
     }
 
     this.setState({ usersRoutes: theirRoutes});
-    this.setState({ savePrompt: "Save Route" }) 
+    this.setState({ savePrompt: "Save Route" })
 
     console.log("This is usersRoutes as defined by the state, on remove");
     console.log(this.state.usersRoutes);
   }
 
    //checkStopPrediction keeps getting called after Marker is clicked
-  checkStopPrediction = (stopId) => {
+  checkStopPrediction0 = (stopId) => {
     API.stopBusPrediction(stopId)
       .then(res => {
       let predictionsArray = [];
@@ -231,7 +232,27 @@ class Home extends Component {
           TripID: String(item.TripID),
         })
       )
-      this.setState({predictionsInfo: predictionsArray})
+      this.setState({predictionsInfo0: predictionsArray})
+      return
+      console.log("Predictions for Location:", this.state.predictionsInfo)
+    })
+      .catch(err => console.log(err));
+  };
+
+  checkStopPrediction1 = (stopId) => {
+    API.stopBusPrediction(stopId)
+      .then(res => {
+      let predictionsArray = [];
+      res.data.Predictions.forEach(item =>
+        predictionsArray.push({
+          DirectionNum: String(item.DirectionNum),
+          DirectionText: String(item.DirectionText),
+          MinutesAwayPrediction: parseFloat(item.Minutes),
+          RouteID: String(item.RouteID),
+          TripID: String(item.TripID),
+        })
+      )
+      this.setState({predictionsInfo1: predictionsArray})
       return
       console.log("Predictions for Location:", this.state.predictionsInfo)
     })
@@ -277,8 +298,10 @@ class Home extends Component {
           markers={this.state.buses}
           path0={this.state.routeShape0}
           path1={this.state.routeShape1}
-          predictions={this.checkStopPrediction}
-          predictionInfo={this.state.predictionsInfo}
+          predictions0={this.checkStopPrediction0}
+          predictionInfo0={this.state.predictionsInfo0}
+          predictions1={this.checkStopPrediction1}
+          predictionInfo1={this.state.predictionsInfo1}
           />
       </Container>
     );
