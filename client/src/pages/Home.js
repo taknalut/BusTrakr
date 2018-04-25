@@ -6,6 +6,7 @@ import Search from "../components/Search";
 import TestSearch from "../components/TestSearch"
 import MapRender from "../components/Map"
 import API from "../utils/API";
+import RouteSaveBtn from "../components/RouteSaveBtn";
 
 class Home extends Component {
   state = {
@@ -17,6 +18,10 @@ class Home extends Component {
     check: false,
     zoom: 10,
     value: TestSearch.value, // this is a test from Angela
+    validSearch: "10A",
+    isLoggedIn: false,
+    usersRoutes: [],
+    savePrompt: "Save Route",
     stops: [],
     clickedMarker: null,
     predictionsInfo: []
@@ -30,7 +35,29 @@ class Home extends Component {
     this.searchRoutes();
     // this.searchBuses();
     console.log("compWillMount")
+
+    this.checkLoginStatus();
   };
+
+  checkLoginStatus = () => {
+
+    // Delete after Tak implements ID-setting code
+    localStorage.setItem('googleID', '100');
+
+    var userID = localStorage.getItem('googleID');
+    this.setState({ isLoggedIn: true });
+
+    // Grabs from db the user's currently favorited routes
+    API.getUsersRoutes(userID).
+      then((result) => {
+        const theirSaved = result.data[0].routes;
+        this.setState({usersRoutes: theirSaved})
+
+        if (this.state.usersRoutes.includes("10A")) {
+            this.setState({ savePrompt: "Remove Route" })
+        }
+      });
+  }
 
   // onToggleOpen = () => (
   //   this.setState({isOpen: true})
@@ -46,14 +73,15 @@ class Home extends Component {
           lng: parseFloat(item.Lon)
         })
       ),
+
       this.setState({routeShape: ShapeDefined}),
       this.searchBuses(),
       this.searchRouteStops()
       console.log("SearchRoutes", res)
+      this.setState({validSearch: this.state.search})
     })
       .catch(err => console.log(err));
   };
-
 
 //work on tomorrow for bus stops
   searchRouteStops = () => {
@@ -130,6 +158,55 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
+  updateRoute = () => {
+    var googleID = localStorage.getItem("googleID");
+
+    if (!googleID) {
+      console.log("You need to log in, fam");
+    }
+
+    if (this.state.usersRoutes.includes(this.state.validSearch)) {
+      this.removeRoute();
+    }
+
+    else {
+      this.saveRoute();
+    }
+
+    API.saveRoute(googleID, {routes: this.state.usersRoutes});
+  }
+
+  saveRoute = () => {
+    var theirRoutes = this.state.usersRoutes;
+
+    console.log(theirRoutes);
+
+    theirRoutes.push(this.state.validSearch);
+
+    this.setState({ usersRoutes: theirRoutes});
+    this.setState({ savePrompt: "Remove Route" })
+
+    console.log("This is usersRoutes as defined by the state, on save");
+    console.log(this.state.usersRoutes);
+  }
+
+  removeRoute = () => {
+    var theirRoutes = this.state.usersRoutes;
+
+    console.log(theirRoutes);
+    var index = theirRoutes.indexOf(this.state.validSearch);
+
+    if (index > -1) {
+      theirRoutes.splice(index, 1);
+    }
+
+    this.setState({ usersRoutes: theirRoutes});
+    this.setState({ savePrompt: "Save Route" })
+
+    console.log("This is usersRoutes as defined by the state, on remove");
+    console.log(this.state.usersRoutes);
+  }
+
   checkStopPrediction = (stopId) => {
     API.stopBusPrediction(stopId)
       .then(res => {
@@ -157,7 +234,6 @@ class Home extends Component {
     });
   };
 
-  // When the form is submitted, search the OMDB API for the value of `this.state.search`
   handleFormSubmit = event => {
     event.preventDefault();
     this.searchRoutes();
@@ -171,7 +247,6 @@ class Home extends Component {
   };
 
   render() {
-
     return (
       <Container>
       <Search
@@ -179,10 +254,17 @@ class Home extends Component {
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
         />
+<<<<<<< HEAD
         {/*this is a test to see if handleformsubmit works*/}
         <TestSearch
         handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
         />
+=======
+        <button
+          onClick={this.updateRoute}>
+          {this.state.savePrompt}
+        </button>
+>>>>>>> origin/master
         <MapRender
           googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: `100%` }} />}
