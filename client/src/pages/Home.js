@@ -11,34 +11,33 @@ class Home extends Component {
   state = {
     result: {},
     search: "10A",
-    routeShape: [],
+    routeShape0: [],
+    routeShape1: [],
     buses: [],
     firstBus: {},
     check: false,
     zoom: 10,
+    stops0: [],
+    stops1: [],
     validSearch: "10A",
     isLoggedIn: false,
     usersRoutes: [],
     savePrompt: "Save Route",
-    stops: [],
     clickedMarker: null,
     predictionsInfo: []
   };
 
-  // handleToggleOpen = (index) => (
-  //         this.setState({clickedMarker: index})
-  // );
-
   componentDidMount(query) {
-    this.searchRoutes();
-    // this.searchBuses();
+    this.searchRoutes0();
+    //Need to fix the error of too many requests
+    // this.searchRouteStops1();
     console.log("compWillMount")
 
     this.checkLoginStatus();
   };
 
-  checkLoginStatus = () => {
 
+  checkLoginStatus = () => {
     // Delete after Tak implements ID-setting code
     localStorage.setItem('googleID', '100');
 
@@ -57,11 +56,7 @@ class Home extends Component {
       });
   }
 
-  // onToggleOpen = () => (
-  //   this.setState({isOpen: true})
-  // );
-
-  searchRoutes = () => {
+  searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
       let ShapeDefined = [];
@@ -72,9 +67,25 @@ class Home extends Component {
         })
       ),
 
-      this.setState({routeShape: ShapeDefined}),
+      this.setState({routeShape0: ShapeDefined}),
       this.searchBuses(),
-      this.searchRouteStops()
+      this.searchRouteStops0(),
+      this.searchRoutes1(),
+      console.log("SearchRoutes", res)
+    })
+      .catch(err => console.log(err));
+  };
+  searchRoutes1 = () => {
+    API.routeSearch(this.state.search)
+      .then(res => {
+      let ShapeDefined = [];
+      res.data.Direction1.Shape.forEach(item =>
+        ShapeDefined.push({
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        })
+      ),
+      this.setState({routeShape1: ShapeDefined}),
       console.log("SearchRoutes", res)
       this.setState({validSearch: this.state.search})
     })
@@ -82,7 +93,7 @@ class Home extends Component {
   };
 
 //work on tomorrow for bus stops
-  searchRouteStops = () => {
+  searchRouteStops0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
       let RouteStops = [];
@@ -97,9 +108,29 @@ class Home extends Component {
         Routes: String(item.Routes)
         })
       ),
-      this.setState({stops: RouteStops}),
-      this.searchBuses()
-      console.log(this.state.stops)
+      this.setState({stops0: RouteStops}),
+      console.log(this.state.stops0)
+    })
+      .catch(err => console.log(err));
+  };
+  searchRouteStops1 = () => {
+    API.routeSearch(this.state.search)
+      .then(res => {
+        console.log("stops1", res)
+      let RouteStops = [];
+      res.data.Direction1.Stops.forEach(item =>
+        RouteStops.push({
+        location: {
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        },
+        StopID: Number(item.StopID),
+        Name: String(item.Name),
+        Routes: String(item.Routes)
+        })
+      ),
+      this.setState({stops1: RouteStops}),
+      console.log("stops1",this.state.stops1)
     })
       .catch(err => console.log(err));
   };
@@ -186,6 +217,7 @@ class Home extends Component {
     console.log(this.state.usersRoutes);
   }
 
+   //checkStopPrediction keeps getting called after Marker is clicked
   checkStopPrediction = (stopId) => {
     API.stopBusPrediction(stopId)
       .then(res => {
@@ -200,6 +232,7 @@ class Home extends Component {
         })
       )
       this.setState({predictionsInfo: predictionsArray})
+      return
       console.log("Predictions for Location:", this.state.predictionsInfo)
     })
       .catch(err => console.log(err));
@@ -215,8 +248,8 @@ class Home extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.searchRoutes();
-    console.log(this.state.routeShape)
+    this.searchRoutes0();
+    console.log(this.state.routeShape0)
   };
 
   render() {
@@ -236,12 +269,14 @@ class Home extends Component {
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `400px` }} />}
           mapElement={<div style={{ height: `100%` }} />}
-          stops={this.state.stops}
+          stops0={this.state.stops0}
+          stops1={this.state.stops1}
           center={this.state.firstBus}
           defaultZoom={14}
           zoom={this.state.zoom}
           markers={this.state.buses}
-          path={this.state.routeShape}
+          path0={this.state.routeShape0}
+          path1={this.state.routeShape1}
           predictions={this.checkStopPrediction}
           predictionInfo={this.state.predictionsInfo}
           />
