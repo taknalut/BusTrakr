@@ -13,7 +13,8 @@ const MapRender = compose(
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
-  withState('selectedStopPlace', 'updateSelectedStopPlace', null),
+  withState('selectedStopPlace0', 'updateSelectedStopPlace0', null),
+  withState('selectedStopPlace1', 'updateSelectedStopPlace1', null),
   withState('selectedBusPlace', 'updateSelectedBusPlace', null),
   withHandlers(() => {
   const refs = {
@@ -24,11 +25,11 @@ const MapRender = compose(
     onMapMounted: () => ref => {
         refs.map = ref
     },
-    onStop0ToggleOpen: ({ updateSelectedStopPlace }) => key => {
-        updateSelectedStopPlace(key);
+    onStop0ToggleOpen: ({ updateSelectedStopPlace0 }) => key => {
+        updateSelectedStopPlace0(key);
     },
-    onStop1ToggleOpen: ({ updateSelectedStopPlace }) => key => {
-        updateSelectedStopPlace(key);
+    onStop1ToggleOpen: ({ updateSelectedStopPlace1 }) => key => {
+        updateSelectedStopPlace1(key);
     },
     onBusToggleOpen: ({ updateSelectedBusPlace }) => key => {
         updateSelectedBusPlace(key);
@@ -73,10 +74,10 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location} onClick={props.predictions(stop.StopID)}>
+            {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location} onClick={props.predictions0(stop.StopID)}>
                 <div>
                     <p><strong>Bus Stop Name:</strong> {stop.Name}</p>
-                    {props.predictionInfo.map((arrivalTime) => (
+                    {props.predictionInfo0.map((arrivalTime) => (
                         <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
                   ))}
                   <p>StopID: {stop.StopID}</p>
@@ -96,10 +97,10 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace === id && <InfoWindow key={id} onCloseClick={props.onStop1ToggleOpen} position={stop.location} onClick={props.predictions(stop.StopID)}>
+            {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop1ToggleOpen} position={stop.location} onClick={props.predictions1(stop.StopID)}>
                 <div>
                     <p><strong>Bus Stop Name:</strong> {stop.Name}</p>
-                    {props.predictionInfo.map((arrivalTime) => (
+                    {props.predictionInfo1.map((arrivalTime) => (
                         <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
                   ))}
                   <p>StopID: {stop.StopID}</p>
@@ -108,7 +109,7 @@ const MapRender = compose(
             </InfoWindow>}
         </Marker>
     ))}
-    <Polyline path={props.path0} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
+    <Polyline path={props.path0} options={{strokeColor:'red',strokeWeight: 4.5}} z-index={0} />
     <Polyline path={props.path1} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
   </GoogleMap>
 );
