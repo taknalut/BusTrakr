@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase';
+import API from "../../utils/API";
 
 const config = {
     apiKey: "AIzaSyB_-pqlyQ-iBcT02LL0uDf4CPt8TPNNFog",
@@ -39,7 +40,29 @@ class Firebase extends Component {
           if (user && user.uid != this.state.currentUid) {
             this.setState({currentUid: user.uid});
             localStorage.setItem('googleID', [user.uid]);
+
+            API.checkUserExist(user.uid).
+              then((result) => {
+                if (result.data.length < 1) {
+
+                  const newUser = {
+                    username: "newPerson",
+                    uuid: user.uid,
+                    routes: []
+                  };
+
+                  API.createUser(newUser).
+                    then((result) => {
+                      console.log(result);
+                    })
+                }
+                
+                else {
+                  console.log("User extant, don't do anything.");
+                }
+            })
           }
+          
           else {
             localStorage.removeItem('googleID');
           }
