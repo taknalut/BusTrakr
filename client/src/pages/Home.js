@@ -39,9 +39,6 @@ class Home extends Component {
 
   checkLoginStatus = () => {
 
-    // Delete after Tak implements ID-setting code
-    localStorage.setItem('googleID', '100');
-
     var userID = localStorage.getItem('googleID');
     this.setState({ isLoggedIn: true });
 
