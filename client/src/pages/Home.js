@@ -3,41 +3,46 @@ import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
+import TestSearch from "../components/TestSearch"
 import MapRender from "../components/Map"
+import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
+import "./Home.css"
 
 class Home extends Component {
   state = {
     result: {},
     search: "10A",
-    routeShape: [],
+    routeShape0: [],
+    routeShape1: [],
     buses: [],
     firstBus: {},
     check: false,
     zoom: 10,
+    stops0: [],
+    stops1: [],
     validSearch: "10A",
     isLoggedIn: false,
     usersRoutes: [],
     savePrompt: "Save Route",
-    stops: [],
     clickedMarker: null,
-    predictionsInfo: []
+    predictionsInfo0: [],
+    predictionsInfo1: []
   };
 
-  // handleToggleOpen = (index) => (
-  //         this.setState({clickedMarker: index})
-  // );
-
   componentDidMount(query) {
-    this.searchRoutes();
-    // this.searchBuses();
+    this.searchRoutes0();
+    //Need to fix the error of too many requests
+    this.searchRouteStops1();
     console.log("compWillMount")
 
     this.checkLoginStatus();
   };
 
   checkLoginStatus = () => {
+    // Delete after Tak implements ID-setting code
+    localStorage.setItem('googleID', '100');
 
     var userID = localStorage.getItem('googleID');
     this.setState({ isLoggedIn: true });
@@ -54,11 +59,7 @@ class Home extends Component {
       });
   }
 
-  // onToggleOpen = () => (
-  //   this.setState({isOpen: true})
-  // );
-
-  searchRoutes = () => {
+  searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
       let ShapeDefined = [];
@@ -69,9 +70,25 @@ class Home extends Component {
         })
       ),
 
-      this.setState({routeShape: ShapeDefined}),
+      this.setState({routeShape0: ShapeDefined}),
       this.searchBuses(),
-      this.searchRouteStops()
+      this.searchRouteStops0(),
+      this.searchRoutes1(),
+      console.log("SearchRoutes", res)
+    })
+      .catch(err => console.log(err));
+  };
+  searchRoutes1 = () => {
+    API.routeSearch(this.state.search)
+      .then(res => {
+      let ShapeDefined = [];
+      res.data.Direction1.Shape.forEach(item =>
+        ShapeDefined.push({
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        })
+      ),
+      this.setState({routeShape1: ShapeDefined}),
       console.log("SearchRoutes", res)
       this.setState({validSearch: this.state.search})
     })
@@ -79,7 +96,7 @@ class Home extends Component {
   };
 
 //work on tomorrow for bus stops
-  searchRouteStops = () => {
+  searchRouteStops0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
       let RouteStops = [];
@@ -94,9 +111,48 @@ class Home extends Component {
         Routes: String(item.Routes)
         })
       ),
-      this.setState({stops: RouteStops}),
+      this.setState({stops0: RouteStops}),
+      console.log(this.state.stops0)
+    })
+      .catch(err => console.log(err));
+  };
+  searchRouteStops1 = () => {
+    API.routeSearch(this.state.search)
+      .then(res => {
+        console.log("stops1", res)
+      let RouteStops = [];
+      res.data.Direction1.Stops.forEach(item =>
+        RouteStops.push({
+        location: {
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        },
+        StopID: Number(item.StopID),
+        Name: String(item.Name),
+        Routes: String(item.Routes)
+        })
+      ),
+      this.setState({stops1: RouteStops}),
+      console.log("stops1",this.state.stops1)
+    })
+      .catch(err => console.log(err));
+  };
+
+  // this is a test from Angela
+  searchRoutesTest = () => {
+    API.routeSearch(this.state.value)
+    console.log("this is the value")
+    console.log(this.state.value)
+      .then(res => {
+      let ShapeDefined = [];
+      res.data.Direction0.Shape.forEach(item =>
+        ShapeDefined.push({
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        })
+      ),
+      this.setState({routeShape: ShapeDefined, zoom: 9}),
       this.searchBuses()
-      console.log(this.state.stops)
     })
       .catch(err => console.log(err));
   };
@@ -172,9 +228,11 @@ class Home extends Component {
 
     this.setState({ usersRoutes: theirRoutes});
     this.setState({ savePrompt: "Save Route" }) 
+
   }
 
-  checkStopPrediction = (stopId) => {
+   //checkStopPrediction keeps getting called after Marker is clicked
+  checkStopPrediction0 = (stopId) => {
     API.stopBusPrediction(stopId)
       .then(res => {
       let predictionsArray = [];
@@ -187,7 +245,28 @@ class Home extends Component {
           TripID: String(item.TripID),
         })
       )
-      this.setState({predictionsInfo: predictionsArray})
+      this.setState({predictionsInfo0: predictionsArray})
+      return
+      console.log("Predictions for Location:", this.state.predictionsInfo)
+    })
+      .catch(err => console.log(err));
+  };
+
+  checkStopPrediction1 = (stopId) => {
+    API.stopBusPrediction(stopId)
+      .then(res => {
+      let predictionsArray = [];
+      res.data.Predictions.forEach(item =>
+        predictionsArray.push({
+          DirectionNum: String(item.DirectionNum),
+          DirectionText: String(item.DirectionText),
+          MinutesAwayPrediction: parseFloat(item.Minutes),
+          RouteID: String(item.RouteID),
+          TripID: String(item.TripID),
+        })
+      )
+      this.setState({predictionsInfo1: predictionsArray})
+      return
       console.log("Predictions for Location:", this.state.predictionsInfo)
     })
       .catch(err => console.log(err));
@@ -203,38 +282,71 @@ class Home extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.searchRoutes();
+    this.searchRoutes0();
+    console.log(this.state.routeShape0)
+  };
+
+  handleFormSubmitTest = (event) => {
+    event.preventDefault();
+    this.searchRoutesTest();
     console.log(this.state.routeShape)
   };
 
+  openNav = () => {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  closeNav = () => {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+  }
+
   render() {
     return (
+      <div>
       <Container>
-        <Search
+      <Search
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
+        />
+        {/*this is a test to see if handleformsubmit works*/}
+        <TestSearch
+        handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
         />
         <button
           onClick={this.updateRoute}>
           {this.state.savePrompt}
         </button>
+        <div
+        className="nav-open"
+        onClick={this.openNav}>&#9776; Veiw your saved lines
+        </div>
         <MapRender
           googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `400px` }} />}
           mapElement={<div style={{ height: `100%` }} />}
-          stops={this.state.stops}
+          stops0={this.state.stops0}
+          stops1={this.state.stops1}
           center={this.state.firstBus}
           defaultZoom={14}
           zoom={this.state.zoom}
           markers={this.state.buses}
-          path={this.state.routeShape}
-          predictions={this.checkStopPrediction}
-          predictionInfo={this.state.predictionsInfo}
+          path0={this.state.routeShape0}
+          path1={this.state.routeShape1}
+          predictions0={this.checkStopPrediction0}
+          predictionInfo0={this.state.predictionsInfo0}
+          predictions1={this.checkStopPrediction1}
+          predictionInfo1={this.state.predictionsInfo1}
+          />
+          <FavNav
+          closeNav={this.closeNav}
           />
           These are the user's routes: {this.state.usersRoutes}
       </Container>
+      </div>
     );
   }
 }

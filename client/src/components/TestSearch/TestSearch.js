@@ -2,22 +2,20 @@ import React from "react";
 import ReactDOM from 'react-dom'
 import Autosuggest from 'react-autosuggest';
 import axios from "axios";
+import API from "../../utils/API";
 import "./TestSearch.css";
 
 const busRoutesArr = [];
-const config = {
-  headers: {'api_key': 'a2a6cab6a2104b0a95bef74fa2c62b52'}
-};
 
-axios.get("https://api.wmata.com/Bus.svc/json/jRoutes", config)
-.then(res => {
-res.data.Routes.forEach(item =>
-  busRoutesArr.push({
-    "routeID": item.RouteID,
-    "name": item.Name
+API.searchAll()
+  .then(res => {
+  res.data.Routes.forEach(item =>
+    busRoutesArr.push({
+      "routeID": item.RouteID,
+      "name": item.Name
+    })
+  )
   })
-)
-})
 
 console.log("bus routes Array")
 console.log(busRoutesArr)
@@ -29,29 +27,27 @@ function escapeRegexCharacters(str) {
 
 function getSuggestions(value) {
   const escapedValue = escapeRegexCharacters(value.trim());
-
   if (escapedValue === '') {
     return [];
   }
-
   const regex = new RegExp('^' + escapedValue, 'i');
 
-  return busRoutesArr.filter(busRoutesArr => regex.test(busRoutesArr.name));
+  return busRoutesArr.filter(busRoutesArr => regex.test(busRoutesArr.routeID));
 }
 
 function getSuggestionValue(suggestion) {
-  return suggestion.name;
+  return suggestion.routeID;
 }
 
 function renderSuggestion(suggestion) {
   return (
-    <span>{suggestion.name}</span>
+    <span>{suggestion.routeID}</span>
   );
 }
 
 export default class TestSearch extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       value: '',
@@ -80,21 +76,27 @@ export default class TestSearch extends React.Component {
   render() {
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: "Start typing your bus line",
+      placeholder: "Start search by typing your bus line",
       value,
       onChange: this.onChange
     };
 
     return (
-      <div className="container">
-      <div>Search: </div>
+      <div>
+      <form className="form-inline mb-3">
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
-        inputProps={inputProps} />
+        inputProps={inputProps}
+        />
+        <button onClick={ (value) => this.props.handleFormSubmitTest(value) }
+        className="btn btn-primary ml-1">
+          Search
+        </button>
+        </form>
         </div>
     );
   }

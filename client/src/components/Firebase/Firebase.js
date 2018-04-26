@@ -46,7 +46,7 @@ class Firebase extends Component {
                 if (result.data.length < 1) {
 
                   const newUser = {
-                    username: "newPerson",
+                    username: user.displayName,
                     uuid: user.uid,
                     routes: []
                   };
