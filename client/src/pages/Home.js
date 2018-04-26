@@ -3,9 +3,12 @@ import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
+import TestSearch from "../components/TestSearch"
 import MapRender from "../components/Map"
+import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
+import "./Home.css"
 
 class Home extends Component {
   state = {
@@ -132,6 +135,25 @@ class Home extends Component {
       ),
       this.setState({stops1: RouteStops}),
       console.log("stops1",this.state.stops1)
+    })
+      .catch(err => console.log(err));
+  };
+
+  // this is a test from Angela
+  searchRoutesTest = () => {
+    API.routeSearch(this.state.value)
+    console.log("this is the value")
+    console.log(this.state.value)
+      .then(res => {
+      let ShapeDefined = [];
+      res.data.Direction0.Shape.forEach(item =>
+        ShapeDefined.push({
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        })
+      ),
+      this.setState({routeShape: ShapeDefined, zoom: 9}),
+      this.searchBuses()
     })
       .catch(err => console.log(err));
   };
@@ -273,18 +295,43 @@ class Home extends Component {
     console.log(this.state.routeShape0)
   };
 
+  handleFormSubmitTest = (event) => {
+    event.preventDefault();
+    this.searchRoutesTest();
+    console.log(this.state.routeShape)
+  };
+
+  openNav = () => {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  closeNav = () => {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+  }
+
   render() {
     return (
+      <div>
       <Container>
-        <Search
+      <Search
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
+        />
+        {/*this is a test to see if handleformsubmit works*/}
+        <TestSearch
+        handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
         />
         <button
           onClick={this.updateRoute}>
           {this.state.savePrompt}
         </button>
+        <div
+        className="nav-open"
+        onClick={this.openNav}>&#9776; Veiw your saved lines
+        </div>
         <MapRender
           googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: `100%` }} />}
@@ -303,7 +350,11 @@ class Home extends Component {
           predictions1={this.checkStopPrediction1}
           predictionInfo1={this.state.predictionsInfo1}
           />
+          <FavNav
+          closeNav={this.closeNav}
+          />
       </Container>
+      </div>
     );
   }
 }
