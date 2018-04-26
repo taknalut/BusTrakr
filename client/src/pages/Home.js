@@ -5,8 +5,10 @@ import { Col, Row, Container } from "../components/Grid";
 import Search from "../components/Search";
 import TestSearch from "../components/TestSearch"
 import MapRender from "../components/Map"
+import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
+import "./Home.css"
 
 class Home extends Component {
   state = {
@@ -246,25 +248,37 @@ class Home extends Component {
     console.log(this.state.routeShape)
   };
 
+  openNav = () => {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  closeNav = () => {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+  }
+
   render() {
     return (
+      <div>
       <Container>
       <Search
           value={this.state.search}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit.bind(this)}
         />
-<<<<<<< HEAD
         {/*this is a test to see if handleformsubmit works*/}
         <TestSearch
         handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
         />
-=======
         <button
           onClick={this.updateRoute}>
           {this.state.savePrompt}
         </button>
->>>>>>> origin/master
+        <div
+        className="nav-open"
+        onClick={this.openNav}>&#9776; Veiw your saved lines
+        </div>
         <MapRender
           googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: `100%` }} />}
@@ -278,8 +292,13 @@ class Home extends Component {
           path={this.state.routeShape}
           predictions={this.checkStopPrediction}
           predictionInfo={this.state.predictionsInfo}
+
+          />
+          <FavNav
+          closeNav={this.closeNav}
           />
       </Container>
+      </div>
     );
   }
 }

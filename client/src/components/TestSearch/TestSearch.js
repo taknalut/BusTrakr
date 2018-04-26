@@ -36,12 +36,12 @@ function getSuggestions(value) {
 }
 
 function getSuggestionValue(suggestion) {
-  return suggestion.name;
+  return suggestion.routeID;
 }
 
 function renderSuggestion(suggestion) {
   return (
-    <span>{suggestion.name}</span>
+    <span>{suggestion.routeID}</span>
   );
 }
 
