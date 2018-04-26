@@ -349,6 +349,7 @@ class Home extends Component {
           predictionInfo0={this.state.predictionsInfo0}
           predictions1={this.checkStopPrediction1}
           predictionInfo1={this.state.predictionsInfo1}
+          />
           <FavNav
           closeNav={this.closeNav}
           />
