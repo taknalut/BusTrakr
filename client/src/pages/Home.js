@@ -40,7 +40,6 @@ class Home extends Component {
     this.checkLoginStatus();
   };
 
-
   checkLoginStatus = () => {
     // Delete after Tak implements ID-setting code
     localStorage.setItem('googleID', '100');
@@ -210,23 +209,17 @@ class Home extends Component {
   }
 
   saveRoute = () => {
-    var theirRoutes = this.state.usersRoutes;
-
-    console.log(theirRoutes);
+    var theirRoutes = this.state.usersRoutes.slice();
 
     theirRoutes.push(this.state.validSearch);
 
     this.setState({ usersRoutes: theirRoutes});
     this.setState({ savePrompt: "Remove Route" })
-
-    console.log("This is usersRoutes as defined by the state, on save");
-    console.log(this.state.usersRoutes);
   }
 
   removeRoute = () => {
-    var theirRoutes = this.state.usersRoutes;
+    var theirRoutes = this.state.usersRoutes.slice();
 
-    console.log(theirRoutes);
     var index = theirRoutes.indexOf(this.state.validSearch);
 
     if (index > -1) {
@@ -234,10 +227,8 @@ class Home extends Component {
     }
 
     this.setState({ usersRoutes: theirRoutes});
-    this.setState({ savePrompt: "Save Route" })
+    this.setState({ savePrompt: "Save Route" }) 
 
-    console.log("This is usersRoutes as defined by the state, on remove");
-    console.log(this.state.usersRoutes);
   }
 
    //checkStopPrediction keeps getting called after Marker is clicked
@@ -353,6 +344,7 @@ class Home extends Component {
           <FavNav
           closeNav={this.closeNav}
           />
+          These are the user's routes: {this.state.usersRoutes}
       </Container>
       </div>
     );
