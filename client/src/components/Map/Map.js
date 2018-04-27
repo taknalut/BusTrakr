@@ -64,7 +64,7 @@ const MapRender = compose(
       </Marker>
     ))}
     {props.stops0.map((stop,i) => (
-      <Marker key={i} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStop0ToggleOpen(i)}
+      <Marker key={i} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => {props.onStop0ToggleOpen(i);props.predictions0(stop.StopID)}}
         icon={{
           url:"../Images/bus-stop.png",
           size: new google.maps.Size(25, 25),
@@ -74,7 +74,7 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location} onClick={props.predictions0(stop.StopID)}>
+            {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
                 <div>
                     <p><strong>Bus Stop Name:</strong> {stop.Name}</p>
                     {props.predictionInfo0.map((arrivalTime) => (
@@ -87,7 +87,7 @@ const MapRender = compose(
         </Marker>
     ))}
     {props.stops1.map((stop,id) => (
-      <Marker key={id} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => props.onStop1ToggleOpen(id)}
+      <Marker key={id} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => {props.onStop1ToggleOpen(id);props.predictions1(stop.StopID)}}
         icon={{
           url:"../Images/bus-stop.png",
           size: new google.maps.Size(25, 25),
@@ -97,7 +97,7 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop1ToggleOpen} position={stop.location} onClick={props.predictions1(stop.StopID)}>
+            {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop1ToggleOpen} position={stop.location}>
                 <div>
                     <p><strong>Bus Stop Name:</strong> {stop.Name}</p>
                     {props.predictionInfo1.map((arrivalTime) => (

@@ -233,6 +233,7 @@ class Home extends Component {
 
    //checkStopPrediction keeps getting called after Marker is clicked
   checkStopPrediction0 = (stopId) => {
+    console.log('checkStopPrediction0', stopId)
     API.stopBusPrediction(stopId)
       .then(res => {
       let predictionsArray = [];
@@ -253,6 +254,7 @@ class Home extends Component {
   };
 
   checkStopPrediction1 = (stopId) => {
+    console.log('checkStopPrediction1', stopId)
     API.stopBusPrediction(stopId)
       .then(res => {
       let predictionsArray = [];
