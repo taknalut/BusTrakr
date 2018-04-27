@@ -4,6 +4,7 @@ import { withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow } from "react-go
 import Search from "../Search";
 import API from "../../utils/API";
 
+
 const google = window.google;
 
 const MapRender = compose(
@@ -55,11 +56,14 @@ const MapRender = compose(
           z-index={100}
       >
         {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
-          <div>
-              <p>Destination: {bus.tripHeadSign}</p>
-              <p>Direction: {bus.directionText}</p>
-              <p>Deviation: {bus.deviation}</p>
-          </div>
+            <div className="card text-black bg-light mb-3">
+              <h5 className="card-header">Current Bus Position</h5>
+                <div className="card-body">
+                    <p><strong>Destination:</strong> {bus.tripHeadSign}</p>
+                    <p><strong>Direction:</strong> {bus.directionText}</p>
+                    <p><strong>Deviation:</strong> {bus.deviation}</p>
+                </div>
+              </div>
         </InfoWindow>}
       </Marker>
     ))}
@@ -75,13 +79,15 @@ const MapRender = compose(
         z-index={2}
         >
             {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
-                <div>
-                    <p><strong>Bus Stop Name:</strong> {stop.Name}</p>
-                    {props.predictionInfo0.map((arrivalTime) => (
-                        <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
-                  ))}
-                  <p>StopID: {stop.StopID}</p>
-                  <p>All Possible Routes: {stop.Routes}</p>
+                <div className="card text-black bg-light mb-3">
+                  <h5 className="card-header">Bus Stop: {stop.Name}</h5>
+                    <div className="card-body">
+                        {props.predictionInfo0.map((arrivalTime) => (
+                          <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
+                        ))}
+                        <p><strong>StopID:</strong> {stop.StopID}</p>
+                        <p><strong>All Possible Routes:</strong> {stop.Routes}</p>
+                    </div>
                 </div>
             </InfoWindow>}
         </Marker>
@@ -97,16 +103,18 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop1ToggleOpen} position={stop.location}>
-                <div>
-                    <p><strong>Bus Stop Name:</strong> {stop.Name}</p>
-                    {props.predictionInfo1.map((arrivalTime) => (
+          {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
+              <div className="card text-black bg-light mb-3">
+                <h5 className="card-header">Bus Stop: {stop.Name}</h5>
+                  <div className="card-body">
+                      {props.predictionInfo1.map((arrivalTime) => (
                         <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
-                  ))}
-                  <p>StopID: {stop.StopID}</p>
-                  <p>All Possible Routes: {stop.Routes}</p>
-                </div>
-            </InfoWindow>}
+                      ))}
+                      <p><strong>StopID:</strong> {stop.StopID}</p>
+                      <p><strong>All Possible Routes:</strong> {stop.Routes}</p>
+                  </div>
+              </div>
+          </InfoWindow>}
         </Marker>
     ))}
     <Polyline path={props.path0} options={{strokeColor:'red',strokeWeight: 4.5}} z-index={0} />
