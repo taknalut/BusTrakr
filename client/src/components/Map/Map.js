@@ -58,6 +58,7 @@ const MapRender = compose(
         {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
             <div className="card text-black bg-light mb-3">
               <h5 className="card-header">Current Bus Position</h5>
+                <p><strong>Time before Next Bus Update:</strong> {props.timer}</p>
                 <div className="card-body">
                     <p><strong>Destination:</strong> {bus.tripHeadSign}</p>
                     <p><strong>Direction:</strong> {bus.directionText}</p>
