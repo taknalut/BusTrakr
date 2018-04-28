@@ -8,7 +8,7 @@ import MapRender from "../components/Map"
 import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
-import "./Home.css"
+import "./Home.css";
 
 class Home extends Component {
   state = {
@@ -28,18 +28,27 @@ class Home extends Component {
     savePrompt: "Save Route",
     clickedMarker: null,
     predictionsInfo0: [],
-    predictionsInfo1: []
+    predictionsInfo1: [],
+    countDown: 15,
+    increment: null
   };
-
   componentDidMount(query) {
     this.searchRoutes0();
-    //Need to fix the error of too many requests
-    this.searchRouteStops1();
     console.log("compWillMount")
-
     this.checkLoginStatus();
+    this.timer();
   };
-
+  componentWillUnmount() {
+    if (this.state.countDown < 1) {
+        clearInterval(this.state.increment)
+    }
+  }
+  componentWillUpdate() {
+    if (this.state.countDown < 1) {
+      this.timerReset();
+      this.searchBuses();
+    }
+  }
   checkLoginStatus = () => {
     // Delete after Tak implements ID-setting code
     localStorage.setItem('googleID', '100');
@@ -59,6 +68,20 @@ class Home extends Component {
       });
   }
 
+  timer = () =>  {
+      this.state.increment = setInterval( () =>
+        this.setState({
+          countDown: this.state.countDown - 1
+        }), 1000);
+      console.log("this.state.increment: ",this.state.increment)
+  };
+  timerReset = () => {
+    this.setState({
+        buses: [],
+        firstBus: {}
+      });
+    this.setState({countDown: 15});
+  }
   searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
@@ -71,9 +94,10 @@ class Home extends Component {
       ),
 
       this.setState({routeShape0: ShapeDefined}),
-      this.searchBuses(),
       this.searchRouteStops0(),
       this.searchRoutes1(),
+      this.searchRouteStops1(),
+      this.searchBuses(),
       console.log("SearchRoutes", res)
     })
       .catch(err => console.log(err));
@@ -186,6 +210,7 @@ class Home extends Component {
         }
       this.setState({ firstBus: firstBusCenter })
       console.log(this.state.firstBus)
+      // this.timer();
     })
       .catch(err => console.log(err));
   };
@@ -227,7 +252,7 @@ class Home extends Component {
     }
 
     this.setState({ usersRoutes: theirRoutes});
-    this.setState({ savePrompt: "Save Route" }) 
+    this.setState({ savePrompt: "Save Route" })
 
   }
 
@@ -336,6 +361,7 @@ class Home extends Component {
           defaultZoom={14}
           zoom={this.state.zoom}
           markers={this.state.buses}
+          timer={this.state.countDown}
           path0={this.state.routeShape0}
           path1={this.state.routeShape1}
           predictions0={this.checkStopPrediction0}
