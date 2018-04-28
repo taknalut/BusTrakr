@@ -45,7 +45,7 @@ const MapRender = compose(
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
       {props.markers.map((bus,index) => (
-        <Marker key={index} position={bus.position} animation={google.maps.Animation.BOUNCE} onClick={() => props.onBusToggleOpen(index)}
+        <Marker key={index} position={bus.position} animation={google.maps.Animation.DROP} onClick={() => props.onBusToggleOpen(index)}
           icon={{
             url:"../Images/bus.png",
             size: new google.maps.Size(25, 25),
@@ -53,13 +53,13 @@ const MapRender = compose(
             anchor: new google.maps.Point(0, 0),
             scaledSize: new google.maps.Size(25, 25)
           }}
-          z-index={100}
+          z-index={10}
       >
         {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
             <div className="card text-black bg-light mb-3">
               <h5 className="card-header">Current Bus Position</h5>
-                <p><strong>Time before Next Bus Update:</strong> {props.timer}</p>
                 <div className="card-body">
+                    <p><strong>Time before Next Bus Update:</strong> {props.timer}</p>
                     <p><strong>Destination:</strong> {bus.tripHeadSign}</p>
                     <p><strong>Direction:</strong> {bus.directionText}</p>
                     <p><strong>Deviation:</strong> {bus.deviation}</p>
