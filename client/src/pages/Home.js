@@ -18,6 +18,7 @@ class Home extends Component {
     routeShape1: [],
     buses: [],
     firstBus: {},
+    firstStop: {},
     check: false,
     zoom: 10,
     stops0: [],
@@ -124,6 +125,9 @@ class Home extends Component {
     API.routeSearch(this.state.search)
       .then(res => {
       let RouteStops = [];
+      let firstStopCenter;
+      let stopLat = res.data.Direction0.Stops[0].Lat;
+      let stopLng = res.data.Direction0.Stops[0].Lon;
       res.data.Direction0.Stops.forEach(item =>
         RouteStops.push({
         location: {
@@ -137,6 +141,12 @@ class Home extends Component {
       ),
       this.setState({stops0: RouteStops}),
       console.log(this.state.stops0)
+      firstStopCenter = {
+          lat: parseFloat(stopLat),
+          lng: parseFloat(stopLng)
+        }
+      this.setState({ firstStop: firstStopCenter })
+      console.log(this.state.firstBus)
     })
       .catch(err => console.log(err));
   };
@@ -210,7 +220,6 @@ class Home extends Component {
         }
       this.setState({ firstBus: firstBusCenter })
       console.log(this.state.firstBus)
-      // this.timer();
     })
       .catch(err => console.log(err));
   };
@@ -310,7 +319,7 @@ class Home extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.searchRoutes0();
-    console.log(this.state.routeShape0)
+    console.log("Submit Route Shape", this.state.routeShape0)
   };
 
   handleFormSubmitTest = (event) => {
@@ -357,8 +366,8 @@ class Home extends Component {
           mapElement={<div style={{ height: `100%` }} />}
           stops0={this.state.stops0}
           stops1={this.state.stops1}
-          center={this.state.firstBus}
-          defaultZoom={14}
+          center={this.state.firstStop}
+          defaultZoom={16}
           zoom={this.state.zoom}
           markers={this.state.buses}
           timer={this.state.countDown}
