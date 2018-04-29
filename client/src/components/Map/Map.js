@@ -53,7 +53,7 @@ const MapRender = compose(
             anchor: new google.maps.Point(0, 0),
             scaledSize: new google.maps.Size(25, 25)
           }}
-          z-index={10}
+          z-index={20}
       >
         {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
             <div className="card text-black bg-light mb-3">
