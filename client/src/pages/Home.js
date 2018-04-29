@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "../components/Grid";
-// import { List, ListItem } from "../components/List";
+import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
 import TestSearch from "../components/TestSearch"
@@ -8,6 +8,7 @@ import MapRender from "../components/Map"
 import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
+import { withAlert } from "react-alert";
 import "./Home.css";
 
 class Home extends Component {
@@ -69,6 +70,10 @@ class Home extends Component {
       });
   }
 
+  zoomToThisBus = (location) => {
+    this.setState({firstStop: location})
+  };
+
   timer = () =>  {
       this.state.increment = setInterval( () =>
         this.setState({
@@ -86,6 +91,9 @@ class Home extends Component {
   searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
+        {
+          this.props.alert.success("Search was successful! Loading Route...");
+        }
       let ShapeDefined = [];
       res.data.Direction0.Shape.forEach(item =>
         ShapeDefined.push({
@@ -101,7 +109,14 @@ class Home extends Component {
       this.searchBuses(),
       console.log("SearchRoutes", res)
     })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.props.alert.error("Not a proper route search, path cannot be displayed!"),
+        this.setState({routeShape0: []}),
+        this.setState({routeShape1: []}),
+        this.setState({stops0: []}),
+        this.setState({stops1: []}),
+        this.setState({buses: []})
+      })
   };
   searchRoutes1 = () => {
     API.routeSearch(this.state.search)
@@ -337,54 +352,78 @@ class Home extends Component {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
   }
+  openNavBus = () => {
+    document.getElementById("mySideNavBus").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  closeNavBus = () => {
+    document.getElementById("mySideNavBus").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+  }
 
   render() {
     return (
       <div>
-      <Container>
-      <Search
-          value={this.state.search}
-          handleInputChange={this.handleInputChange}
-          handleFormSubmit={this.handleFormSubmit.bind(this)}
-        />
-        {/*this is a test to see if handleformsubmit works*/}
-        <TestSearch
-        handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
-        />
-        <button
-          onClick={this.updateRoute}>
-          {this.state.savePrompt}
-        </button>
-        <div
-        className="nav-open"
-        onClick={this.openNav}>&#9776; Veiw your saved lines
-        </div>
-        <MapRender
-          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-          stops0={this.state.stops0}
-          stops1={this.state.stops1}
-          center={this.state.firstStop}
-          defaultZoom={16}
-          zoom={this.state.zoom}
-          markers={this.state.buses}
-          timer={this.state.countDown}
-          path0={this.state.routeShape0}
-          path1={this.state.routeShape1}
-          predictions0={this.checkStopPrediction0}
-          predictionInfo0={this.state.predictionsInfo0}
-          predictions1={this.checkStopPrediction1}
-          predictionInfo1={this.state.predictionsInfo1}
+        <Container>
+          <Search
+            value={this.state.search}
+            handleInputChange={this.handleInputChange}
+            handleFormSubmit={this.handleFormSubmit.bind(this)}
           />
-          <FavNav
-          closeNav={this.closeNav}
+          {/*this is a test to see if handleformsubmit works*/}
+          <TestSearch
+          handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
           />
-          These are the user's routes: {this.state.usersRoutes}
-      </Container>
+          <button
+            onClick={this.updateRoute}>
+            {this.state.savePrompt}
+          </button>
+          <div
+            className="nav-open"
+            onClick={this.openNav}>&#9776; Veiw your saved lines
+          </div>
+          <div
+            className="nav-open"
+            onClick={this.openNavBus}> &#9776; View active Buses
+          </div>
+          {this.state.buses.length ? (
+            <List closeNav={this.closeNavBus}>
+              {this.state.buses.map((bus,index) => (
+                <ListItem key={index} position={bus.position}>
+                  This bus is headed to {bus.tripHeadSign}, going {bus.directionText} <button onClick={()=> this.zoomToThisBus(bus.position)}>Zoom To</button>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <h3>No Buses Currently In Service</h3>
+          )}
+          <MapRender
+            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `400px` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+            stops0={this.state.stops0}
+            stops1={this.state.stops1}
+            center={this.state.firstStop}
+            defaultZoom={16}
+            zoom={this.state.zoom}
+            markers={this.state.buses}
+            timer={this.state.countDown}
+            path0={this.state.routeShape0}
+            path1={this.state.routeShape1}
+            predictions0={this.checkStopPrediction0}
+            predictionInfo0={this.state.predictionsInfo0}
+            predictions1={this.checkStopPrediction1}
+            predictionInfo1={this.state.predictionsInfo1}
+            />
+            <FavNav
+            closeNav={this.closeNav}
+            />
+            These are the user's routes: {this.state.usersRoutes}
+        </Container>
       </div>
     );
   }
 }
-export default Home;
+export default withAlert(Home);
