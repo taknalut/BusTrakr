@@ -28,7 +28,8 @@ class Home extends Component {
     savePrompt: "Save Route",
     clickedMarker: null,
     predictionsInfo0: [],
-    predictionsInfo1: []
+    predictionsInfo1: [],
+    screenSize: "full"
   };
 
   componentDidMount(query) {
@@ -38,8 +39,9 @@ class Home extends Component {
     console.log("compWillMount")
 
     this.checkLoginStatus();
+    this.updateWindowView();
+    window.addEventListener("resize", this.updateWindowView.bind(this));
   };
-
 
   checkLoginStatus = () => {
     // Delete after Tak implements ID-setting code
@@ -301,14 +303,35 @@ class Home extends Component {
     console.log(this.state.routeShape)
   };
 
+  updateWindowView = () => {
+    console.log(this.state.screenSize)
+    if (window.innerWidth <= 450) {
+      this.setState({ screenSize: "mobile" });
+    } else {
+      this.setState({ screenSize: "full" });
+    }
+  }
+
   openNav = () => {
+    if (this.state.screenSize = "mobile") {
+    // console.log("smaller screen")
+    document.getElementById("mySidenav").style.height = "250px";
+    document.getElementById("main").style.marginTop = "250px";
+  } else if (this.state.screenSize = "full"){
+    // console.log("bigger screens")
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
   }
+  }
 
   closeNav = () => {
+    if (this.state.screenSize = "mobile") {
+    document.getElementById("mySidenav").style.height = "0";
+    document.getElementById("main").style.marginTop = "0";
+  } else {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
+  }
   }
 
   render() {
