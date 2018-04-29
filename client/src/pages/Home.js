@@ -381,12 +381,16 @@ class Home extends Component {
           </button>
           <div
             className="nav-open"
-            onClick={this.openNav}>&#9776; Veiw your saved lines
+            onClick={this.openNav}>&#9776; View your saved lines
           </div>
-          <div
-            className="nav-open"
-            onClick={this.openNavBus}> &#9776; View active Buses
-          </div>
+          {this.state.buses.length ? (
+            <div
+              className="nav-open"
+              onClick={this.openNavBus}> &#9776; View active Buses
+            </div>
+          ) : (
+            <div></div>
+          )}
           {this.state.buses.length ? (
             <List closeNav={this.closeNavBus}>
               {this.state.buses.map((bus,index) => (
