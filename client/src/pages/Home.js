@@ -9,6 +9,7 @@ import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
 import { withAlert } from "react-alert";
+import GeoLocation from "../components/GeoLocation"
 import "./Home.css";
 
 class Home extends Component {
@@ -19,7 +20,7 @@ class Home extends Component {
     routeShape1: [],
     buses: [],
     firstBus: {},
-    firstStop: {},
+    mapCenter: {},
     check: false,
     zoom: 10,
     stops0: [],
@@ -32,7 +33,8 @@ class Home extends Component {
     predictionsInfo0: [],
     predictionsInfo1: [],
     countDown: 15,
-    increment: null
+    increment: null,
+    userLocation: null
   };
   componentDidMount(query) {
     this.searchRoutes0();
@@ -69,11 +71,9 @@ class Home extends Component {
         }
       });
   }
-
   zoomToThisBus = (location) => {
-    this.setState({firstStop: location})
+    this.setState({mapCenter: location})
   };
-
   timer = () =>  {
       this.state.increment = setInterval( () =>
         this.setState({
@@ -88,6 +88,23 @@ class Home extends Component {
       });
     this.setState({countDown: 15});
   }
+  showPosition = (position) => {
+    this.setState({userLocation: {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude}});
+      this.setState({mapCenter: {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude}});
+    console.log("Latitude: " + position.coords.latitude +
+      "<br>Longitude: " + position.coords.longitude);
+  };
+  getLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.showPosition)
+    } else {
+        this.props.alert.show("Geolocation is not supported by this browser.");
+    }
+  };
   searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
@@ -160,7 +177,7 @@ class Home extends Component {
           lat: parseFloat(stopLat),
           lng: parseFloat(stopLng)
         }
-      this.setState({ firstStop: firstStopCenter })
+      this.setState({ mapCenter: firstStopCenter })
       console.log(this.state.firstBus)
     })
       .catch(err => console.log(err));
@@ -366,6 +383,7 @@ class Home extends Component {
     return (
       <div>
         <Container>
+          <GeoLocation userLocation={this.getLocation}/>
           <Search
             value={this.state.search}
             handleInputChange={this.handleInputChange}
@@ -409,7 +427,8 @@ class Home extends Component {
             mapElement={<div style={{ height: `100%` }} />}
             stops0={this.state.stops0}
             stops1={this.state.stops1}
-            center={this.state.firstStop}
+            userLocation={this.state.userLocation}
+            center={this.state.mapCenter}
             defaultZoom={16}
             zoom={this.state.zoom}
             markers={this.state.buses}

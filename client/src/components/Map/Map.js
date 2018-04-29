@@ -44,6 +44,7 @@ const MapRender = compose(
       defaultZoom={props.defaultZoom}
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
+      <Marker position={props.userLocation} />
       {props.markers.map((bus,index) => (
         <Marker key={index} position={bus.position} animation={google.maps.Animation.DROP} onClick={() => props.onBusToggleOpen(index)}
           icon={{
