@@ -59,7 +59,7 @@ const MapRender = compose(
             <div className="card text-black bg-light mb-3">
               <h5 className="card-header">Current Bus Position</h5>
                 <div className="card-body">
-                    <p><strong>Time before Next Bus Update:</strong> {props.timer}</p>
+                    <p><strong>Bus Location Update in:</strong> {props.timer}</p>
                     <p><strong>Destination:</strong> {bus.tripHeadSign}</p>
                     <p><strong>Direction:</strong> {bus.directionText}</p>
                     <p><strong>Deviation:</strong> {bus.deviation}</p>
