@@ -5,6 +5,7 @@ import { List, ListItem } from "../components/List";
 import Search from "../components/Search";
 import MapRender from "../components/Map"
 import FavNav from "../components/FavNav"
+import SaveLines from "../components/SaveLine"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
 import AutoCompleteExampleFilters from "../components/Autocomplete";
@@ -12,6 +13,14 @@ import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
 
+const styles = {
+  block: {
+    maxWidth: 250,
+  },
+  checkbox: {
+    marginBottom: 16,
+  },
+};
 
 class Home extends Component {
   state = {
@@ -31,6 +40,7 @@ class Home extends Component {
     isLoggedIn: false,
     usersRoutes: [],
     savePrompt: "Save Route",
+    checked: false,
     clickedMarker: null,
     predictionsInfo0: [],
     predictionsInfo1: [],
@@ -305,6 +315,16 @@ class Home extends Component {
     this.setState({ savePrompt: "Remove Route" })
   }
 
+  // for the heart
+  updateSaved() {
+    this.updateRoute();
+    this.setState((oldState) => {
+      return {
+        checked: !oldState.checked,
+      };
+    });
+  }
+
   removeRoute = () => {
     var theirRoutes = this.state.usersRoutes.slice();
 
@@ -407,8 +427,10 @@ class Home extends Component {
           <div className="in-line">
           <h2>Tracking bus {this.state.search}
           </h2>
-          <p> { this.state.savePrompt === "Save Route" ? <i className="far fa-star" onClick={this.updateRoute}> {this.state.savePrompt} </i> : <i className="fas fa-star"onClick={this.updateRoute}> {this.state.savePrompt} </i> }
-          </p>
+          <SaveLines
+          updateSaved={this.updateSaved.bind(this)}
+          checked={this.state.checked}
+          />
           <button className="btn btn-primary btn-sm"
             onClick={this.updateRoute}>
             {this.state.savePrompt}
