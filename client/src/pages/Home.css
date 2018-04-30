@@ -6,3 +6,7 @@
 .push-out {
   width: 250px;
 }
+
+.in-line {
+  display: inline-block;
+}

@@ -25,5 +25,11 @@ export default {
   },
   stopBusPrediction: function(stopId) {
     return axios.get("https://api.wmata.com/NextBusService.svc/json/jPredictions?StopID="+ stopId, config);
+  },
+  checkUserExist: function(possibleId) {
+    return axios.get("/api/users/" + possibleId);
+  },
+  createUser: function(userObject) {
+    return axios.post("/api/users", userObject);
   }
 };
