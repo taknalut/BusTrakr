@@ -3,14 +3,15 @@ import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
 import Search from "../components/Search";
-import TestSearch from "../components/TestSearch"
 import MapRender from "../components/Map"
 import FavNav from "../components/FavNav"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
+import AutoCompleteExampleFilters from "../components/Autocomplete";
 import { withAlert } from "react-alert";
-import GeoLocation from "../components/GeoLocation"
+import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
+
 
 class Home extends Component {
   state = {
@@ -19,6 +20,7 @@ class Home extends Component {
     routeShape0: [],
     routeShape1: [],
     buses: [],
+    allRoutes: [],
     firstBus: {},
     mapCenter: {},
     check: false,
@@ -34,25 +36,31 @@ class Home extends Component {
     predictionsInfo1: [],
     countDown: 15,
     increment: null,
-    userLocation: null
+    userLocation: null,
+    dataSource: []
   };
+
   componentDidMount(query) {
     this.searchRoutes0();
     console.log("compWillMount")
     this.checkLoginStatus();
     this.timer();
+    this.searchAllRoutes();
   };
+
   componentWillUnmount() {
     if (this.state.countDown < 1) {
         clearInterval(this.state.increment)
     }
   }
+
   componentWillUpdate() {
     if (this.state.countDown < 1) {
       this.timerReset();
       this.searchBuses();
     }
   }
+
   checkLoginStatus = () => {
     // Delete after Tak implements ID-setting code
     localStorage.setItem('googleID', '100');
@@ -105,6 +113,20 @@ class Home extends Component {
         this.props.alert.show("Geolocation is not supported by this browser.");
     }
   };
+
+  searchAllRoutes = () => {
+    let busRoutesArr = [];
+    var that = this;
+    API.searchAll()
+      .then(res => {
+      res.data.Routes.forEach(item =>
+        busRoutesArr.push(item.RouteID)
+      )
+      that.setState({dataSource: busRoutesArr})
+      console.log("routes", that.state.dataSource)
+    })
+  }
+
   searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
@@ -340,24 +362,15 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
-  handleInputChange = event => {
-    const value = event.target.value;
-    const name = event.target.name;
+  handleInputChange = (newValue) => {
     this.setState({
-      [name]: value
+      'search': newValue
     });
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
+  handleFormSubmit = () => {
     this.searchRoutes0();
     console.log("Submit Route Shape", this.state.routeShape0)
-  };
-
-  handleFormSubmitTest = (event) => {
-    event.preventDefault();
-    this.searchRoutesTest();
-    console.log(this.state.routeShape)
   };
 
   openNav = () => {
@@ -368,7 +381,8 @@ class Home extends Component {
   closeNav = () => {
     document.getElementById("mySidenav").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
-  }
+}
+
   openNavBus = () => {
     document.getElementById("mySideNavBus").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -384,19 +398,22 @@ class Home extends Component {
       <div>
         <Container>
           <GeoLocation userLocation={this.getLocation}/>
-          <Search
-            value={this.state.search}
-            handleInputChange={this.handleInputChange}
-            handleFormSubmit={this.handleFormSubmit.bind(this)}
+          <AutoCompleteExampleFilters
+          dataSource={this.state.dataSource}
+          handleInputChange={this.handleInputChange}
+          handleFormSubmit={this.handleFormSubmit}
           />
-          {/*this is a test to see if handleformsubmit works*/}
-          <TestSearch
-          handleFormSubmitTest = {this.handleFormSubmit.bind(this)}
-          />
-          <button
+          <br />
+          <div className="in-line">
+          <h2>Tracking bus {this.state.search}
+          </h2>
+          <p> { this.state.savePrompt === "Save Route" ? <i className="far fa-star" onClick={this.updateRoute}> {this.state.savePrompt} </i> : <i className="fas fa-star"onClick={this.updateRoute}> {this.state.savePrompt} </i> }
+          </p>
+          <button className="btn btn-primary btn-sm"
             onClick={this.updateRoute}>
             {this.state.savePrompt}
           </button>
+          </div>
           <div
             className="nav-open"
             onClick={this.openNav}>&#9776; View your saved lines
@@ -446,7 +463,7 @@ class Home extends Component {
             These are the user's routes: {this.state.usersRoutes}
         </Container>
       </div>
-    );
+    )
   }
 }
 export default withAlert(Home);
