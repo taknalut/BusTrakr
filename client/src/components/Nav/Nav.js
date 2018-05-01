@@ -2,7 +2,7 @@ import React from "react";
 import "./Nav.css";
 
 const Nav = props => (
-  <nav className="navbar navbar-light bg-light mb-3">
+  <nav className="navbar navbar-light bg-light">
   <div className="container">
     <a className="navbar-brand">BusTrakr
     <img src="images/busloc.png" height="50" className="d-inline-block align-bottom" alt="" />

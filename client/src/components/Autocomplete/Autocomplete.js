@@ -2,7 +2,7 @@ import React from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AutoComplete from 'material-ui/AutoComplete';
 
-const AutoCompleteExampleFilters = props => (
+const AutoCompleteFilters = props => (
     <MuiThemeProvider>
     <div>
     <AutoComplete
@@ -17,4 +17,4 @@ const AutoCompleteExampleFilters = props => (
     </ MuiThemeProvider>
   );
 
-export default AutoCompleteExampleFilters;
+export default AutoCompleteFilters;
