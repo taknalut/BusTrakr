@@ -8,19 +8,10 @@ import FavNav from "../components/FavNav"
 import SaveLines from "../components/SaveLine"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
-import AutoCompleteExampleFilters from "../components/Autocomplete";
+import AutoCompleteFilters from "../components/Autocomplete";
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
-
-const styles = {
-  block: {
-    maxWidth: 250,
-  },
-  checkbox: {
-    marginBottom: 16,
-  },
-};
 
 class Home extends Component {
   state = {
@@ -126,7 +117,7 @@ class Home extends Component {
 
   searchAllRoutes = () => {
     let busRoutesArr = [];
-    var that = this;
+    let that = this;
     API.searchAll()
       .then(res => {
       res.data.Routes.forEach(item =>
@@ -417,8 +408,7 @@ class Home extends Component {
     return (
       <div>
         <Container>
-          <GeoLocation userLocation={this.getLocation}/>
-          <AutoCompleteExampleFilters
+          <AutoCompleteFilters
           dataSource={this.state.dataSource}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
@@ -431,10 +421,6 @@ class Home extends Component {
           updateSaved={this.updateSaved.bind(this)}
           checked={this.state.checked}
           />
-          <button className="btn btn-primary btn-sm"
-            onClick={this.updateRoute}>
-            {this.state.savePrompt}
-          </button>
           </div>
           <div
             className="nav-open"
@@ -481,6 +467,10 @@ class Home extends Component {
             />
             <FavNav
             closeNav={this.closeNav}
+            />
+            <br />
+            <GeoLocation
+            userLocation={this.getLocation}
             />
             These are the user's routes: {this.state.usersRoutes}
         </Container>

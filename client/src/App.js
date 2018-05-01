@@ -2,7 +2,6 @@ import React from "react";
 import Home from "./pages";
 import Nav from "./components/Nav";
 import NavButtons from "./components/NavButtons";
-import Form from "./components/Form";
 import FavNav from "./components/FavNav"
 import { Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
@@ -19,7 +18,6 @@ const App = () => (
       <NavButtons />
       </Nav>
       <Home />
-      <Form />
     </div>
   </Provider>
 );
