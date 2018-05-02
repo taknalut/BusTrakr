@@ -9,4 +9,5 @@
 
 .in-line {
   display: inline-block;
+  position: relative;
 }
