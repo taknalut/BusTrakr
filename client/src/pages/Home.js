@@ -9,6 +9,7 @@ import SaveLines from "../components/SaveLine"
 import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
 import AutoCompleteFilters from "../components/Autocomplete";
+import DropdownFav from "../components/DropdownFav"
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
@@ -414,7 +415,7 @@ class Home extends Component {
           handleFormSubmit={this.handleFormSubmit}
           />
           <br />
-          <div className="in-line">
+          <div>
           <h2>Tracking bus {this.state.search}
           </h2>
           <SaveLines
@@ -422,10 +423,11 @@ class Home extends Component {
           checked={this.state.checked}
           />
           </div>
-          <div
+          {/*<div
             className="nav-open"
             onClick={this.openNav}>&#9776; View your saved lines
-          </div>
+          </div>*/}
+          <DropdownFav />
           {this.state.buses.length ? (
             <div
               className="nav-open"
