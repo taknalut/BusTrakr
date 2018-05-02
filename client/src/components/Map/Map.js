@@ -48,7 +48,7 @@ const MapRender = compose(
       {props.markers.map((bus,index) => (
         <Marker key={index} position={bus.position} animation={google.maps.Animation.DROP} onClick={() => props.onBusToggleOpen(index)}
           icon={{
-            url:"../Images/bus.png",
+            url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus.png",
             size: new google.maps.Size(25, 25),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(0, 0),
@@ -72,7 +72,7 @@ const MapRender = compose(
     {props.stops0.map((stop,i) => (
       <Marker key={i} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => {props.onStop0ToggleOpen(i);props.predictions0(stop.StopID)}}
         icon={{
-          url:"../Images/bus-stop.png",
+          url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus-stop.png",
           size: new google.maps.Size(25, 25),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(0, 0),
@@ -97,7 +97,7 @@ const MapRender = compose(
     {props.stops1.map((stop,id) => (
       <Marker key={id} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => {props.onStop1ToggleOpen(id);props.predictions1(stop.StopID)}}
         icon={{
-          url:"../Images/bus-stop.png",
+          url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus-stop.png",
           size: new google.maps.Size(25, 25),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(0, 0),

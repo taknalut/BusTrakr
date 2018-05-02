@@ -31,7 +31,6 @@ class Home extends Component {
     validSearch: "10A",
     isLoggedIn: false,
     usersRoutes: [],
-    savePrompt: "Save Route",
     checked: false,
     clickedMarker: null,
     predictionsInfo0: [],
@@ -64,22 +63,16 @@ class Home extends Component {
   }
 
   checkLoginStatus = () => {
-    // Delete after Tak implements ID-setting code
-    localStorage.setItem('googleID', '100');
-
     var userID = localStorage.getItem('googleID');
     this.setState({ isLoggedIn: true });
 
     // Grabs from db the user's currently favorited routes
-    API.getUsersRoutes(userID).
-      then((result) => {
-        const theirSaved = result.data[0].routes;
-        this.setState({usersRoutes: theirSaved})
-
-        if (this.state.usersRoutes.includes("10A")) {
-            this.setState({ savePrompt: "Remove Route" })
-        }
-      });
+    if (userID) 
+      API.getUsersRoutes(userID).
+        then((result) => {
+          const theirSaved = result.data[0].routes;
+          this.setState({usersRoutes: theirSaved})
+        });
   }
   zoomToThisBus = (location) => {
     this.setState({mapCenter: location})
@@ -304,7 +297,6 @@ class Home extends Component {
     theirRoutes.push(this.state.validSearch);
 
     this.setState({ usersRoutes: theirRoutes});
-    this.setState({ savePrompt: "Remove Route" })
   }
 
   // for the heart
@@ -327,8 +319,6 @@ class Home extends Component {
     }
 
     this.setState({ usersRoutes: theirRoutes});
-    this.setState({ savePrompt: "Save Route" })
-
   }
 
    //checkStopPrediction keeps getting called after Marker is clicked
