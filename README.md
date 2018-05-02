@@ -18,7 +18,7 @@ If you wish to bookmark a route, log in to your account or create one
 
 This enables the bookmarking feature
 
-[Click on the star/heart]
+[Click on the star/heart please]
 
 ## Built With
 
