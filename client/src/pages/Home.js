@@ -10,6 +10,7 @@ import API from "../utils/API";
 import RouteSaveBtn from "../components/RouteSaveBtn";
 import AutoCompleteFilters from "../components/Autocomplete";
 import DropdownFav from "../components/DropdownFav"
+import DropdownActive from "../components/DropdownActive"
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
@@ -427,7 +428,9 @@ class Home extends Component {
             className="nav-open"
             onClick={this.openNav}>&#9776; View your saved lines
           </div>*/}
-          <DropdownFav />
+          <div>
+          <DropdownFav /> |  <DropdownActive />
+          </div>
           {this.state.buses.length ? (
             <div
               className="nav-open"
@@ -436,14 +439,21 @@ class Home extends Component {
           ) : (
             <div></div>
           )}
-          {this.state.buses.length ? (
-            <List closeNav={this.closeNavBus}>
+          {this.state.buses.length ?
+            (<List closeNav={this.closeNavBus}>
               {this.state.buses.map((bus,index) => (
-                <ListItem key={index} position={bus.position}>
-                  This bus is headed to {bus.tripHeadSign}, going {bus.directionText} <button onClick={()=> this.zoomToThisBus(bus.position)}>Zoom To</button>
+                <ListItem
+                key={index}
+                position={bus.position}>
+                  This bus is headed to {bus.tripHeadSign}, going {bus.directionText}
+                  <button
+                  onClick={()=> this.zoomToThisBus(bus.position)}>
+                  Zoom To
+                  </button>
                 </ListItem>
-              ))}
-            </List>
+              )
+            )
+          } </List>
           ) : (
             <h3>No Buses Currently In Service</h3>
           )}
