@@ -62,18 +62,16 @@ class Home extends Component {
   }
 
   checkLoginStatus = () => {
-    // Delete after Tak implements ID-setting code
-    localStorage.setItem('googleID', '100');
-
     var userID = localStorage.getItem('googleID');
     this.setState({ isLoggedIn: true });
 
     // Grabs from db the user's currently favorited routes
-    API.getUsersRoutes(userID).
-      then((result) => {
-        const theirSaved = result.data[0].routes;
-        this.setState({usersRoutes: theirSaved})
-      });
+    if (userID) 
+      API.getUsersRoutes(userID).
+        then((result) => {
+          const theirSaved = result.data[0].routes;
+          this.setState({usersRoutes: theirSaved})
+        });
   }
   zoomToThisBus = (location) => {
     this.setState({mapCenter: location})
