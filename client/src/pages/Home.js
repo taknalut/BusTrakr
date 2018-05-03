@@ -7,9 +7,11 @@ import MapRender from "../components/Map"
 import FavNav from "../components/FavNav"
 import SaveLines from "../components/SaveLine"
 import API from "../utils/API";
-import RouteSaveBtn from "../components/RouteSaveBtn";
-import AutoCompleteFilters from "../components/Autocomplete";
+import RouteSaveBtn from "../components/RouteSaveBtn"
+import AutoCompleteFilters from "../components/Autocomplete"
 import DropdownFav from "../components/DropdownFav"
+import DropdownActive from "../components/DropdownActive"
+import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
@@ -67,7 +69,7 @@ class Home extends Component {
     this.setState({ isLoggedIn: true });
 
     // Grabs from db the user's currently favorited routes
-    if (userID) 
+    if (userID)
       API.getUsersRoutes(userID).
         then((result) => {
           const theirSaved = result.data[0].routes;
@@ -406,7 +408,7 @@ class Home extends Component {
           />
           <br />
           <div>
-          <h2>Tracking bus {this.state.search}
+          <h2>Tracking route {this.state.search}
           </h2>
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
@@ -417,7 +419,14 @@ class Home extends Component {
             className="nav-open"
             onClick={this.openNav}>&#9776; View your saved lines
           </div>*/}
+          <div>
           <DropdownFav />
+          |
+          <DropdownActive>
+          <MenuItem value="10A" primaryText="Hello bus!" />
+          <MenuItem value="10B" primaryText="Bye bus!" onItemClick={console.log("hello my button has been clicked!")} />
+          </DropdownActive>
+          </div>
           {this.state.buses.length ? (
             <div
               className="nav-open"
@@ -426,14 +435,21 @@ class Home extends Component {
           ) : (
             <div></div>
           )}
-          {this.state.buses.length ? (
-            <List closeNav={this.closeNavBus}>
+          {this.state.buses.length ?
+            (<List closeNav={this.closeNavBus}>
               {this.state.buses.map((bus,index) => (
-                <ListItem key={index} position={bus.position}>
-                  This bus is headed to {bus.tripHeadSign}, going {bus.directionText} <button onClick={()=> this.zoomToThisBus(bus.position)}>Zoom To</button>
+                <ListItem
+                key={index}
+                position={bus.position}>
+                  This bus is headed to {bus.tripHeadSign}, going {bus.directionText}
+                  <button
+                  onClick={()=> this.zoomToThisBus(bus.position)}>
+                  Zoom To
+                  </button>
                 </ListItem>
-              ))}
-            </List>
+              )
+            )
+          } </List>
           ) : (
             <h3>No Buses Currently In Service</h3>
           )}
