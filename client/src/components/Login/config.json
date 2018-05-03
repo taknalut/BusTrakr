@@ -1,0 +1,10 @@
+{
+  "config": {
+    "apiKey": "AIzaSyB_-pqlyQ-iBcT02LL0uDf4CPt8TPNNFog",
+    "authDomain": "bustrakr-146b5.firebaseapp.com",
+    "databaseURL": "https://bustrakr-146b5.firebaseio.com",
+    "projectId": "bustrakr-146b5",
+    "storageBucket": "bustrakr-146b5.appspot.com",
+    "messagingSenderId": "562142304940"
+  }
+}
