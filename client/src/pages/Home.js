@@ -408,7 +408,7 @@ class Home extends Component {
           />
           <br />
           <div>
-          <h2>Tracking bus {this.state.search}
+          <h2>Tracking route {this.state.search}
           </h2>
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
