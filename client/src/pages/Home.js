@@ -25,7 +25,7 @@ class Home extends Component {
     firstBus: {},
     mapCenter: {},
     check: false,
-    zoom: 10,
+    zoom: 16,
     stops0: [],
     stops1: [],
     validSearch: "10A",
@@ -59,6 +59,7 @@ class Home extends Component {
     if (this.state.countDown < 1) {
       this.timerReset();
       this.searchBuses();
+      this.closeNav();
     }
   }
 
@@ -67,7 +68,7 @@ class Home extends Component {
     this.setState({ isLoggedIn: true });
 
     // Grabs from db the user's currently favorited routes
-    if (userID) 
+    if (userID)
       API.getUsersRoutes(userID).
         then((result) => {
           const theirSaved = result.data[0].routes;
@@ -125,17 +126,18 @@ class Home extends Component {
   searchRoutes0 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
-        {
-          this.props.alert.success("Search was successful! Loading Route...");
-        }
       let ShapeDefined = [];
       res.data.Direction0.Shape.forEach(item =>
         ShapeDefined.push({
           lat: parseFloat(item.Lat),
           lng: parseFloat(item.Lon)
         })
-      ),
-
+      )
+      if (ShapeDefined != []) {
+        {
+          this.props.alert.success("Search was successful! Loading Route...");
+        }
+      }
       this.setState({routeShape0: ShapeDefined}),
       this.searchRouteStops0(),
       this.searchRoutes1(),
@@ -447,7 +449,7 @@ class Home extends Component {
             userLocation={this.state.userLocation}
             center={this.state.mapCenter}
             defaultZoom={16}
-            zoom={this.state.zoom}
+            zoomTo={this.state.zoom}
             markers={this.state.buses}
             timer={this.state.countDown}
             path0={this.state.routeShape0}
