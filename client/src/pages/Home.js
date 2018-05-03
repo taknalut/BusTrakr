@@ -7,10 +7,11 @@ import MapRender from "../components/Map"
 import FavNav from "../components/FavNav"
 import SaveLines from "../components/SaveLine"
 import API from "../utils/API";
-import RouteSaveBtn from "../components/RouteSaveBtn";
-import AutoCompleteFilters from "../components/Autocomplete";
+import RouteSaveBtn from "../components/RouteSaveBtn"
+import AutoCompleteFilters from "../components/Autocomplete"
 import DropdownFav from "../components/DropdownFav"
 import DropdownActive from "../components/DropdownActive"
+import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import "./Home.css";
@@ -68,7 +69,7 @@ class Home extends Component {
     this.setState({ isLoggedIn: true });
 
     // Grabs from db the user's currently favorited routes
-    if (userID) 
+    if (userID)
       API.getUsersRoutes(userID).
         then((result) => {
           const theirSaved = result.data[0].routes;
@@ -419,7 +420,12 @@ class Home extends Component {
             onClick={this.openNav}>&#9776; View your saved lines
           </div>*/}
           <div>
-          <DropdownFav /> |  <DropdownActive />
+          <DropdownFav />
+          |
+          <DropdownActive>
+          <MenuItem value="10A" primaryText="Hello bus!" />
+          <MenuItem value="10B" primaryText="Bye bus!" onItemClick={console.log("hello my button has been clicked!")} />
+          </DropdownActive>
           </div>
           {this.state.buses.length ? (
             <div
