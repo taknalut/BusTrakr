@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import "./Login.css";
 import firebase from 'firebase';
@@ -10,13 +10,14 @@ import { config } from './config';
 firebase.initializeApp(config);
 
 export default class Login extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       open: false,
       isSignedIn: false,
       currentUid: null
     };
+    this.logout = this.logout.bind(this);
   }
 
   uiConfig = {
@@ -26,22 +27,25 @@ export default class Login extends Component {
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       callbacks: {
-        signInSuccessUrl: () => {
-          console.log("signin");
-          return false
-        }
+        signInSuccessUrl: () => false
       }
    };
 
 
   componentDidMount() {
+      if (window.location.search === '?mode=select'){
+        this.onOpenModal();
+      }
+
       this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
           (user) => {
             this.setState({ isSignedIn: !!user })
-            console.log(this.state);
 
             if (user && user.uid != this.state.currentUid) {
-              this.setState({currentUid: user.uid});
+              this.setState({
+                currentUid: user.uid
+              });
+
               localStorage.setItem('googleID', [user.uid]);
 
               API.checkUserExist(user.uid).
@@ -85,32 +89,43 @@ export default class Login extends Component {
       this.setState({ open: false });
     };
 
+    logout = () => {
+      firebase.auth().signOut()
+        .then(() => {
+          this.setState({
+            isSignedIn: false,
+            currentUid: null
+          });
+        });
+    }
+
   render() {
-    const { open } = this.state;
-    if (!this.state.isSignedIn) {
+      const { open } = this.state;
+      console.log(window.location.search);
+      if (!this.state.isSignedIn) {
+      return (
+        <div className="cl-effect-7">
+          <a className="mobile-view" onClick={this.onOpenModal}>Login/Register</a>
+          <Modal open={open} onClose={this.onCloseModal} little>
+            <div>
+              <p>Please sign-in:</p>
+              <StyledFirebaseAuth uiCallback={ui => ui.disableAutoSignIn()} uiConfig={this.uiConfig} firebaseAuth={firebase.auth()}/>
+            </div>
+          </Modal>
+      </div>
+      );
+    }
     return (
-      <div className="cl-effect-7">
-        <a className="mobile-view" onClick={this.onOpenModal}>Login/Register</a>
-        <Modal open={open} onClose={this.onCloseModal} little>
-          <div>
-            <p>Please sign-in:</p>
-            <StyledFirebaseAuth uiCallback={ui => ui.disableAutoSignIn()} uiConfig={this.uiConfig} firebaseAuth={firebase.auth()}/>
-          </div>
-        </Modal>
-    </div>
+      <div>
+        <div>
+          <Modal open={open} onClose={this.onCloseModal} little>
+              <p className="text-center">Welcome {firebase.auth().currentUser.displayName}!<br/> You are now signed-in!</p>
+          </Modal>
+        </div>
+        <div className="cl-effect-7">
+          <a className="mobile-view" onClick={this.logout}>Log out</a>
+        </div>
+      </div>
     );
   }
-  return (
-    <div>
-    <div>
-    <Modal open={open} onClose={this.onCloseModal} little>
-        <p className="text-center">Welcome {firebase.auth().currentUser.displayName}!<br/> You are now signed-in!</p>
-    </Modal>
-    </div>
-    <div className="cl-effect-7">
-      <a className="mobile-view" onClick={() => firebase.auth().signOut()}>Log out</a>
-    </div>
-    </div>
-  );
-}
 }

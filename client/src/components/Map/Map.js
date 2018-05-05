@@ -42,17 +42,18 @@ const MapRender = compose(
     <GoogleMap
       ref={props.onMapMounted}
       defaultZoom={props.defaultZoom}
+      zoom={props.zoomTo}
       center={props.center}
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
       <Marker position={props.userLocation} />
       {props.markers.map((bus,index) => (
         <Marker key={index} position={bus.position} animation={google.maps.Animation.DROP} onClick={() => props.onBusToggleOpen(index)}
           icon={{
-            url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus.png",
-            size: new google.maps.Size(25, 25),
+            url:"https://s3.us-east-2.amazonaws.com/bustrakr/busloc.png",
+            size: new google.maps.Size(50, 50),
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(0, 0),
-            scaledSize: new google.maps.Size(25, 25)
+            scaledSize: new google.maps.Size(50, 50)
           }}
           z-index={20}
       >
