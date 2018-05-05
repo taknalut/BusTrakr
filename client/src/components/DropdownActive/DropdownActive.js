@@ -9,7 +9,7 @@ import "./DropdownActive.css";
 const DropdownActive = props => (
   <MuiThemeProvider>
   <IconMenu
-    iconButtonElement={<p className="display-text">View active buses on the road <i className="material-icons align-middle">directions_bus</i></p>}
+    iconButtonElement={<p className="display-text">| View active buses <i className="material-icons align-middle">directions_bus</i></p>}
     anchorOrigin={{horizontal: 'left', vertical: 'top'}}
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
     maxHeight={272}

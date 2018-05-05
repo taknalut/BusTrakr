@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import FavNav from "./components/FavNav"
 import { Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import "./App.css";
 
 const options = {
   timeout: 5000,
@@ -13,12 +14,10 @@ const options = {
 
 const App = () => (
   <Provider template={AlertTemplate} {...options}>
-    <div id="main">
       <Nav>
       <Login />
       </Nav>
       <Home />
-    </div>
   </Provider>
 );
 
