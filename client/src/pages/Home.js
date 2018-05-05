@@ -61,7 +61,7 @@ class Home extends Component {
     if (this.state.countDown < 1) {
       this.timerReset();
       this.searchBuses();
-      this.closeNav();
+      // this.closeNav();
     }
   }
 
