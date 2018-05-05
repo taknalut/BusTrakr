@@ -17,8 +17,8 @@ const SaveLines = props => (
   <MuiThemeProvider>
   <div style={styles.block}>
   <Checkbox
-  checkedIcon={<ActionFavorite />}
-  uncheckedIcon={<ActionFavoriteBorder />}
+  checkedIcon={props.status ? <ActionFavorite /> : <ActionFavoriteBorder />}
+  uncheckedIcon={!props.status ? <ActionFavoriteBorder /> : <ActionFavorite />}
   onCheck={props.updateSaved}
   style={styles.checkbox}
   label={props.checked ? "Unsave" : "Save"}
