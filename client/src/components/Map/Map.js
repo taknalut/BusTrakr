@@ -58,9 +58,9 @@ const MapRender = compose(
           z-index={20}
       >
         {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
-            <div className="card text-black bg-light mb-3">
-              <h5 className="card-header">Current Bus Position</h5>
-                <div className="card-body">
+            <div className="text-black mb-3 mt-3">
+              <h5>Current Bus Position</h5>
+                <div>
                     <p><strong>Bus Location Update in:</strong> {props.timer}</p>
                     <p><strong>Destination:</strong> {bus.tripHeadSign}</p>
                     <p><strong>Direction:</strong> {bus.directionText}</p>
@@ -82,9 +82,9 @@ const MapRender = compose(
         z-index={2}
         >
             {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
-                <div className="card text-black bg-light mb-3">
-                  <h5 className="card-header">Bus Stop: {stop.Name}</h5>
-                    <div className="card-body">
+                <div className="text-black mt-3">
+                  <h5>Bus Stop: {stop.Name}</h5>
+                    <div>
                         {props.predictionInfo0.map((arrivalTime) => (
                           <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
                         ))}
@@ -107,9 +107,9 @@ const MapRender = compose(
         z-index={2}
         >
           {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
-              <div className="card text-black bg-light mb-3">
-                <h5 className="card-header">Bus Stop: {stop.Name}</h5>
-                  <div className="card-body">
+              <div className="text-black mt-3">
+                <h5>Bus Stop: {stop.Name}</h5>
+                  <div>
                       {props.predictionInfo1.map((arrivalTime) => (
                         <p key={arrivalTime.TripID}> <strong>Minutes Away:</strong> {arrivalTime.MinutesAwayPrediction}, <strong>Route:</strong> {arrivalTime.RouteID}, {arrivalTime.DirectionText} </p>
                       ))}

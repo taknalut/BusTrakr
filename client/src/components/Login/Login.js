@@ -108,7 +108,7 @@ export default class Login extends Component {
           <a className="mobile-view" onClick={this.onOpenModal}>Login/Register</a>
           <Modal open={open} onClose={this.onCloseModal} little>
             <div>
-              <p>Please sign-in:</p>
+              <p className="mt-4">Please sign-in:</p>
               <StyledFirebaseAuth uiCallback={ui => ui.disableAutoSignIn()} uiConfig={this.uiConfig} firebaseAuth={firebase.auth()}/>
             </div>
           </Modal>
@@ -119,7 +119,7 @@ export default class Login extends Component {
       <div>
         <div>
           <Modal open={open} onClose={this.onCloseModal} little>
-              <p className="text-center">Welcome {firebase.auth().currentUser.displayName}!<br/> You are now signed-in!</p>
+              <p className="mt-4 text-center">Welcome {firebase.auth().currentUser.displayName}!<br/> You are now signed-in!</p>
           </Modal>
         </div>
         <div className="cl-effect-7">
