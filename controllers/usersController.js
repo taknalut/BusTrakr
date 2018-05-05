@@ -23,8 +23,9 @@ module.exports = {
   },
   update: function(req, res) {
     db.User
-      .findOneAndUpdate({ uuid: req.params.id }, req.body)
+      .findOneAndUpdate({ uuid: req.params.id }, {$set:{routes: req.body}}, {new: true})
       .then(dbModel => res.json(dbModel))
+      .then(dbModel => console.log(dbModel))
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
