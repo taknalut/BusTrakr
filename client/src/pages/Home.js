@@ -67,7 +67,6 @@ class Home extends Component {
 
   checkLoginStatus = () => {
     var userID = localStorage.getItem('googleID');
-    this.setState({ isLoggedIn: true });
 
     // Grabs from db the user's currently favorited routes
     if (userID)
@@ -75,8 +74,21 @@ class Home extends Component {
         then((result) => {
           const theirSaved = result.data[0].routes;
           this.setState({usersRoutes: theirSaved})
+
+          // Check if current search in bookmarks
+          if (theirSaved.includes(this.state.validSearch)) {
+
+            // Make the heart blue, "Unsave"
+            this.setState({checked: true});
+          }
+
+          else {
+            // Make heart white, "Save"
+            this.setState({checked: false});
+          }
         });
   }
+
   zoomToThisBus = (location) => {
     this.setState({mapCenter: location})
   };
@@ -146,6 +158,17 @@ class Home extends Component {
       this.searchRouteStops1(),
       this.searchBuses(),
       console.log("SearchRoutes", res)
+
+      this.setState({validSearch: this.state.search})
+
+      // Check if favorited
+      if (this.state.usersRoutes.includes(this.state.validSearch)) {
+        this.setState({checked: true})
+      }
+
+      else {
+        this.setState({checked: false})
+      }
     })
       .catch(err => {
         this.props.alert.error("Not a proper route search, path cannot be displayed!"),
@@ -169,6 +192,8 @@ class Home extends Component {
       this.setState({routeShape1: ShapeDefined}),
       console.log("SearchRoutes", res)
       this.setState({validSearch: this.state.search})
+      console.log("We SHOULD see F13 below...")
+      console.log(this.state.validSearch);
     })
       .catch(err => console.log(err));
   };
@@ -259,35 +284,33 @@ class Home extends Component {
       .catch(err => console.log(err));
   };
 
-  updateRoute = () => {
-    var googleID = localStorage.getItem("googleID");
-
-    if (!googleID) {
-      console.log("You need to log in, fam");
-    }
-
-    if (this.state.usersRoutes.includes(this.state.validSearch)) {
-      this.removeRoute();
-    }
-
-    else {
-      this.saveRoute();
-    }
-
-    API.saveRoute(googleID, {routes: this.state.usersRoutes});
-  }
-
-  saveRoute = () => {
-    var theirRoutes = this.state.usersRoutes.slice();
-
-    theirRoutes.push(this.state.validSearch);
-
-    this.setState({ usersRoutes: theirRoutes});
-  }
-
   // for the heart
   updateSaved() {
-    this.updateRoute();
+    var theirRoutes = this.state.usersRoutes.slice();
+    var userID = localStorage.getItem('googleID');
+
+    // User clicked on blank heart, wants to SAVE
+    if (this.state.checked == false) {
+
+      theirRoutes.push(this.state.validSearch);
+      this.setState({ usersRoutes: theirRoutes });
+
+      API.saveRoute(userID, theirRoutes);
+    }
+
+    // User clicked on blue heart, wants to REMOVE
+    if (this.state.checked == true) {
+      var index = theirRoutes.indexOf(this.state.validSearch);
+
+      if (index > -1) {
+        theirRoutes.splice(index, 1);
+      }
+
+      this.setState({ usersRoutes: theirRoutes});
+
+      API.saveRoute(userID, theirRoutes);
+    }
+
     this.setState((oldState) => {
       return {
         checked: !oldState.checked,
@@ -397,6 +420,7 @@ class Home extends Component {
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
           checked={this.state.checked}
+          status={this.state.checked}
           />
           </div>
           {/*<div
@@ -477,7 +501,8 @@ class Home extends Component {
             <GeoLocation
             userLocation={this.getLocation}
             />
-            These are the user's routes: {this.state.usersRoutes}
+            These are the user's routes: {this.state.usersRoutes} This is their latest valid search {this.state.validSearch}
+
         </Container>
       </div>
     )
