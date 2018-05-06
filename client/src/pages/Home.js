@@ -99,6 +99,7 @@ class Home extends Component {
         }), 1000);
       console.log("this.state.increment: ",this.state.increment)
   };
+
   timerReset = () => {
     this.setState({
         buses: [],
@@ -106,6 +107,7 @@ class Home extends Component {
       });
     this.setState({countDown: 15});
   }
+
   showPosition = (position) => {
     this.setState({userLocation: {
       lat: position.coords.latitude,
@@ -116,6 +118,7 @@ class Home extends Component {
     console.log("Latitude: " + position.coords.latitude +
       "<br>Longitude: " + position.coords.longitude);
   };
+
   getLocation = () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition)
@@ -152,7 +155,7 @@ class Home extends Component {
           this.props.alert.success("Search was successful! Loading Route...");
         }
       }
-      this.setState({routeShape0: ShapeDefined}),
+      this.setState({routeShape0: ShapeDefined, stops0: ShapeDefined, stops1: ShapeDefined}),
       this.searchRouteStops0(),
       this.searchRoutes1(),
       this.searchRouteStops1(),
@@ -179,6 +182,7 @@ class Home extends Component {
         this.setState({buses: []})
       })
   };
+
   searchRoutes1 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
@@ -228,6 +232,7 @@ class Home extends Component {
     })
       .catch(err => console.log(err));
   };
+
   searchRouteStops1 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
@@ -432,7 +437,8 @@ class Home extends Component {
           {this.state.buses.length ?
             <DropdownActive>
             {this.state.buses.map((bus, index) => (
-              <ul>
+              <ul
+              >
               <MenuItem
                 value={bus.position}
                 primaryText={bus.dropdownText}
