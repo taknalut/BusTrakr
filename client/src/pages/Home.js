@@ -152,7 +152,8 @@ class Home extends Component {
           this.props.alert.success("Search was successful! Loading Route...");
         }
       }
-      this.setState({routeShape0: ShapeDefined}),
+      //this.setState({routeShape0: ShapeDefined}),
+      this.setState({routeShape0: ShapeDefined, stops0: ShapeDefined, stops1: ShapeDefined, mapCenter: ShapeDefined[0]}),
       this.searchRouteStops0(),
       this.searchRoutes1(),
       this.searchRouteStops1(),
@@ -222,9 +223,8 @@ class Home extends Component {
       firstStopCenter = {
           lat: parseFloat(stopLat),
           lng: parseFloat(stopLng)
-        }
+      }
       this.setState({ mapCenter: firstStopCenter })
-      console.log(this.state.firstBus)
     })
       .catch(err => console.log(err));
   };
