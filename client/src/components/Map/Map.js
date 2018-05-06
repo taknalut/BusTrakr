@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import { compose, withProps, withState, withHandlers, withStateHandlers} from "recompose";
-import { withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow } from "react-google-maps";
+import { withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "react-google-maps";
 import Search from "../Search";
 import API from "../../utils/API";
-
 
 const google = window.google;
 
@@ -11,7 +10,7 @@ const MapRender = compose(
   withProps({
     // googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyZQ_jUpH1-rnOCDRlbZGCAWtyRU2lXw&v=3.exp&libraries=geometry,drawing,places",
     // loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    containerElement: <div style={{ height: `500px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withState('selectedStopPlace0', 'updateSelectedStopPlace0', null),
@@ -47,7 +46,11 @@ const MapRender = compose(
       defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
       <Marker position={props.userLocation} />
       {props.markers.map((bus,index) => (
-        <Marker key={index} position={bus.position} animation={google.maps.Animation.DROP} onClick={() => props.onBusToggleOpen(index)}
+        <Marker
+          key={index}
+          position={bus.position}
+          animation={google.maps.Animation.DROP}
+          onClick={() => props.onBusToggleOpen(index)}
           icon={{
             url:"https://s3.us-east-2.amazonaws.com/bustrakr/busloc.png",
             size: new google.maps.Size(50, 50),
@@ -57,7 +60,10 @@ const MapRender = compose(
           }}
           z-index={20}
       >
-        {props.selectedBusPlace === index && <InfoWindow onCloseClick={props.onBusToggleOpen} position={bus.location}>
+        {props.selectedBusPlace === index &&
+          <InfoWindow
+            onCloseClick={props.onBusToggleOpen}
+            position={bus.location}>
             <div className="text-black mb-3 mt-3">
               <h5>Current Bus Position</h5>
                 <div>
@@ -71,7 +77,15 @@ const MapRender = compose(
       </Marker>
     ))}
     {props.stops0.map((stop,i) => (
-      <Marker key={i} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => {props.onStop0ToggleOpen(i);props.predictions0(stop.StopID)}}
+      <Marker
+        key={i}
+        position={stop.location}
+        stopID={stop.StopID}
+        name={stop.Name}
+        routes={stop.Routes}
+        animation={google.maps.Animation.DROP}
+        opacity={0.8}
+        onClick={() => {props.onStop0ToggleOpen(i);props.predictions0(stop.StopID)}}
         icon={{
           url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus-stop.png",
           size: new google.maps.Size(25, 25),
@@ -81,7 +95,12 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location} options={{maxWidth: 250}} >
+            {props.selectedStopPlace0 === i &&
+              <InfoWindow
+                key={i}
+                onCloseClick={props.onStop0ToggleOpen}
+                position={stop.location}
+                options={{maxWidth: 250}}>
                 <div className="text-black mt-3">
                   <h5>Bus Stop: {stop.Name}</h5>
                     <div>
@@ -92,11 +111,20 @@ const MapRender = compose(
                         <p><strong>All Possible Routes:</strong> {stop.Routes}</p>
                     </div>
                 </div>
-            </InfoWindow>}
+            </InfoWindow>
+          }
         </Marker>
     ))}
     {props.stops1.map((stop,id) => (
-      <Marker key={id} position={stop.location} stopID={stop.StopID} name={stop.Name} routes={stop.Routes} animation={google.maps.Animation.DROP} opacity={0.8} onClick={() => {props.onStop1ToggleOpen(id);props.predictions1(stop.StopID)}}
+      <Marker
+        key={id}
+        position={stop.location}
+        stopID={stop.StopID}
+        name={stop.Name}
+        routes={stop.Routes}
+        animation={google.maps.Animation.DROP}
+        opacity={0.8}
+        onClick={() => {props.onStop1ToggleOpen(id);props.predictions1(stop.StopID)}}
         icon={{
           url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus-stop.png",
           size: new google.maps.Size(25, 25),
@@ -106,7 +134,12 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-          {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop0ToggleOpen} position={stop.location} options={{maxWidth: 250}} >
+          {props.selectedStopPlace1 === id &&
+            <InfoWindow
+              key={id}
+              onCloseClick={props.onStop0ToggleOpen}
+              position={stop.location}
+              options={{maxWidth: 250}} >
               <div className="text-black mt-3">
                 <h5>Bus Stop: {stop.Name}</h5>
                   <div>
@@ -122,6 +155,7 @@ const MapRender = compose(
     ))}
     <Polyline path={props.path0} options={{strokeColor:'red',strokeWeight: 4.5}} z-index={0} />
     <Polyline path={props.path1} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
+    <TrafficLayer autoUpdate />
   </GoogleMap>
 );
 
