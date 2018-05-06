@@ -81,7 +81,7 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-            {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
+            {props.selectedStopPlace0 === i && <InfoWindow key={i} onCloseClick={props.onStop0ToggleOpen} position={stop.location} options={{maxWidth: 250}} >
                 <div className="text-black mt-3">
                   <h5>Bus Stop: {stop.Name}</h5>
                     <div>
@@ -106,7 +106,7 @@ const MapRender = compose(
         }}
         z-index={2}
         >
-          {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop0ToggleOpen} position={stop.location}>
+          {props.selectedStopPlace1 === id && <InfoWindow key={id} onCloseClick={props.onStop0ToggleOpen} position={stop.location} options={{maxWidth: 250}} >
               <div className="text-black mt-3">
                 <h5>Bus Stop: {stop.Name}</h5>
                   <div>
