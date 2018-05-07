@@ -12,6 +12,7 @@ const GeoLocation = props => (
       label="Use Current Location?"
       primary={true}
       style={style}
+      backgroundColor="#a4c639"
       onClick={() => props.userLocation()}
      />
   </MuiThemeProvider>

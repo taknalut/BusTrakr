@@ -1,14 +1,21 @@
 import React from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AutoComplete from 'material-ui/AutoComplete';
+import {orangeA700} from 'material-ui/styles/colors';
+
+const styles = {
+  underlineStyle: {
+    borderColor: orangeA700,
+  },
+  floatingLabelFocusStyle: {
+    color: orangeA700,
+  },
+};
 
 const AutoCompleteFilters = props => (
     <MuiThemeProvider>
     <div>
     <AutoComplete
-      underlineStyle={{
-      color: "red"
-    }}
       floatingLabelText="Start your search by typing a route"
       filter={AutoComplete.fuzzyFilter}
       dataSource={props.dataSource}
@@ -16,6 +23,8 @@ const AutoCompleteFilters = props => (
       onNewRequest={props.handleFormSubmit}
       onUpdateInput={props.handleInputChange}
       animated={true}
+      underlineFocusStyle={styles.underlineStyle}
+      floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
     />
     </div>
     </ MuiThemeProvider>

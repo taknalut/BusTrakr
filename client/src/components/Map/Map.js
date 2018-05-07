@@ -10,7 +10,7 @@ const MapRender = compose(
   withProps({
     // googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyZQ_jUpH1-rnOCDRlbZGCAWtyRU2lXw&v=3.exp&libraries=geometry,drawing,places",
     // loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `500px` }} />,
+    containerElement: <div style={{ height: `500px`, boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withState('selectedStopPlace0', 'updateSelectedStopPlace0', null),
@@ -39,6 +39,7 @@ const MapRender = compose(
   withGoogleMap
 )(props =>
     <GoogleMap
+      className="map-style"
       ref={props.onMapMounted}
       defaultZoom={props.defaultZoom}
       zoom={props.zoomTo}
@@ -153,7 +154,7 @@ const MapRender = compose(
           </InfoWindow>}
         </Marker>
     ))}
-    <Polyline path={props.path0} options={{strokeColor:'red',strokeWeight: 4.5}} z-index={0} />
+    <Polyline path={props.path0} options={{strokeColor:'rgb(0,188,212)',strokeWeight: 4.5}} z-index={0} />
     <Polyline path={props.path1} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
     {props.showTraffic ? <TrafficLayer autoUpdate /> : <div></div>}
   </GoogleMap>

@@ -15,6 +15,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
 import TrafficButton from "../components/TrafficButton";
+import Jumbotron from "../components/Jumbotron";
 import "./Home.css";
 
 class Home extends Component {
@@ -63,7 +64,6 @@ class Home extends Component {
     if (this.state.countDown < 1) {
       this.timerReset();
       this.searchBuses();
-      // this.closeNav();
     }
   }
 
@@ -403,29 +403,10 @@ class Home extends Component {
     console.log("Submit Route Shape", this.state.routeShape0)
   };
 
-//   openNav = () => {
-//     document.getElementById("mySidenav").style.width = "250px";
-//     document.getElementById("main").style.marginLeft = "250px";
-//   }
-//
-//   closeNav = () => {
-//     document.getElementById("mySidenav").style.width = "0";
-//     document.getElementById("main").style.marginLeft = "0";
-// }
-//
-//   openNavBus = () => {
-//     document.getElementById("mySideNavBus").style.width = "250px";
-//     document.getElementById("main").style.marginLeft = "250px";
-//   }
-//
-//   closeNavBus = () => {
-//     document.getElementById("mySideNavBus").style.width = "0";
-//     document.getElementById("main").style.marginLeft = "0";
-//   }
-
   render() {
     return (
       <div>
+      <Jumbotron>
         <Container>
           <AutoCompleteFilters
           dataSource={this.state.dataSource}
@@ -433,19 +414,15 @@ class Home extends Component {
           handleFormSubmit={this.handleFormSubmit}
           />
           <br />
-          <div>
-          <h2>Tracking route {this.state.search}
-          </h2>
+          <div style={{display: "inline-block"}}>
+          <h4 className="float-left">Tracking route: {this.state.search}
+          </h4>
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
           checked={this.state.checked}
           status={this.state.checked}
           />
           </div>
-          {/*<div
-            className="nav-open"
-            onClick={this.openNav}>&#9776; View your saved lines
-          </div>*/}
           <div>
           <DropdownFav />
           {this.state.buses.length ?
@@ -468,33 +445,8 @@ class Home extends Component {
           </DropdownActive>
         }
           </div>
-          {/*{this.state.buses.length ? (
-            <div
-              className="nav-open"
-              onClick={this.openNavBus}> &#9776; View active Buses
-            </div>
-          ) : (
-            <div></div>
-          )}
-          {this.state.buses.length ?
-            (<List closeNav={this.closeNavBus}>
-              {this.state.buses.map((bus,index) => (
-                <ListItem
-                key={index}
-                position={bus.position}>
-                  This bus is headed to {bus.tripHeadSign}, going {bus.directionText}
-                  <button
-                  onClick={()=> this.zoomToThisBus(bus.position)}>
-                  Zoom To
-                  </button>
-                </ListItem>
-              )
-            )
-          } </List>
-          ) : (
-            <h3>No Buses Currently In Service</h3>
-          )}*/}
           <MapRender
+            className="map-style"
             googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `400px` }} />}
@@ -523,9 +475,10 @@ class Home extends Component {
               changeState={this.toggleTraffic}
             />
 
-            These are the user's routes: {this.state.usersRoutes} This is their latest valid search {this.state.validSearch}
+            {/*These are the user's routes: {this.state.usersRoutes} This is their latest valid search {this.state.validSearch}*/}
 
         </Container>
+        </Jumbotron>
       </div>
     )
   }

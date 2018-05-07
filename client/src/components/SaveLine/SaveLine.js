@@ -6,10 +6,13 @@ import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 const styles = {
   block: {
-    maxWidth: 250,
+    maxWidth: 80,
+    float: "left",
   },
   checkbox: {
     marginBottom: 16,
+    paddingTop: 0,
+    marginLeft: 15
   },
 };
 
@@ -17,8 +20,8 @@ const SaveLines = props => (
   <MuiThemeProvider>
   <div style={styles.block}>
   <Checkbox
-  checkedIcon={props.status ? <ActionFavorite /> : <ActionFavoriteBorder />}
-  uncheckedIcon={!props.status ? <ActionFavoriteBorder /> : <ActionFavorite />}
+  checkedIcon={props.status ? <ActionFavorite style={{fill: "#FF6D00"}} /> : <ActionFavoriteBorder />}
+  uncheckedIcon={!props.status ? <ActionFavoriteBorder /> : <ActionFavorite style={{fill: "#FF6D00"}} />}
   onCheck={props.updateSaved}
   style={styles.checkbox}
   label={props.checked ? "Unsave" : "Save"}
