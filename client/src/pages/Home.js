@@ -14,6 +14,7 @@ import DropdownActive from "../components/DropdownActive"
 import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
 import GeoLocation from "../components/GeoLocation";
+import TrafficButton from "../components/TrafficButton";
 import "./Home.css";
 
 class Home extends Component {
@@ -40,7 +41,8 @@ class Home extends Component {
     countDown: 15,
     increment: null,
     userLocation: null,
-    dataSource: []
+    dataSource: [],
+    showTraffic: true,
   };
 
   componentDidMount(query) {
@@ -87,6 +89,18 @@ class Home extends Component {
             this.setState({checked: false});
           }
         });
+  }
+
+  toggleTraffic = () => {
+    if (this.state.showTraffic) {
+      this.setState({showTraffic: false})
+      console.log("this is toggle traffic state to false")
+      console.log(this.state.showTraffic)
+    } else {
+      this.setState({showTraffic: true})
+      console.log("this is toggle traffic state to true")
+      console.log(this.state.showTraffic)
+    }
   }
 
   zoomToThisBus = (location) => {
@@ -499,14 +513,16 @@ class Home extends Component {
             predictionInfo0={this.state.predictionsInfo0}
             predictions1={this.checkStopPrediction1}
             predictionInfo1={this.state.predictionsInfo1}
+            showTraffic={this.state.showTraffic}
             />
-            <FavNav
-            closeNav={this.closeNav}
-            />
-            <br />
             <GeoLocation
             userLocation={this.getLocation}
             />
+            <TrafficButton
+              showTraffic={this.state.showTraffic}
+              changeState={this.toggleTraffic}
+            />
+
             These are the user's routes: {this.state.usersRoutes} This is their latest valid search {this.state.validSearch}
 
         </Container>
