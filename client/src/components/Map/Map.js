@@ -59,7 +59,7 @@ const MapRender = compose(
             scaledSize: new google.maps.Size(50, 50)
           }}
           z-index={20}
-      >
+        >
         {props.selectedBusPlace === index &&
           <InfoWindow
             onCloseClick={props.onBusToggleOpen}
@@ -155,7 +155,7 @@ const MapRender = compose(
     ))}
     <Polyline path={props.path0} options={{strokeColor:'red',strokeWeight: 4.5}} z-index={0} />
     <Polyline path={props.path1} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
-    <TrafficLayer autoUpdate />
+    {props.showTraffic ? <TrafficLayer autoUpdate /> : <div></div>}
   </GoogleMap>
 );
 
