@@ -79,11 +79,9 @@ class Home extends Component {
 
           // Check if current search in bookmarks
           if (theirSaved.includes(this.state.validSearch)) {
-
             // Make the heart blue, "Unsave"
             this.setState({checked: true});
           }
-
           else {
             // Make heart white, "Save"
             this.setState({checked: false});
@@ -151,7 +149,7 @@ class Home extends Component {
         busRoutesArr.push(item.RouteID)
       )
       that.setState({dataSource: busRoutesArr})
-      console.log("routes", that.state.dataSource)
+      //console.log("routes", that.state.dataSource)
     })
   }
 
@@ -184,7 +182,6 @@ class Home extends Component {
       if (this.state.usersRoutes.includes(this.state.validSearch)) {
         this.setState({checked: true})
       }
-
       else {
         this.setState({checked: false})
       }
@@ -210,9 +207,8 @@ class Home extends Component {
         })
       ),
       this.setState({routeShape1: ShapeDefined}),
-      console.log("SearchRoutes", res)
       this.setState({validSearch: this.state.search})
-      console.log("We SHOULD see F13 below...")
+
       console.log(this.state.validSearch);
     })
       .catch(err => console.log(err));
@@ -238,7 +234,7 @@ class Home extends Component {
         })
       ),
       this.setState({stops0: RouteStops}),
-      console.log(this.state.stops0)
+      //console.log(this.state.stops0)
       firstStopCenter = {
           lat: parseFloat(stopLat),
           lng: parseFloat(stopLng)
@@ -251,7 +247,7 @@ class Home extends Component {
   searchRouteStops1 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
-        console.log("stops1", res)
+        //console.log("stops1", res)
       let RouteStops = [];
       res.data.Direction1.Stops.forEach(item =>
         RouteStops.push({
@@ -264,8 +260,8 @@ class Home extends Component {
         Routes: String(item.Routes)
         })
       ),
-      this.setState({stops1: RouteStops}),
-      console.log("stops1",this.state.stops1)
+      this.setState({stops1: RouteStops});
+      //console.log("stops1",this.state.stops1)
     })
       .catch(err => console.log(err));
   };
@@ -292,14 +288,14 @@ class Home extends Component {
       })
       ),
       this.setState({ buses: busesArray}),
-      console.log(res),
+      //console.log(res),
       //Grab First Bus in Array
       firstBusCenter = {
           lat: parseFloat(busLat),
           lng: parseFloat(busLng)
         }
       this.setState({ firstBus: firstBusCenter })
-      console.log(this.state.firstBus)
+      //console.log(this.state.firstBus)
     })
       .catch(err => console.log(err));
   };
@@ -311,7 +307,6 @@ class Home extends Component {
 
     // User clicked on blank heart, wants to SAVE
     if (this.state.checked == false) {
-
       theirRoutes.push(this.state.validSearch);
       this.setState({ usersRoutes: theirRoutes });
 
@@ -325,11 +320,13 @@ class Home extends Component {
       if (index > -1) {
         theirRoutes.splice(index, 1);
       }
-
       this.setState({ usersRoutes: theirRoutes});
 
       API.saveRoute(userID, theirRoutes);
     }
+
+console.log(this.state.usersRoutes);
+console.log(this.state.buses);
 
     this.setState((oldState) => {
       return {
@@ -338,17 +335,17 @@ class Home extends Component {
     });
   }
 
-  removeRoute = () => {
-    var theirRoutes = this.state.usersRoutes.slice();
-
-    var index = theirRoutes.indexOf(this.state.validSearch);
-
-    if (index > -1) {
-      theirRoutes.splice(index, 1);
-    }
-
-    this.setState({ usersRoutes: theirRoutes});
-  }
+  // removeRoute = () => {
+  //   var theirRoutes = this.state.usersRoutes.slice();
+  //
+  //   var index = theirRoutes.indexOf(this.state.validSearch);
+  //
+  //   if (index > -1) {
+  //     theirRoutes.splice(index, 1);
+  //   }
+  //
+  //   this.setState({ usersRoutes: theirRoutes});
+  // }
 
    //checkStopPrediction keeps getting called after Marker is clicked
   checkStopPrediction0 = (stopId) => {
@@ -405,6 +402,11 @@ class Home extends Component {
     console.log("Submit Route Shape", this.state.routeShape0)
   };
 
+  searchFav = (fav) => {
+    this.handleInputChange(fav);
+    this.handleFormSubmit();
+  }
+
   render() {
     return (
       <div>
@@ -426,7 +428,27 @@ class Home extends Component {
           />
           </div>
           <div>
-          <DropdownFav />
+
+          {this.state.usersRoutes.length ?
+            <DropdownFav>
+               {this.state.usersRoutes.map((route, index) => (
+                 <ul
+                 >
+                 <MenuItem
+                   value={route}
+                   primaryText={route}
+                   onClick={() => {this.searchFav(route)}}
+                 />
+                 </ul>
+               ))
+               }
+            </DropdownFav>
+            :
+            <DropdownFav>
+               <MenuItem value="0" primaryText="There are currently no favorite route" disabled={true} />
+            </DropdownFav>
+           }
+
           {this.state.buses.length ?
             <DropdownActive>
             {this.state.buses.map((bus, index) => (

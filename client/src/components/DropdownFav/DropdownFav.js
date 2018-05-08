@@ -14,8 +14,6 @@ const DropdownFavs = props => (
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
     maxHeight={272}
   >
-    <MenuItem value="10A" primaryText="10A Static Example" />
-    <MenuItem value="10B" primaryText="10B Static Example" />
     {props.children}
   </IconMenu>
   </ MuiThemeProvider>

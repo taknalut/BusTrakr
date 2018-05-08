@@ -68,13 +68,12 @@ export default class Login extends Component {
                   else {
                     console.log("User extant, don't do anything.");
                   }
-              })
+              });
             }
             else {
               localStorage.removeItem('googleID');
             }
-          }
-      );
+          });
     }
 
     componentWillUnmount() {
@@ -97,11 +96,12 @@ export default class Login extends Component {
             currentUid: null
           });
         });
+      window.location.reload();
+      window.location.href = "/";
     }
 
   render() {
       const { open } = this.state;
-      console.log(window.location.search);
       if (!this.state.isSignedIn) {
       return (
         <div className="cl-effect-7">
