@@ -104,6 +104,7 @@ class Home extends Component {
   zoomToThisBus = (location) => {
     this.setState({mapCenter: location})
   };
+
   timer = () =>  {
       this.state.increment = setInterval( () =>
         this.setState({
@@ -397,6 +398,7 @@ console.log(this.state.buses);
 
   handleFormSubmit = () => {
     this.searchRoutes0();
+    this.timerReset();
     console.log("Submit Route Shape", this.state.routeShape0)
   };
 
