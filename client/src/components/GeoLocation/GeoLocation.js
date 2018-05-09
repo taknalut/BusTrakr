@@ -9,7 +9,7 @@ const style = {
 const GeoLocation = props => (
   <MuiThemeProvider>
     <RaisedButton
-      label="Use Current Location?"
+      label="Show Current Location?"
       primary={true}
       style={style}
       backgroundColor="#a4c639"
@@ -17,13 +17,5 @@ const GeoLocation = props => (
      />
   </MuiThemeProvider>
 );
-
-// const GeoLocation = props => {
-//   return (
-//     <div>
-//       <button  onClick={() => props.userLocation()}>Use Current Location?</button>
-//     </div>
-//   );
-// };
 
 export default GeoLocation;

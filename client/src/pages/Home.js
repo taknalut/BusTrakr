@@ -419,7 +419,7 @@ console.log(this.state.buses);
           />
           <br />
           <div style={{display: "inline-block"}}>
-          <h4 className="float-left">Tracking route: {this.state.search}
+          <h4 className="float-left">Tracking route: {this.state.validSearch}
           </h4>
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
