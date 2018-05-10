@@ -174,7 +174,7 @@ class Home extends Component {
       this.searchRoutes1(),
       this.searchRouteStops1(),
       this.searchBuses(),
-      console.log("SearchRoutes", res)
+      console.log("SearchRoutes1", res)
 
       this.setState({validSearch: this.state.search})
 
@@ -187,11 +187,9 @@ class Home extends Component {
       }
     })
       .catch(err => {
-        this.props.alert.error("Not a proper route search, path cannot be displayed!"),
+        this.props.alert.error("Not a proper route '0' search, path cannot be displayed!"),
         this.setState({routeShape0: []}),
-        this.setState({routeShape1: []}),
         this.setState({stops0: []}),
-        this.setState({stops1: []}),
         this.setState({buses: []})
       })
   };
@@ -207,11 +205,16 @@ class Home extends Component {
         })
       ),
       this.setState({routeShape1: ShapeDefined}),
-      this.setState({validSearch: this.state.search})
+      this.setState({validSearch: this.state.search}),
+      console.log("SearchRoutes2", res)
 
       console.log(this.state.validSearch);
     })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.props.alert.error("Not a proper route '1' search, path cannot be displayed!"),
+        this.setState({routeShape1: []}),
+        this.setState({stops1: []}),
+      });
   };
 
 //work on tomorrow for bus stops
