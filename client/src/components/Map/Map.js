@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import { compose, withProps, withState, withHandlers, withStateHandlers} from "recompose";
+import React /*{Component}*/ from "react";
+import { compose, withProps, withState, withHandlers /*withStateHandlers*/} from "recompose";
 import { withGoogleMap, GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "react-google-maps";
-import Search from "../Search";
-import API from "../../utils/API";
+// import Search from "../Search";
+// import API from "../../utils/API";
 
 const google = window.google;
 

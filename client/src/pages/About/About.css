@@ -1,0 +1,619 @@
+#map {
+  padding: 0;
+  margin: 0;
+  height: 500px;
+  width: 100%;
+  /* border-radius: 20px; */
+  border: black 1px solid;
+}
+
+*/ #pac-input {
+  font-size: 0px;
+  text-overflow: ellipsis;
+  margin: 0px 0px 0px 0px;
+  width: 0%;
+  height: 0%;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+/*--------------------------------Google Maps Required Testing----------------*/
+
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+  background-color: #F9F9F9;
+  color: #253031;
+}
+
+.wrapper {
+  /* height: calc(100vh - 100px); */
+  min-height: 100%;
+  position: relative;
+}
+
+.navbar {
+  position: -webkit-sticky;
+  /* Safari */
+  position: sticky;
+  top: 0;
+  background-color: #4F6367;
+  z-index: 3;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+  font-family: 'Ubuntu', sans-serif;
+  color: #FFF;
+}
+
+.navbar-brand:hover {
+  color: #FFF;
+}
+
+#registerbtn, #oktaLogin, #oktaRegister, #recruiterSubmit {
+  background-color: #F7B733;
+}
+
+#registerbtn:hover {
+  background-color: #E1A72F;
+}
+
+/* Dropdown Button */
+
+.dropbtn {
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 16px;
+  border-radius: 50%;
+}
+
+/* The container <div> - needed to position the dropdown content */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  /* top: 1%; */
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 0;
+}
+
+/* Links inside the dropdown */
+
+.dropdown-content a, p {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0;
+}
+
+/* Change color of dropdown links on hover */
+
+.dropdown-content a:hover {
+  background-color: #ddd
+}
+
+/* Show the dropdown menu on hover */
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+
+.dropdown:hover .dropbtn {
+  opacity: .7;
+}
+
+h1 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+}
+
+.float-right {
+  float: right;
+}
+
+th {
+  width: auto;
+}
+
+.main-banner {
+  background-position: 60% 40%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* padding: 100px; */
+  color: #F9F9F9;
+}
+
+.about-banner {
+  background-color: #4f6367;
+  /* background-position: 60% 40%; */
+  /* background-size: cover;
+  background-repeat: no-repeat; */
+  /* padding: 100px; */
+  color: #F9F9F9;
+}
+
+
+.main-banner-overlay {
+  background-color: rgba(79, 99, 103, 0.2);
+  width: 100%;
+  padding: auto;
+  /* z-index: 1 */
+}
+
+.queried-banner {
+  background-color: #4f6367;
+  background-position: 50% 65%;
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #F9F9F9;
+}
+
+.heading {
+  font-size: 2.5rem;
+  padding-top: 50px;
+}
+
+.header-text {
+  padding-bottom: 100px;
+  color: #F7B733;
+  width: 40%;
+}
+
+.about-text {
+  color: #F7B733;
+  padding-top: 20px;
+  padding-bottom: 80px;
+}
+
+.fa-linkedin, .fa-github-square {
+  font-size: 2rem;
+}
+
+.fa-linkedin {
+  padding-right: 5px;
+}
+
+.about-pic {
+  width: 90%;
+}
+
+.search-keyword {
+  width: 35%;
+  box-sizing: border-box;
+  border: 1px solid #4F6367;
+  border-radius: 60px;
+  font-size: 1rem;
+  background-color: #fff;
+  background-position-y: center;
+  background-position-x: .5rem;
+  background-size: 5%;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 35px;
+  position: relative;
+  /* left: 0px; */
+  top: -25px;
+  z-index: 2;
+}
+
+.search-location {
+  width: 35%;
+  box-sizing: border-box;
+  border: 1px solid #4F6367;
+  border-radius: 60px;
+  font-size: 1rem;
+  background-color: #fff;
+  background-position-y: center;
+  background-position-x: .5rem;
+  background-size: 5%;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 35px;
+  position: relative;
+  margin-left: 1%;
+  top: -25px;
+  z-index: 2;
+}
+
+.search-radius {
+  width: 15%;
+  background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 90% 0;
+  background-position-y: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 12px 20px 12px 35px;
+  box-sizing: border-box;
+  border: 1px solid #4F6367;
+  border-radius: 60px;
+  font-size: 1rem;
+  background-color: #fff;
+  position: relative;
+  margin-left: 1%;
+  top: -25px;
+  z-index: 1;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+.search-keyword:focus, .search-location:focus, .search-radius:focus, .btn-delete:focus, btn-viewPost:focus {
+  outline: none;
+}
+
+.latest-section {
+  margin-top: 2%;
+  margin-bottom: 10%;
+}
+
+.print-post-section {
+  margin-top: 1%;
+  margin-bottom: 5%;
+}
+
+#resultsRecreuiterPageTitleText {
+  margin-bottom: 1%;
+}
+
+.recruiter-login-text {
+  display: inline-block;
+}
+
+#jobState {
+  background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    height: 38px;
+}
+
+.search-submit {
+  border-radius: 60px;
+  font-size: 1rem;
+  position: relative;
+  margin-left: 1%;
+  top: -21px;
+  z-index: 1;
+  background-color: #F7B733;
+  padding: 12.5px 32px;
+  /* color: #253031; */
+}
+
+.search-submit:hover {
+  background-color: #E1A72F;
+}
+
+#listviewclick {
+  color: #007bff;
+}
+
+#listviewclick:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#mapviewclick {
+  color: #007bff;
+}
+
+#mapviewclick:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.savedSearch {
+  padding: 1rem;
+}
+
+.jobRow {
+  border-top: 1px solid #ccc;
+}
+
+table {
+  table-layout: fixed;
+}
+
+.description-td {
+  overflow-y: scroll;
+  text-overflow: ellipsis;
+  height: 110px;
+  display: block;
+}
+
+.description-width {
+  width: 450px;
+}
+
+.padding-table-left {
+  padding-left: 30px;
+}
+
+.modal-header {
+  border-bottom: 0px;
+}
+
+.jobTitleModalView {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.star {
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: center;
+}
+
+.checkedStar {
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: center;
+}
+
+p.checkedStar {
+  margin-left: 0px;
+}
+
+.checkedStar:hover, .star:hover {
+  cursor: pointer;
+}
+
+.starCol {
+  width: 100px;
+}
+
+.jobDescripCol {
+  width: 450px;
+}
+
+.btn-viewPost {
+  background-color: #4F6367;
+  /* Green */
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: .25rem;
+  float: right;
+}
+
+
+.btn-view {
+  background-color: #4F6367;
+  /* Green */
+  border: none;
+  color: #F9F9F9;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: .25rem;
+  margin-left: 50px;
+}
+
+.btn-delete {
+  background-color: #fe5f55;
+  /* Green */
+  border: none;
+  color: #F9F9F9;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: .25rem;
+  margin-left: 50px;
+}
+
+.btn-view:hover, .btn-viewPost:hover, .apply-btn:hover, .btn-delete:hover, .btn-addPost:hover {
+  opacity: .7;
+}
+
+.apply-btn {
+  background-color: #F7B733;
+  /* Green */
+  border: none;
+  color: #253031;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 15px;
+  cursor: pointer;
+  border-radius: .25rem;
+  outline: none;
+}
+
+.btn-addPost {
+  background-color: #F7B733;
+  /* Green */
+  border: none;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: .25rem;
+}
+
+.pagination {
+  margin-bottom: 1%;
+}
+
+/* Pagination links */
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+/* Style the active/current link */
+
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+.modal-title-logins {
+  padding-bottom: 0px;
+}
+
+.footer {
+  background-color: #F9F9F9;
+  border-top: 1.5px solid #FE5F55;
+  /* margin-top: 50px; */
+  /* position:absolute;
+   bottom:0; */
+  width: 100%;
+  /* height:60px;   /* Height of the footer */
+}
+
+/* Modal */
+
+.img_container {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+/* settings page */
+.settings-box {
+  box-shadow: 0 4px 8px 0 rgba(79, 99, 103, 0.2), 0 6px 20px 0 rgba(79, 99, 103, 0.19);
+  padding: 2% 10%;
+  margin-top: 3%;
+}
+
+.subtitle-account {
+  color: #F7B733;
+  padding-bottom: 2%;
+  border-bottom: 1px solid #4F6367;
+  margin-bottom: 2%;
+}
+
+#userImage {
+  max-width: 80%;
+}
+
+.profileimage {
+  width: 100%;
+  border-radius: 50%;
+  background-size: contain;
+}
+
+.accountBtn {
+  background-color: #F7B733;
+}
+
+.btn-outline-secondary {
+  background-color: #F7B733;
+  color: #253031;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.tooltip-inner {
+  text-align: left !important;
+}
+
+/* media queries */
+@media only screen and (max-width: 992px) {
+  .search-keyword {
+    width: 25%;
+    background-size: 20%;
+  }
+
+  .search-location {
+    width: 25%;
+    background-size: 20%;
+    margin-left: 2%;
+  }
+
+  .search-radius {
+    width: 20%;
+    background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 90% 0;
+    background-position-y: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 12px 20px 12px 8px;
+    box-sizing: border-box;
+    border: 1px solid #4F6367;
+    border-radius: 60px;
+    font-size: 1rem;
+    background-color: #fff;
+    position: relative;
+    margin-left: 2%;
+    top: -25px;
+    z-index: 1;
+  }
+
+  .search-submit {
+    margin-left: 2%;
+  }
+}
+
+@media only screen and (max-width: 490px) {
+  .search-keyword {
+    width: 45%;
+    background-size: 10%;
+  }
+
+  .search-location {
+    width: 45%;
+    background-size: 10%;
+    margin-left: 2%;
+  }
+
+  .search-radius {
+    width: 45%;
+    background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 90% 0;
+    background-position-y: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 12px 20px 12px 8px;
+    box-sizing: border-box;
+    border: 1px solid #4F6367;
+    border-radius: 60px;
+    font-size: 1rem;
+    background-color: #fff;
+    position: relative;
+    margin-left: 0%;
+    top: -25px;
+    z-index: 1;
+  }
+
+  .search-submit {
+    margin-left: 2%;
+  }
+}

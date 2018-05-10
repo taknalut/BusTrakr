@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import Modal from 'react-responsive-modal';
 import "./Login.css";
 import firebase from 'firebase';
@@ -31,7 +31,6 @@ export default class Login extends Component {
       }
    };
 
-
   componentDidMount() {
       if (window.location.search === '?mode=select'){
         this.onOpenModal();
@@ -41,17 +40,15 @@ export default class Login extends Component {
           (user) => {
             this.setState({ isSignedIn: !!user })
 
-            if (user && user.uid != this.state.currentUid) {
+            if (user && user.uid !== this.state.currentUid) {
               this.setState({
                 currentUid: user.uid
               });
 
               localStorage.setItem('googleID', [user.uid]);
 
-              API.checkUserExist(user.uid).
-                then((result) => {
-                  console.log("check user");
-                  console.log(result);
+              API.checkUserExist(user.uid)
+                .then((result) => {
                   if (result.data.length < 1) {
                     const newUser = {
                       username: user.displayName,
@@ -59,19 +56,29 @@ export default class Login extends Component {
                       routes: []
                     };
 
-                    API.createUser(newUser).
-                      then((result) => {
+                    API.createUser(newUser)
+                      .then((result) => {
                         console.log("line 59", result);
                       })
                   }
 
                   else {
-                    console.log("User extant, don't do anything.");
+                    // console.log("User found.");
+
+                    if (localStorage.getItem('alreadyLoaded')) {
+                      return;
+                    }
+
+                    else {
+                      window.location.href = "/";
+                      (localStorage.setItem('alreadyLoaded', false))
+                    }
                   }
               });
             }
             else {
               localStorage.removeItem('googleID');
+              localStorage.removeItem('alreadyLoaded');
             }
           });
     }
@@ -96,6 +103,7 @@ export default class Login extends Component {
             currentUid: null
           });
         });
+      (localStorage.setItem('alreadyLoaded', false))
       window.location.reload();
       window.location.href = "/";
     }

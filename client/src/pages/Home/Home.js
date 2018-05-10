@@ -1,21 +1,21 @@
-import React, { Component, Fragment } from "react";
-import { Col, Row, Container } from "../components/Grid";
-import { List, ListItem } from "../components/List";
+import React, { Component /*Fragment*/ } from "react";
+import { Container } from "../../components/Grid";
+// import { List, ListItem } from "../../components/List";
 // import { Input, TextArea, FormBtn } from "../components/Form";
-import Search from "../components/Search";
-import MapRender from "../components/Map"
-import FavNav from "../components/FavNav"
-import SaveLines from "../components/SaveLine"
-import API from "../utils/API";
-import RouteSaveBtn from "../components/RouteSaveBtn"
-import AutoCompleteFilters from "../components/Autocomplete"
-import DropdownFav from "../components/DropdownFav"
-import DropdownActive from "../components/DropdownActive"
+// import Search from "../../components/Search";
+import MapRender from "../../components/Map"
+// import FavNav from "../../components/FavNav"
+import SaveLines from "../../components/SaveLine"
+import API from "../../utils/API";
+// import RouteSaveBtn from "../../components/RouteSaveBtn"
+import AutoCompleteFilters from "../../components/Autocomplete"
+import DropdownFav from "../../components/DropdownFav"
+import DropdownActive from "../../components/DropdownActive"
 import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
-import GeoLocation from "../components/GeoLocation";
-import TrafficButton from "../components/TrafficButton";
-import Jumbotron from "../components/Jumbotron";
+import GeoLocation from "../../components/GeoLocation";
+import TrafficButton from "../../components/TrafficButton";
+import Jumbotron from "../../components/Jumbotron";
 import "./Home.css";
 
 class Home extends Component {
@@ -48,7 +48,6 @@ class Home extends Component {
 
   componentDidMount(query) {
     this.searchRoutes0();
-    console.log("compWillMount")
     this.checkLoginStatus();
     this.timer();
     this.searchAllRoutes();
@@ -71,9 +70,9 @@ class Home extends Component {
     var userID = localStorage.getItem('googleID');
 
     // Grabs from db the user's currently favorited routes
-    if (userID)
-      API.getUsersRoutes(userID).
-        then((result) => {
+    if (userID) {
+      API.getUsersRoutes(userID)
+        .then((result) => {
           const theirSaved = result.data[0].routes;
           this.setState({usersRoutes: theirSaved})
 
@@ -87,6 +86,7 @@ class Home extends Component {
             this.setState({checked: false});
           }
         });
+    }
   }
 
   toggleTraffic = () => {
@@ -110,7 +110,6 @@ class Home extends Component {
         this.setState({
           countDown: this.state.countDown - 1
         }), 1000);
-      console.log("this.state.increment: ",this.state.increment)
   };
 
   timerReset = () => {
@@ -157,24 +156,32 @@ class Home extends Component {
     API.routeSearch(this.state.search)
       .then(res => {
       let ShapeDefined = [];
-      res.data.Direction0.Shape.forEach(item =>
-        ShapeDefined.push({
-          lat: parseFloat(item.Lat),
-          lng: parseFloat(item.Lon)
-        })
-      )
-      if (ShapeDefined != []) {
-        {
-          this.props.alert.success("Search was successful! Loading Route...");
-        }
+
+      if (res.data.Direction0) {
+        res.data.Direction0.Shape.forEach(item =>
+          ShapeDefined.push({
+            lat: parseFloat(item.Lat),
+            lng: parseFloat(item.Lon)
+          })
+        )
+
+        this.setState({routeShape0: ShapeDefined})
       }
+
+      else {
+        this.setState({routeShape0: []})
+      }
+
+      if (ShapeDefined !== []) {
+        this.props.alert.success("Search was successful! Loading Route...");
+      }
+
       //this.setState({routeShape0: ShapeDefined}),
-      this.setState({routeShape0: ShapeDefined, stops0: ShapeDefined, stops1: ShapeDefined, mapCenter: ShapeDefined[0]}),
-      this.searchRouteStops0(),
-      this.searchRoutes1(),
-      this.searchRouteStops1(),
-      this.searchBuses(),
-      console.log("SearchRoutes", res)
+      this.setState({routeShape0: ShapeDefined, stops0: ShapeDefined, stops1: ShapeDefined, mapCenter: ShapeDefined[0]})
+      this.searchRouteStops0()
+      this.searchRoutes1()
+      this.searchRouteStops1()
+      this.searchBuses()
 
       this.setState({validSearch: this.state.search})
 
@@ -188,10 +195,10 @@ class Home extends Component {
     })
       .catch(err => {
         this.props.alert.error("Not a proper route search, path cannot be displayed!"),
-        this.setState({routeShape0: []}),
-        this.setState({routeShape1: []}),
-        this.setState({stops0: []}),
-        this.setState({stops1: []}),
+        this.setState({routeShape0: []})
+        this.setState({routeShape1: []})
+        this.setState({stops0: []})
+        this.setState({stops1: []})
         this.setState({buses: []})
       })
   };
@@ -200,16 +207,20 @@ class Home extends Component {
     API.routeSearch(this.state.search)
       .then(res => {
       let ShapeDefined = [];
-      res.data.Direction1.Shape.forEach(item =>
-        ShapeDefined.push({
-          lat: parseFloat(item.Lat),
-          lng: parseFloat(item.Lon)
-        })
-      ),
-      this.setState({routeShape1: ShapeDefined}),
-      this.setState({validSearch: this.state.search})
 
-      console.log(this.state.validSearch);
+      if (res.data.Direction1) {
+        res.data.Direction1.Shape.forEach(item =>
+          ShapeDefined.push({
+            lat: parseFloat(item.Lat),
+            lng: parseFloat(item.Lon)
+          })
+        )
+        this.setState({routeShape1: ShapeDefined})
+      }
+
+      else {
+        this.setState({routeShape1: []})
+      }
     })
       .catch(err => console.log(err));
   };
@@ -232,8 +243,8 @@ class Home extends Component {
         Name: String(item.Name),
         Routes: String(item.Routes)
         })
-      ),
-      this.setState({stops0: RouteStops}),
+      )
+      this.setState({stops0: RouteStops})
       //console.log(this.state.stops0)
       firstStopCenter = {
           lat: parseFloat(stopLat),
@@ -247,7 +258,6 @@ class Home extends Component {
   searchRouteStops1 = () => {
     API.routeSearch(this.state.search)
       .then(res => {
-        //console.log("stops1", res)
       let RouteStops = [];
       res.data.Direction1.Stops.forEach(item =>
         RouteStops.push({
@@ -259,9 +269,8 @@ class Home extends Component {
         Name: String(item.Name),
         Routes: String(item.Routes)
         })
-      ),
+      )
       this.setState({stops1: RouteStops});
-      //console.log("stops1",this.state.stops1)
     })
       .catch(err => console.log(err));
   };
@@ -275,20 +284,20 @@ class Home extends Component {
       let busLat = res.data.BusPositions[0].Lat;
       let busLng = res.data.BusPositions[0].Lon;
 
-      res.data.BusPositions.forEach(item =>
-        busesArray.push({
-        position: {
-          lat: parseFloat(item.Lat),
-          lng: parseFloat(item.Lon)
-        },
-        tripHeadSign: String(item.TripHeadsign),
-        directionText: String(item.DirectionText),
-        deviation: parseFloat(item.Deviation),
-        dropdownText: "Bus heading " + String(item.DirectionText) + " towards " + String(item.TripHeadsign)
+      res.data.BusPositions.forEach(item => {
+          busesArray.push({
+          position: {
+            lat: parseFloat(item.Lat),
+            lng: parseFloat(item.Lon)
+          },
+          tripHeadSign: String(item.TripHeadsign),
+          directionText: String(item.DirectionText),
+          deviation: parseFloat(item.Deviation),
+          dropdownText: "Bus heading " + String(item.DirectionText) + " towards " + String(item.TripHeadsign)
+        })
       })
-      ),
-      this.setState({ buses: busesArray}),
-      //console.log(res),
+      this.setState({ buses: busesArray})
+
       //Grab First Bus in Array
       firstBusCenter = {
           lat: parseFloat(busLat),
@@ -306,7 +315,7 @@ class Home extends Component {
     var userID = localStorage.getItem('googleID');
 
     // User clicked on blank heart, wants to SAVE
-    if (this.state.checked == false) {
+    if (this.state.checked === false) {
       theirRoutes.push(this.state.validSearch);
       this.setState({ usersRoutes: theirRoutes });
 
@@ -314,7 +323,7 @@ class Home extends Component {
     }
 
     // User clicked on blue heart, wants to REMOVE
-    if (this.state.checked == true) {
+    if (this.state.checked === true) {
       var index = theirRoutes.indexOf(this.state.validSearch);
 
       if (index > -1) {
@@ -325,8 +334,8 @@ class Home extends Component {
       API.saveRoute(userID, theirRoutes);
     }
 
-console.log(this.state.usersRoutes);
-console.log(this.state.buses);
+    console.log(this.state.usersRoutes);
+    console.log(this.state.buses);
 
     this.setState((oldState) => {
       return {
@@ -334,18 +343,6 @@ console.log(this.state.buses);
       };
     });
   }
-
-  // removeRoute = () => {
-  //   var theirRoutes = this.state.usersRoutes.slice();
-  //
-  //   var index = theirRoutes.indexOf(this.state.validSearch);
-  //
-  //   if (index > -1) {
-  //     theirRoutes.splice(index, 1);
-  //   }
-  //
-  //   this.setState({ usersRoutes: theirRoutes});
-  // }
 
    //checkStopPrediction keeps getting called after Marker is clicked
   checkStopPrediction0 = (stopId) => {
@@ -363,14 +360,14 @@ console.log(this.state.buses);
         })
       )
       this.setState({predictionsInfo0: predictionsArray})
-      return
-      console.log("Predictions for Location:", this.state.predictionsInfo)
+      return;
+      
     })
       .catch(err => console.log(err));
   };
 
   checkStopPrediction1 = (stopId) => {
-    console.log('checkStopPrediction1', stopId)
+
     API.stopBusPrediction(stopId)
       .then(res => {
       let predictionsArray = [];
@@ -385,7 +382,7 @@ console.log(this.state.buses);
       )
       this.setState({predictionsInfo1: predictionsArray})
       return
-      console.log("Predictions for Location:", this.state.predictionsInfo)
+      
     })
       .catch(err => console.log(err));
   };
@@ -398,8 +395,9 @@ console.log(this.state.buses);
 
   handleFormSubmit = () => {
     this.searchRoutes0();
+    this.searchRoutes1();
     this.timerReset();
-    console.log("Submit Route Shape", this.state.routeShape0)
+
   };
 
   searchFav = (fav) => {
@@ -432,8 +430,7 @@ console.log(this.state.buses);
           {this.state.usersRoutes.length ?
             <DropdownFav>
                {this.state.usersRoutes.map((route, index) => (
-                 <ul
-                 >
+                 <ul key={index}>
                  <MenuItem
                    value={route}
                    primaryText={route}
@@ -452,13 +449,12 @@ console.log(this.state.buses);
           {this.state.buses.length ?
             <DropdownActive>
             {this.state.buses.map((bus, index) => (
-              <ul
-              >
-              <MenuItem
-                value={bus.position}
-                primaryText={bus.dropdownText}
-                onClick={() => {this.zoomToThisBus(bus.position)}}
-              />
+              <ul key={index}>
+                <MenuItem
+                  value={bus.position}
+                  primaryText={bus.dropdownText}
+                  onClick={() => {this.zoomToThisBus(bus.position)}}
+                />
               </ul>
             ))
             }

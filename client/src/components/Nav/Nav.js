@@ -4,7 +4,7 @@ import "./Nav.css";
 const Nav = props => (
   <nav className="navbar navbar-light bg-light">
   <div className="container">
-    <a className="navbar-brand">BusTrakr
+    <a className="navbar-brand" href="/">BusTrakr
     <img src="images/busloc.png" height="50" className="d-inline-block align-bottom" alt="" />
     </a>
     <div>{props.children}</div>
