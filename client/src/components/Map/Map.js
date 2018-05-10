@@ -56,7 +56,6 @@ const MapRender = compose(
             url:"https://s3.us-east-2.amazonaws.com/bustrakr/busloc.png",
             size: new google.maps.Size(50, 50),
             origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(0, 0),
             scaledSize: new google.maps.Size(50, 50)
           }}
           z-index={20}
@@ -91,7 +90,6 @@ const MapRender = compose(
           url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus-stop.png",
           size: new google.maps.Size(25, 25),
           origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 0),
           scaledSize: new google.maps.Size(25, 25)
         }}
         z-index={2}
@@ -130,7 +128,6 @@ const MapRender = compose(
           url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus-stop.png",
           size: new google.maps.Size(25, 25),
           origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 0),
           scaledSize: new google.maps.Size(25, 25)
         }}
         z-index={2}
