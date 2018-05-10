@@ -44,7 +44,8 @@ const MapRender = compose(
       defaultZoom={props.defaultZoom}
       zoom={props.zoomTo}
       center={props.center}
-      defaultCenter={{ lat: 38.9072, lng: -77.0369 }} >
+      defaultCenter={{ lat: 38.9072, lng: -77.0369 }}
+      options= {{gestureHandling: "greedy"}} >
       <Marker position={props.userLocation} />
       {props.markers.map((bus,index) => (
         <Marker
