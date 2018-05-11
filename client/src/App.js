@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Home from "./pages";
 import Nav from "./components/Nav";
 import Login from "./components/Login";
@@ -12,13 +12,55 @@ const options = {
   position: "bottom center"
 };
 
-const App = () => (
-  <Provider template={AlertTemplate} {...options}>
-      <Nav>
-      <Login />
-      </Nav>
-      <Home />
-  </Provider>
-);
+class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      isSignedIn: false,
+      uuid: null,
+      open: false,
+      routes: []
+    };
+  }
+
+  onSignInSuccess = (currentUid, usersRoutes) => {
+    this.setState({
+      isSignedIn: true,
+      uuid: currentUid,
+      open: false,
+      routes: usersRoutes
+    });
+  }
+
+  onSignOutSuccess = () => {
+    this.setState({
+      isSignedIn: false,
+      uuid: null
+    });
+  }
+
+  openSignInModal = () => {
+    this.setState({
+      open: true
+    });
+  }
+
+  closeSignInModal = () => {
+    this.setState({
+      open: false
+    });
+  }
+
+  render() {
+    return (
+      <Provider template={AlertTemplate} {...options}>
+          <Nav>
+          <Login onSignInSuccess={this.onSignInSuccess.bind(this)} onSignOutSuccess={this.onSignOutSuccess.bind(this)} isOpenSignIn={this.state.open} isCloseSignIn={this.closeSignInModal.bind(this)}/>
+          </Nav>
+          <Home isSignedIn={this.state.isSignedIn} userID={this.state.uuid} openSignIn={this.openSignInModal.bind(this)} userSavedRoutes={this.state.routes}/>
+      </Provider>
+    );
+  }
+}
 
 export default App;

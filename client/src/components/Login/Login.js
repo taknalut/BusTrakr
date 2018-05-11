@@ -31,7 +31,6 @@ export default class Login extends Component {
       }
    };
 
-
   componentDidMount() {
       if (window.location.search === '?mode=select'){
         this.onOpenModal();
@@ -39,7 +38,9 @@ export default class Login extends Component {
 
       this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
           (user) => {
-            this.setState({ isSignedIn: !!user })
+            this.setState({
+              isSignedIn: !!user,
+            })
 
             if (user && user.uid != this.state.currentUid) {
               this.setState({
@@ -50,8 +51,8 @@ export default class Login extends Component {
 
               API.checkUserExist(user.uid).
                 then((result) => {
-                  console.log("check user");
-                  console.log(result);
+                  this.props.onSignInSuccess(user.uid, result.data[0].routes);
+
                   if (result.data.length < 1) {
                     const newUser = {
                       username: user.displayName,
@@ -61,7 +62,7 @@ export default class Login extends Component {
 
                     API.createUser(newUser).
                       then((result) => {
-                        console.log("line 59", result);
+                        console.log(result);
                       })
                   }
 
@@ -86,6 +87,7 @@ export default class Login extends Component {
 
     onCloseModal = () => {
       this.setState({ open: false });
+      this.props.isCloseSignIn();
     };
 
     logout = () => {
@@ -95,13 +97,12 @@ export default class Login extends Component {
             isSignedIn: false,
             currentUid: null
           });
+        this.props.onSignOutSuccess();
         });
-      window.location.reload();
-      window.location.href = "/";
     }
 
   render() {
-      const { open } = this.state;
+      const open = this.state.open ? this.state.open : this.props.isOpenSignIn
       if (!this.state.isSignedIn) {
       return (
         <div className="cl-effect-7">

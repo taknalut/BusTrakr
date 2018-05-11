@@ -18,7 +18,7 @@ const styles = {
 
 const SaveLines = props => (
   <MuiThemeProvider>
-  <div style={styles.block}>
+  <div style={styles.block} onClick={props.onClick}>
   <Checkbox
   checkedIcon={props.status ? <ActionFavorite style={{fill: "#FF6D00"}} /> : <ActionFavoriteBorder />}
   uncheckedIcon={!props.status ? <ActionFavoriteBorder /> : <ActionFavorite style={{fill: "#FF6D00"}} />}
