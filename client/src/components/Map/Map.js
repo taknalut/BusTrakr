@@ -6,6 +6,12 @@ import API from "../../utils/API";
 
 const google = window.google;
 
+const lineSymbol = {
+          path: 'M 0,-1 0,1',
+          strokeOpacity: 1,
+          scale: 4
+          };
+
 const MapRender = compose(
   withProps({
     // googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyZQ_jUpH1-rnOCDRlbZGCAWtyRU2lXw&v=3.exp&libraries=geometry,drawing,places",
@@ -152,8 +158,16 @@ const MapRender = compose(
           </InfoWindow>}
         </Marker>
     ))}
-    <Polyline path={props.path0} options={{strokeColor:'rgb(0,188,212)',strokeWeight: 4.5}} z-index={0} />
-    <Polyline path={props.path1} options={{strokeColor:'black',strokeWeight: 2.5}} z-index={1} />
+    <Polyline path={props.path0} options={{strokeColor:'rgb(0,188,212)',strokeWeight: 4.5, icons: [{
+            icon: lineSymbol,
+            offset: '0',
+            repeat: '20px'
+          }]}} z-index={0} />
+    <Polyline path={props.path1} options={{strokeColor:'black',strokeWeight: 2.5, icons: [{
+            icon: lineSymbol,
+            offset: '0',
+            repeat: '20px'
+          }]}} z-index={1} />
     {props.showTraffic ? <TrafficLayer autoUpdate /> : <div></div>}
   </GoogleMap>
 );
