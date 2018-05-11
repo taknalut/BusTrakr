@@ -177,11 +177,13 @@ class Home extends Component {
       }
 
       //this.setState({routeShape0: ShapeDefined}),
-      this.setState({routeShape0: ShapeDefined, stops0: ShapeDefined, stops1: ShapeDefined, mapCenter: ShapeDefined[0]})
-      this.searchRouteStops0()
-      this.searchRoutes1()
-      this.searchRouteStops1()
-      this.searchBuses()
+
+      this.setState({routeShape0: ShapeDefined, stops0: ShapeDefined, stops1: ShapeDefined, mapCenter: ShapeDefined[0]}),
+      this.searchRouteStops0(),
+      this.searchRoutes1(),
+      this.searchRouteStops1(),
+      this.searchBuses(),
+      console.log("SearchRoutes1", res)
 
       this.setState({validSearch: this.state.search})
 
@@ -194,11 +196,9 @@ class Home extends Component {
       }
     })
       .catch(err => {
-        this.props.alert.error("Not a proper route search, path cannot be displayed!"),
-        this.setState({routeShape0: []})
-        this.setState({routeShape1: []})
-        this.setState({stops0: []})
-        this.setState({stops1: []})
+        this.props.alert.error("Not a proper route '0' search, path cannot be displayed!"),
+        this.setState({routeShape0: []}),
+        this.setState({stops0: []}),
         this.setState({buses: []})
       })
   };
@@ -207,6 +207,15 @@ class Home extends Component {
     API.routeSearch(this.state.search)
       .then(res => {
       let ShapeDefined = [];
+      res.data.Direction1.Shape.forEach(item =>
+        ShapeDefined.push({
+          lat: parseFloat(item.Lat),
+          lng: parseFloat(item.Lon)
+        })
+      ),
+      this.setState({routeShape1: ShapeDefined}),
+      this.setState({validSearch: this.state.search}),
+      console.log("SearchRoutes2", res)
 
       if (res.data.Direction1) {
         res.data.Direction1.Shape.forEach(item =>
@@ -222,7 +231,11 @@ class Home extends Component {
         this.setState({routeShape1: []})
       }
     })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.props.alert.error("Not a proper route '1' search, path cannot be displayed!")
+        this.setState({routeShape1: []})
+        this.setState({stops1: []})
+      });
   };
 
 //work on tomorrow for bus stops
