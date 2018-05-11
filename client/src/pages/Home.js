@@ -211,9 +211,9 @@ class Home extends Component {
       console.log(this.state.validSearch);
     })
       .catch(err => {
-        this.props.alert.error("Not a proper route '1' search, path cannot be displayed!");
-        this.setState({routeShape1: []});
-        this.setState({stops1: []});
+        this.props.alert.error("Not a proper route '1' search, path cannot be displayed!")
+        this.setState({routeShape1: []})
+        this.setState({stops1: []})
       });
   };
 
@@ -415,6 +415,7 @@ console.log(this.state.buses);
       this.props.openSignIn();
     }
   }
+
 
   render() {
     return (
