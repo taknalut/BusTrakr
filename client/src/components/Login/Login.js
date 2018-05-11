@@ -63,22 +63,12 @@ export default class Login extends Component {
                   }
 
                   else {
-                    // console.log("User found.");
-
-                    if (localStorage.getItem('alreadyLoaded')) {
-                      return;
-                    }
-
-                    else {
-                      window.location.href = "/";
-                      (localStorage.setItem('alreadyLoaded', false))
-                    }
+                    console.log("User found.");
                   }
               });
             }
             else {
               localStorage.removeItem('googleID');
-              localStorage.removeItem('alreadyLoaded');
             }
           });
     }
@@ -103,7 +93,6 @@ export default class Login extends Component {
             currentUid: null
           });
         });
-      (localStorage.setItem('alreadyLoaded', false))
       window.location.reload();
       window.location.href = "/";
     }
