@@ -418,6 +418,12 @@ class Home extends Component {
     this.handleFormSubmit();
   }
 
+  onClickSave = () => {
+    if(!this.props.isSignedIn) {
+    this.props.openSignIn();
+    }
+  }
+
   render() {
     return (
       <div>
@@ -432,11 +438,20 @@ class Home extends Component {
           <div style={{display: "inline-block"}}>
           <h4 className="float-left">Tracking route: {this.state.validSearch}
           </h4>
+          { this.props.isSignedIn && this.state.usersRoutes.includes(this.state.validSearch) ?
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
           checked={this.state.checked}
           status={this.state.checked}
           />
+          :
+          <SaveLines
+          onClick={this.onClickSave}
+          updateSaved={this.updateSaved.bind(this)}
+          checked={false}
+          status={false}
+          />
+          }
           </div>
           <div>
 
