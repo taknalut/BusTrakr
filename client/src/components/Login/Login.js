@@ -39,7 +39,9 @@ export default class Login extends Component {
 
       this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
           (user) => {
-            this.setState({ isSignedIn: !!user })
+            this.setState({
+              isSignedIn: !!user,
+            })
 
             if (user && user.uid != this.state.currentUid) {
               this.setState({
@@ -52,11 +54,16 @@ export default class Login extends Component {
                 then((result) => {
                   console.log("check user");
                   console.log(result);
+                  console.log(result.data[0].routes);
+
+                  this.props.onSignInSuccess(user.uid, result.data[0].routes);
+
                   if (result.data.length < 1) {
                     const newUser = {
                       username: user.displayName,
                       uuid: user.uid,
-                      routes: []
+                      routes: [],
+                      phone: ""
                     };
 
                     API.createUser(newUser).
@@ -74,6 +81,7 @@ export default class Login extends Component {
               localStorage.removeItem('googleID');
             }
           });
+
     }
 
     componentWillUnmount() {
@@ -86,6 +94,8 @@ export default class Login extends Component {
 
     onCloseModal = () => {
       this.setState({ open: false });
+      this.props.isCloseSignIn();
+
     };
 
     logout = () => {
@@ -95,13 +105,12 @@ export default class Login extends Component {
             isSignedIn: false,
             currentUid: null
           });
+        this.props.onSignOutSuccess();
         });
-      window.location.reload();
-      window.location.href = "/";
     }
 
   render() {
-      const { open } = this.state;
+      const open = this.state.open ? this.state.open : this.props.isOpenSignIn
       if (!this.state.isSignedIn) {
       return (
         <div className="cl-effect-7">

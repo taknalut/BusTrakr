@@ -69,6 +69,8 @@ class Home extends Component {
 
   checkLoginStatus = () => {
     var userID = localStorage.getItem('googleID');
+    //var userID = this.props.uuid;
+    console.log("userID", userID);
 
     // Grabs from db the user's currently favorited routes
     if (userID)
@@ -76,6 +78,7 @@ class Home extends Component {
         then((result) => {
           const theirSaved = result.data[0].routes;
           this.setState({usersRoutes: theirSaved})
+          console.log(this.state.usersRoutes);
 
           // Check if current search in bookmarks
           if (theirSaved.includes(this.state.validSearch)) {
@@ -407,7 +410,19 @@ console.log(this.state.buses);
     this.handleFormSubmit();
   }
 
+  onClickSave = () => {
+    console.log("Call OnClick");
+    console.log(this.props.isSignedIn);
+    if(!this.props.isSignedIn){
+      this.props.openSignIn();
+    }
+  }
+
   render() {
+    // console.log(this.props.isSignedIn);
+    // console.log(this.props.userID);
+    //console.log(this.props.userSavedRoutes);
+    //console.log(this.state.usersRoutes);
     return (
       <div>
       <Jumbotron>
@@ -421,11 +436,21 @@ console.log(this.state.buses);
           <div style={{display: "inline-block"}}>
           <h4 className="float-left">Tracking route: {this.state.search}
           </h4>
+
+          { this.props.isSignedIn && this.state.usersRoutes.includes(this.state.validSearch) ?
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
           checked={this.state.checked}
           status={this.state.checked}
           />
+          :
+          <SaveLines
+          onClick={this.onClickSave}
+          updateSaved={this.updateSaved.bind(this)}
+          checked={false}
+          status={false}
+          />
+          }
           </div>
           <div>
 
