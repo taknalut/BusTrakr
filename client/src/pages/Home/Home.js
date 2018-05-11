@@ -213,8 +213,8 @@ class Home extends Component {
           lng: parseFloat(item.Lon)
         })
       ),
-      this.setState({routeShape1: ShapeDefined})
-      this.setState({validSearch: this.state.search})
+      this.setState({routeShape1: ShapeDefined}),
+      this.setState({validSearch: this.state.search}),
       console.log("SearchRoutes2", res)
 
       if (res.data.Direction1) {
@@ -235,7 +235,7 @@ class Home extends Component {
         this.props.alert.error("Not a proper route '1' search, path cannot be displayed!")
         this.setState({routeShape1: []})
         this.setState({stops1: []})
-      })
+      });
   };
 
 //work on tomorrow for bus stops

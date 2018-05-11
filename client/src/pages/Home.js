@@ -211,9 +211,9 @@ class Home extends Component {
       console.log(this.state.validSearch);
     })
       .catch(err => {
-        this.props.alert.error("Not a proper route '1' search, path cannot be displayed!");
-        this.setState({routeShape1: []});
-        this.setState({stops1: []});
+        this.props.alert.error("Not a proper route '1' search, path cannot be displayed!")
+        this.setState({routeShape1: []})
+        this.setState({stops1: []})
       });
   };
 
@@ -410,12 +410,6 @@ console.log(this.state.buses);
     this.handleFormSubmit();
   }
 
-  onClickSave = () => {
-    if(!this.props.isSignedIn){
-      this.props.openSignIn();
-    }
-  }
-
   render() {
     return (
       <div>
@@ -430,20 +424,11 @@ console.log(this.state.buses);
           <div style={{display: "inline-block"}}>
           <h4 className="float-left">Tracking route: {this.state.search}
           </h4>
-          { this.props.isSignedIn && this.state.usersRoutes.includes(this.state.validSearch) ?
           <SaveLines
           updateSaved={this.updateSaved.bind(this)}
           checked={this.state.checked}
           status={this.state.checked}
           />
-          :
-          <SaveLines
-          onClick={this.onClickSave}
-          updateSaved={this.updateSaved.bind(this)}
-          checked={false}
-          status={false}
-          />
-          }
           </div>
           <div>
 
