@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Login from "./components/Login";
-import FavNav from "./components/FavNav"
 import { Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import { BrowserRouter as Router, Route } from "react-router-dom";
