@@ -60,7 +60,7 @@ class App extends Component {
             <Nav>
             <Login onSignInSuccess={this.onSignInSuccess.bind(this)} onSignOutSuccess={this.onSignOutSuccess.bind(this)} isOpenSignIn={this.state.open} isCloseSignIn={this.closeSignInModal.bind(this)}/>
             </Nav>
-            <Route exact path="/" render={()=><Home isSignedIn={this.state.isSignedIn} userID={this.state.uuid} openSignIn={this.openSignInModal.bind(this)} userSavedRoutes={this.state.routes}/>}/>
+            <Route exact path="/" render={() => <Home isSignedIn={this.state.isSignedIn} userID={this.state.uuid} openSignIn={this.openSignInModal.bind(this)} userSavedRoutes={this.state.routes}/> }/>
             <Route exact path="/about" component={About} />
         </Provider>
       </Router>
