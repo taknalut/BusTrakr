@@ -26,6 +26,11 @@ ul {
   float: left;
 }
 
+.bodyContainer {
+    min-height: calc(100vh - 0.5rem);
+    margin-bottom: 100px;
+}
+
 @media only screen and (max-width: 600px) {
 .float-left {
   float: none;

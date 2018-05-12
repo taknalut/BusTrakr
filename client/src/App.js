@@ -6,6 +6,7 @@ import { Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import About from "./pages/About";
+import Footer from "./components/Footer"
 import "./App.css";
 
 const options = {
@@ -61,6 +62,7 @@ class App extends Component {
             </Nav>
             <Route exact path="/" render={() => <Home isSignedIn={this.state.isSignedIn} userID={this.state.uuid} openSignIn={this.openSignInModal.bind(this)} userSavedRoutes={this.state.routes}/> }/>
             <Route exact path="/about" component={About} />
+            <Footer />
         </Provider>
       </Router>
     );
