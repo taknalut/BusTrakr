@@ -3,22 +3,24 @@
 BusTrackr is a single-page application that informs users of the current status of a WMATA bus for every route. Users have the option of bookmarking routes and stops.
 
 ## Getting Started
-
-When the page loads, you will see this screen.
-
-[Picture of 10A]
+Bus positions are updated every 15 seconds
 
 You can search for a route of your own in the search bar (Autocomplete-enabled)
 
-[Picture of an incomplete search, autocomplete bar expanded]
+Create an account or log in to enable the bookmarking feature. 
+See bookmarked lines by clicking "View your saved lines"
 
-If you wish to bookmark a route, log in to your account or create one 
+See which buses are on the road with "View active buses"
 
-[Point to the login/register button]
+Use current location to center the map on where you are.
 
-This enables the bookmarking feature
+Click on a bus marker to see its destination, it's direction, and it's deviation from its schedule.
+    Deviation: -1 means it's one minute early
+    Deviation: -3 means it's three minutes late
 
-[Click on the star/heart please]
+Click on a stop marker to see which buses will visit that stop.
+Here you can also see a prediction of how when the bus might arrive.
+
 
 ## Built With
 
