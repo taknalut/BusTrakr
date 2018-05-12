@@ -127,7 +127,8 @@ export default class Login extends Component {
           </Modal>
         </div>
         <div className="cl-effect-7">
-          <a className="mobile-view" onClick={this.logout}>Log out</a>
+          <p className="mobile-view name">Hi {firebase.auth().currentUser.displayName}</p>
+          <a className="mobile-view button" onClick={this.logout}>Log out</a>
         </div>
       </div>
     );
