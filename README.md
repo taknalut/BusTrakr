@@ -11,10 +11,8 @@
 * See which buses are on the road with<img src="https://user-images.githubusercontent.com/24596592/39953416-85f339a8-5579-11e8-971d-367c0a59893c.png" align="top">
 * Use current location to center the map on where you are.
 * Click on a bus marker to see destination, direction, and deviation from its schedule.
-    - Negative Deviation indicates the bus is running ahead of schedule.
-        - *-1 means one minute early*
-    - Positive Deviation indicates the bus is running late.
-        - *+3 means three minutes late*
+    - Negative Deviation indicates the bus is running ahead of schedule. *-1 means one minute early.*
+    - Positive Deviation indicates the bus is running late. *+3 means three minutes late.*
 
 * Click on a stop marker to see which buses will visit that stop.
     - Here you can also see a prediction of when the bus might arrive.
@@ -22,7 +20,7 @@
 ## Technologies & Frameworks
 
 * [React.js](https://reactjs.org/) - User interface library
-* [Google Maps API](https://maven.apache.org/) - Dependency management
+* [Google Maps API](https://developers.google.com/maps/documentation/) - Customized interactive map
 * [Express.js](https://expressjs.com/) - Web application framework
 * [MongoDB](https://www.mongodb.com/) - NoSQL database to save bookmarked routes
 * [Mongoose](http://mongoosejs.com/) - MongoDB Object model creation
