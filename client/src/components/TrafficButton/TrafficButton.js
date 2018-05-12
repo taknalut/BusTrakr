@@ -7,8 +7,8 @@ const styles = {
     margin: 12,
     fontSize: "10px",
     position: "relative",
-    top: -465,
-    left: -228,
+    top: -505,
+    left: -94,
     zIndex: 2,
   },
   labelStyle: {
@@ -17,6 +17,7 @@ const styles = {
     paddingLeft: 1,
     paddingTop: 1,
     paddingBottom: 1,
+    color: 'white'
   }
 };
 
@@ -28,6 +29,7 @@ const TrafficButton = (props) => (
       style={styles.button}
       labelStyle={styles.labelStyle}
       containerElement="label"
+      backgroundColor="#FF6D00"
       onClick={props.changeState}
     >
     </RaisedButton>
