@@ -25,6 +25,9 @@
 * [MongoDB](https://www.mongodb.com/) - NoSQL database to save bookmarked routes
 * [Mongoose](http://mongoosejs.com/) - MongoDB Object model creation
 * [Firebase](https://firebase.google.com/) - User authentication
+* [Material UI](http://www.material-ui.com/) - Styling components for bookmark
+* [WMATA API](https://developer.wmata.com/) - Bus stop information, route and schedule data, and bus positions
+
 
 ## **Code Example**
 ```
