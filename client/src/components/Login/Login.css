@@ -77,9 +77,24 @@ nav a:focus {
 	opacity: 1;
 }
 
+.button {
+  float: left;
+}
+
+.name {
+  float: left;
+  position: relative;
+	display: inline-block;
+	margin: 15px 25px;
+  padding: 12px 10px 10px;
+}
+
 @media only screen and (max-width: 600px) {
 .mobile-view {
   margin-right: 0px;
   font-size: .3rem;
+}
+.button {
+  margin-left: 5px;
 }
 }
