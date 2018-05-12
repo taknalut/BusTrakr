@@ -44,6 +44,7 @@ class Home extends Component {
     userLocation: null,
     dataSource: [],
     showTraffic: true,
+    currentUser: '',
   };
 
   componentDidMount(query) {
@@ -64,6 +65,14 @@ class Home extends Component {
       this.timerReset();
       this.searchBuses();
     }
+
+    if (this.state.countDown % 3 == 0) {
+      if (localStorage.getItem('googleID')) {
+        if (this.state.currentUser !== localStorage.getItem('googleID')) {
+          this.checkLoginStatus();
+        }
+      }    
+    }
   }
 
   checkLoginStatus = () => {
@@ -75,6 +84,7 @@ class Home extends Component {
         .then((result) => {
           const theirSaved = result.data[0].routes;
           this.setState({usersRoutes: theirSaved})
+          this.setState({currentUser: result.data[0].uuid})
 
           // Check if current search in bookmarks
           if (theirSaved.includes(this.state.validSearch)) {
@@ -328,15 +338,21 @@ class Home extends Component {
     var userID = localStorage.getItem('googleID');
 
     // User clicked on blank heart, wants to SAVE
-    if (this.state.checked === false) {
+    if (this.state.checked == false) {
       theirRoutes.push(this.state.validSearch);
+
+      console.log(this.state.usersRoutes);
       this.setState({ usersRoutes: theirRoutes });
+
+      console.log(theirRoutes)
+      console.log(this.state.usersRoutes);
 
       API.saveRoute(userID, theirRoutes);
     }
 
     // User clicked on blue heart, wants to REMOVE
-    if (this.state.checked === true) {
+    if (this.state.checked == true) {
+      console.log(theirRoutes)
       var index = theirRoutes.indexOf(this.state.validSearch);
 
       if (index > -1) {
@@ -522,9 +538,6 @@ class Home extends Component {
               showTraffic={this.state.showTraffic}
               changeState={this.toggleTraffic}
             />
-
-            {/*These are the user's routes: {this.state.usersRoutes} This is their latest valid search {this.state.validSearch}*/}
-
         </Container>
         </Jumbotron>
       </div>

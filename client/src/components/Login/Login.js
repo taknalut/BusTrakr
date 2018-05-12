@@ -51,7 +51,8 @@ export default class Login extends Component {
 
               API.checkUserExist(user.uid).
                 then((result) => {
-                  this.props.onSignInSuccess(user.uid, result.data[0].routes);
+                  // this.props.onSignInSuccess(user.uid, result.data[0].routes);
+                  console.log(result)
 
                   if (result.data.length < 1) {
                     const newUser = {
@@ -67,7 +68,7 @@ export default class Login extends Component {
                   }
 
                   else {
-                    console.log("User extant, don't do anything.");
+                    this.props.onSignInSuccess(user.uid, result.data[0].routes);
                   }
               });
             }
@@ -91,6 +92,8 @@ export default class Login extends Component {
     };
 
     logout = () => {
+      localStorage.removeItem('googleID');
+
       firebase.auth().signOut()
         .then(() => {
           this.setState({
