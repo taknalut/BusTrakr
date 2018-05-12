@@ -9,7 +9,7 @@ const style = {
 const GeoLocation = props => (
   <MuiThemeProvider>
     <RaisedButton
-      label="Use Current Location?"
+      label="Show me where I am"
       primary={true}
       style={style}
       backgroundColor="#a4c639"

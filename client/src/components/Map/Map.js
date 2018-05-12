@@ -60,10 +60,10 @@ const MapRender = compose(
           animation={google.maps.Animation.DROP}
           onClick={() => props.onBusToggleOpen(index)}
           icon={{
-            url:"https://s3.us-east-2.amazonaws.com/bustrakr/busloc.png",
-            size: new google.maps.Size(50, 50),
+            url:"https://s3.us-east-2.amazonaws.com/bustrakr/bus.png",
+            // size: new google.maps.Size(50, 50),
             origin: new google.maps.Point(0, 0),
-            scaledSize: new google.maps.Size(50, 50)
+            scaledSize: new google.maps.Size(43.5, 57)
           }}
           z-index={20}
         >

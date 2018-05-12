@@ -9,6 +9,7 @@ const styles = {
   },
   floatingLabelFocusStyle: {
     color: orangeA700,
+    marginTop: 0,
   },
 };
 
