@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Home from "./pages/Home";
 import Nav from "./components/Nav";
 import Login from "./components/Login";
-import FavNav from "./components/FavNav"
+import FavNav from "./components/FavNav";
 import { Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -58,7 +58,7 @@ class App extends Component {
       <Router>
         <Provider template={AlertTemplate} {...options}>
             <Nav>
-            <Login onSignInSuccess={this.onSignInSuccess.bind(this)} onSignOutSuccess={this.onSignOutSuccess.bind(this)} isOpenSignIn={this.state.open} isCloseSignIn={this.closeSignInModal.bind(this)}/>
+              <Login onSignInSuccess={this.onSignInSuccess.bind(this)} onSignOutSuccess={this.onSignOutSuccess.bind(this)} isOpenSignIn={this.state.open} isCloseSignIn={this.closeSignInModal.bind(this)}/>
             </Nav>
             <Route exact path="/" render={() => <Home isSignedIn={this.state.isSignedIn} userID={this.state.uuid} openSignIn={this.openSignInModal.bind(this)} userSavedRoutes={this.state.routes}/> }/>
             <Route exact path="/about" component={About} />
