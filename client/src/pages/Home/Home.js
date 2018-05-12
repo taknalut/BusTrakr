@@ -10,7 +10,8 @@ import API from "../../utils/API";
 // import RouteSaveBtn from "../../components/RouteSaveBtn"
 import AutoCompleteFilters from "../../components/Autocomplete"
 import DropdownFav from "../../components/DropdownFav"
-import DropdownActive from "../../components/DropdownActive"
+import DropdownActive from "../../components/DropdownActive";
+import Footer from "../../components/Footer"
 import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
 import GeoLocation from "../../components/GeoLocation";
@@ -540,6 +541,7 @@ class Home extends Component {
             />
         </Container>
         </Jumbotron>
+        <Footer />
       </div>
     )
   }
