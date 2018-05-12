@@ -72,7 +72,7 @@ class Home extends Component {
         if (this.state.currentUser !== localStorage.getItem('googleID')) {
           this.checkLoginStatus();
         }
-      }    
+      }
     }
   }
 
@@ -499,6 +499,7 @@ class Home extends Component {
                   value={bus.position}
                   primaryText={bus.dropdownText}
                   onClick={() => {this.zoomToThisBus(bus.position)}}
+                  className="mobile"
                 />
               </ul>
             ))

@@ -1,9 +1,6 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import MapsPlace from 'material-ui/svg-icons/maps/place';
 import "./DropdownFav.css";
 
 const DropdownFavs = props => (

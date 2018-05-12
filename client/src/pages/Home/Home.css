@@ -30,4 +30,7 @@ ul {
 .float-left {
   float: none;
 }
+.mobile {
+  max-width: 100vw;
+}
 }
