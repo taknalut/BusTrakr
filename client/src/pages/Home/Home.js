@@ -11,7 +11,6 @@ import API from "../../utils/API";
 import AutoCompleteFilters from "../../components/Autocomplete"
 import DropdownFav from "../../components/DropdownFav"
 import DropdownActive from "../../components/DropdownActive";
-import Footer from "../../components/Footer"
 import MenuItem from 'material-ui/MenuItem';
 import { withAlert } from "react-alert";
 import GeoLocation from "../../components/GeoLocation";
@@ -443,7 +442,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div className="bodyContainer">
       <Jumbotron>
         <Container>
           <AutoCompleteFilters
@@ -542,7 +541,6 @@ class Home extends Component {
             />
         </Container>
         </Jumbotron>
-        <Footer />
       </div>
     )
   }

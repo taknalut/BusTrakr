@@ -1,13 +1,28 @@
 #foot {
-    position: fixed;
-    left: 0;
-    bottom: 0;
     width: 100%;
-    background-color: #666666;
+    padding: .8rem;
+    background-color: black;
     text-align: center;
-    color: grey;
-    height: 9%;
-    overflow: hidden;
-    display: block;
-    padding-top: 20px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
 }
+
+p {
+  margin-bottom: 0;
+  padding-bottom: 0.5rem;
+}
+
+.mapLink {
+  color: white;
+}
+.mapLink:hover {
+   color: white;
+}
+
+.line {
+    height: 0.5;
+    width: 50%;
+    background: white;
+    border-bottom:1px solid white;
+    margin: auto;
+    }
