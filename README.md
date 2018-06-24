@@ -1,6 +1,6 @@
-# BusTrackr
+# BusTrakr
 
-[BusTrackr](https://tranquil-fjord-74322.herokuapp.com) is a single-page application that informs users of the current status of a WMATA bus for every route. Users have the option of bookmarking routes and stops.
+[BusTrakr](https://tranquil-fjord-74322.herokuapp.com) is a single-page application that informs users of the current status of a WMATA bus for every route. Users have the option of bookmarking routes and stops.
 
 ## Features
 
